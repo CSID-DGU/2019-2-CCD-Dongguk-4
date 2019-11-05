@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "119349870819",
+    "firebase_url": "https://danong-53e3d.firebaseio.com",
+    "project_id": "danong-53e3d",
+    "storage_bucket": "danong-53e3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119349870819:android:e77e5cbb40c213819305d6",
+        "android_client_info": {
+          "package_name": "com.example.net_danong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119349870819-qjgl1u5ckck4mvc2dd4idl2du17c2o2r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.net_danong",
+            "certificate_hash": "94b528a1ea3b0d5628c2eb91f79d6e6268235c38"
+          }
+        },
+        {
+          "client_id": "119349870819-4kknd4074gorctknag0eg70lle4hm3kr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiVoZpXT5_Pp-6b7OF6woBP5stSzdBAfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119349870819-4kknd4074gorctknag0eg70lle4hm3kr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
