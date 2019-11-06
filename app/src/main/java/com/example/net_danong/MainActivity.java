@@ -3,6 +3,7 @@ package com.example.net_danong;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         db = FirebaseFirestore.getInstance();
+        /*Intent intent = new Intent(this, firstpage_activity.class);
+        startActivity(intent); */
 /* 테스트데이터 추가 11/06 5:04 am
         addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
         addNewUsers("tbfxdn80", Arrays.asList("전북 임실군 덕치면 일중리", "35.4928087", "127.1220321"), "2");
