@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--fragment_menu1,2,3,4,5.xml 순서대로 홈(메인), 찜, 지도, sns게시판, 더보기 (ui설정대로)페이지-->
+<!--fragment_menu1,2,3,4,5.xml 순서대로 홈(메인), 찜, 지도, sns게시판, 더보기 (ui설정대로)페이지!-->
+<!--frament_menu1~5.xml파일, activity_main.xml, Menu1~5Fragment class, MainActivity Class, gradle 파일 수정 및 navbar branch생성-->
 
     <FrameLayout
         android:id="@+id/frame_layout"
