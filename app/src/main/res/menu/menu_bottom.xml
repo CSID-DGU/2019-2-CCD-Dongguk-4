@@ -2,16 +2,26 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_menu1"
-        android:icon="@android:drawable/ic_menu_call"
-        android:title="MENU1" />
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="HOME" />
 
     <item
         android:id="@+id/navigation_menu2"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="MENU2" />
+        android:icon="@android:drawable/ic_input_get"
+        android:title="LIST" />
 
     <item
         android:id="@+id/navigation_menu3"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="MAPS" />
+
+    <item
+        android:id="@+id/navigation_menu4"
         android:icon="@android:drawable/ic_menu_edit"
-        android:title="MENU3" />
+        android:title="SNS" />
+
+    <item
+        android:id="@+id/navigation_menu5"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="MORE" />
 </menu>

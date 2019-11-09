@@ -7,6 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="찜한 상품들 ~!!!"/>
+        android:text="농부들의 SNS...농작물 팁 공유 게시판"/>
 
 </LinearLayout>

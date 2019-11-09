@@ -25,7 +25,7 @@ import java.util.Map;
 
 import io.opencensus.tags.Tag;
 
-//navBar 변경 추가
+//navBar 관련 항목
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,17 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    // n개의 메뉴에 들어갈 Fragment들
+    // 5개의 메뉴에 들어갈 Fragment들
     private Menu1Fragment menu1Fragment = new Menu1Fragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
+    private Menu4Fragment menu4Fragment = new Menu4Fragment();
+    private Menu5Fragment menu5Fragment = new Menu5Fragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //첫 화면 지정
+        //첫 화면 지정 (menu1페이지)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
 
@@ -131,6 +133,14 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case R.id.navigation_menu3: {
                     transaction.replace(R.id.frame_layout, menu3Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu4: {
+                    transaction.replace(R.id.frame_layout, menu4Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu5: {
+                    transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
                     break;
                 }
             }
