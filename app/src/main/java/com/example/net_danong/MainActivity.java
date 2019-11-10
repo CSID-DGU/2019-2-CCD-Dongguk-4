@@ -25,16 +25,38 @@ import java.util.Map;
 
 import io.opencensus.tags.Tag;
 
+//navBar 관련 항목
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import android.view.MenuItem;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     //로그인 상태변화 확인
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+    // 5개의 메뉴에 들어갈 Fragment들
+    private Menu1Fragment menu1Fragment = new Menu1Fragment();
+    private Menu2Fragment menu2Fragment = new Menu2Fragment();
+    private Menu3Fragment menu3Fragment = new Menu3Fragment();
+    private Menu4Fragment menu4Fragment = new Menu4Fragment();
+    private Menu5Fragment menu5Fragment = new Menu5Fragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //첫 화면 지정 (menu1페이지)
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
         /*Intent intent = new Intent(this, firstpage_activity.class);
@@ -92,5 +114,37 @@ public class MainActivity extends AppCompatActivity {
                         Log.w("", "Error adding document", e);
                     }
                 });
+    }
+
+    // navBar 클래스 navBar 클릭 시 이동
+    class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            switch (menuItem.getItemId()) {
+                case R.id.navigation_menu1: {
+                    transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu2: {
+                    transaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu3: {
+                    transaction.replace(R.id.frame_layout, menu3Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu4: {
+                    transaction.replace(R.id.frame_layout, menu4Fragment).commitAllowingStateLoss();
+                    break;
+                }
+                case R.id.navigation_menu5: {
+                    transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
+                    break;
+                }
+            }
+            return true;
+        }
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--메인 페이지-->
+    <!--  ImageView랑 ViewPager위젯 실행하면 에뮬레이터가 안 돌아가서 주석처리 했어용-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/danonglogo"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@null"-->
+<!--        android:src="@drawable/ic_launcher_foreground"-->
+<!--        android:paddingLeft="12dp"-->
+<!--        />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:paddingLeft="16dp"
+        android:text="어떤 농작물을 찾고 계신가요?"
+        android:textSize="28dp"
+        />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/ImageView_SearchBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/ic_launcher_background"-->
+<!--        android:clickable="true"-->
+<!--        />-->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="다농의 추천 농작물"
+        android:textSize="23dp"
+        android:paddingTop="30dp"
+        android:paddingLeft="16dp"
+        />
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="300dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:foregroundGravity="center"-->
+<!--        android:id="@+id/viewPager"-->
+<!--        android:overScrollMode="never"-->
+<!--        android:clipToPadding="false"-->
+<!--        />-->
+
+
+</LinearLayout>
