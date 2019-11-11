@@ -33,7 +33,6 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
-    private FirebaseAuth auth;
     //로그인 상태변화 확인
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -50,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Intent intent = new Intent(this, TEMPLoginActivity.class);
+        startActivity(intent);/*
         //첫 화면 지정 (menu1페이지)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
@@ -59,8 +59,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
-        /*Intent intent = new Intent(this, firstpage_activity.class);
-        startActivity(intent); */
+*/
 /* 테스트데이터 추가 11/06 5:04 am
         addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
         addNewUsers("tbfxdn80", Arrays.asList("전북 임실군 덕치면 일중리", "35.4928087", "127.1220321"), "2");

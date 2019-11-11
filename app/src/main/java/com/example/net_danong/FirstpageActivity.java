@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class firstpage_activity extends AppCompatActivity {
+public class FirstpageActivity extends AppCompatActivity {
 
     ViewPager viewPager;
     Adapter adapter;

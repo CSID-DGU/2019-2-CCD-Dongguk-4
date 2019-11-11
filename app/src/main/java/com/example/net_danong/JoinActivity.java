@@ -1,6 +1,5 @@
 package com.example.net_danong;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
-public class register_activity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class JoinActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     //다음 진행 버튼
     public Button nextBtn;
@@ -29,9 +28,9 @@ public class register_activity extends AppCompatActivity implements CompoundButt
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_join);
 
-        check1 = (AppCompatCheckBox) findViewById(R.id.register_check_1);
+      /*  check1 = (AppCompatCheckBox) findViewById(R.id.register_check_1);
         check2 = (AppCompatCheckBox) findViewById(R.id.register_check_2);
         check3 = (AppCompatCheckBox) findViewById(R.id.register_check_3);
         check4 = (AppCompatCheckBox) findViewById(R.id.register_check_4);
@@ -97,7 +96,7 @@ public class register_activity extends AppCompatActivity implements CompoundButt
                     if(TERM_AGREE_3 == 1) {
                         if(TERM_AGREE_2 == 1) {
                             if(TERM_AGREE_1 == 1) {
-                                startActivity(new Intent(register_activity.this, MainActivity.class));
+                                startActivity(new Intent(JoinActivity.this, MainActivity.class));
                             } else {
                                 Toast.makeText(getApplicationContext(), "약관을 체크해주세요", Toast.LENGTH_SHORT).show();
 
@@ -110,12 +109,12 @@ public class register_activity extends AppCompatActivity implements CompoundButt
                     }
                     //전체 약관 체크된 경우
                     else {
-                        Intent intent = new Intent(register_activity.this, MainActivity.class);
+                        Intent intent = new Intent(JoinActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 }
             }
-        });
+        });*/
     }
 
 
