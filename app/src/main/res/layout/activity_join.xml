@@ -27,21 +27,7 @@
         android:inputType="textPersonName"
         android:paddingTop="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="6dp"
-        android:text="비밀번호" />
 
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="8자리 이상 영문, 숫자 포함"
-        android:inputType="textPassword"
-        android:paddingTop="16dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -57,6 +43,21 @@
         android:ems="10"
         android:hint="hello@danong.com"
         android:inputType="textEmailAddress"
+        android:paddingTop="16dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingLeft="6dp"
+        android:text="비밀번호" />
+
+    <EditText
+        android:id="@+id/passwordText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="8자리 이상 영문, 숫자 포함"
+        android:inputType="textPassword"
         android:paddingTop="16dp" />
 
     <TextView
