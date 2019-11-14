@@ -52,4 +52,14 @@
 <!--        />-->
 
 
+    //검색 관련 추가 -다은
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:text="검색" />
+
+
+
 </LinearLayout>

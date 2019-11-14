@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
+import androidx.fragment.app.Fragment;
+
 public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener{
 
     //이메일 비밀번호 로그인 모듈 변수
@@ -103,7 +105,8 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
                     Toast.makeText(TEMPLoginActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
 
                     startActivity(new Intent(TEMPLoginActivity.this, MainActivity.class));
-                    finish();
+
+                  //  finish();
                 }
 
             }

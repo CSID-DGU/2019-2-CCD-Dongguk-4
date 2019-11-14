@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,12 +46,16 @@ public class MainActivity extends AppCompatActivity {
     private Menu4Fragment menu4Fragment = new Menu4Fragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
 
+    private static final String TAG = "DocSnippets";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, TEMPLoginActivity.class);
-        startActivity(intent);/*
+        //Intent intent = new Intent(this, TEMPLoginActivity.class);
+        //startActivity(intent);/*
+
+
         //첫 화면 지정 (menu1페이지)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
@@ -59,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
-*/
+        searchDB("토마토");
+//*/
 /* 테스트데이터 추가 11/06 5:04 am
         addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
         addNewUsers("tbfxdn80", Arrays.asList("전북 임실군 덕치면 일중리", "35.4928087", "127.1220321"), "2");
@@ -84,6 +90,25 @@ public class MainActivity extends AppCompatActivity {
 */
 
 
+    }
+
+    //db테스트용 검색쿼리
+    private void searchDB(String productName) {
+        db.collection("product")
+                .whereEqualTo("pdtName", productName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -141,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_menu5: {
                     transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
                     break;
+                    //if문걸어서 여기서 아예 처리
                 }
             }
             return true;
