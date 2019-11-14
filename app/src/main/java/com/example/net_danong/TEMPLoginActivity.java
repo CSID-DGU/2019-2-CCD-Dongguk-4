@@ -32,7 +32,7 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.temp_activity_login);
+        setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance(); //이메일 비밀번호 로그인 모듈 변수
 
         //이메일

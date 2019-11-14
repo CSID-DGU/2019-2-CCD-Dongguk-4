@@ -10,6 +10,6 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 public class Menu5Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.temp_activity_login, container, false);
+        return inflater.inflate(R.layout.activity_login, container, false);
     }
 }
