@@ -19,6 +19,8 @@ import java.util.Map;
 
 //navBar 관련 항목
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
     private Menu4Fragment menu4Fragment = new Menu4Fragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
+    //추가 기능별 Fragment
+    private SearchFragment searchFragment = new SearchFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
+        transaction.replace(R.id.frame_layout, menu1Fragment.newInstance()).commitAllowingStateLoss();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
@@ -73,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
         addNewProduct("토마토", "2019-10-31", "9");
         addNewProduct("토마토", "2019-10-28", "10");
 */
-
-
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -137,4 +139,14 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
+
+    //Fragment 교체 (Menu1에서 검색 버튼 클릭 시, Search_fragment로 이동)
+    public void replaceSearchFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, searchFragment).commitAllowingStateLoss();
+        // searchFragment띄우기
+    }
+
+
 }
