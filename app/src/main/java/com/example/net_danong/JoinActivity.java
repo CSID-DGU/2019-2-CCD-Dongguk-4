@@ -1,39 +1,32 @@
 package com.example.net_danong;
 
-import android.content.Intent;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+
+
+import java.util.Date;
 import java.util.regex.Pattern;
 
-public class JoinActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
-
-    //다음 진행 버튼
-    public Button nextBtn;
-
-    //체크박스 선택여부
-    public int TERM_AGREE_1 = 0;  //No check = 0, Check = 1
-    public int TERM_AGREE_2 = 0;
-    public int TERM_AGREE_3 = 0;
-    public int TERM_AGREE_4 = 0;
-    //체크박스
-    AppCompatCheckBox check1;
-    AppCompatCheckBox check2;
-    AppCompatCheckBox check3;
-    AppCompatCheckBox check4;
+public class JoinActivity extends AppCompatActivity  implements  View.OnClickListener{
 
     //비밀번호 정규식
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
@@ -41,17 +34,13 @@ public class JoinActivity extends AppCompatActivity implements CompoundButton.On
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9]@[a-zA-Z0-9].[a-zA-Z0-9]");
     //파이어베이스 인증 객체 생성
     private FirebaseAuth firebaseAuth;
+    DatabaseReference mdatabase;
 
     //이메일과 비밀번호
-    private EditText editName;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editPhoneNumber;
+    private EditText editName, editTextEmail, editTextPassword, editPhoneNumber;
+    private Button mRegisterbtn;
+    private String name, email, password, phoneNumber;
 
-    private String name = "";
-    private String email ="";
-    private String password = "";
-    private String phoneNumber = "";
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -61,157 +50,82 @@ public class JoinActivity extends AppCompatActivity implements CompoundButton.On
         //파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
 
+        editName = findViewById(R.id.nameText);
         editTextEmail = findViewById(R.id.emailText);
         editTextPassword = findViewById(R.id.passwordText);
-        editName = findViewById(R.id.nameText);
         editPhoneNumber = findViewById(R.id.phonenumberText);
-
-        check1 = (AppCompatCheckBox) findViewById(R.id.register_check_1);
-        check2 = (AppCompatCheckBox) findViewById(R.id.register_check_2);
-        check3 = (AppCompatCheckBox) findViewById(R.id.register_check_3);
-        check4 = (AppCompatCheckBox) findViewById(R.id.register_check_4);
-
-        //첫번째 동의
-        check1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    TERM_AGREE_1 = 1;
-                } else {
-                    TERM_AGREE_1 = 0;
-                }
-            }
-        });
-
-        //두번째 동의
-        check2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    TERM_AGREE_2 = 1;
-                } else {
-                    TERM_AGREE_2 = 0;
-                }
-            }
-        });
-
-        //세번째 동의
-        check3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    TERM_AGREE_3 = 1;
-                } else {
-                    TERM_AGREE_3 = 0;
-                }
-            }
-        });
-        //전체동의
-        check4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
-                if (isChecked) {
-                    check1.setChecked(true);
-                    check2.setChecked(true);
-                    check3.setChecked(true);
-                    TERM_AGREE_4 = 1;
-                } else {
-                    check1.setChecked(false);
-                    check2.setChecked(false);
-                    check3.setChecked(false);
-                    TERM_AGREE_4 = 0;
-                }
-            }
-        });
-        //회원가입 버튼
-        nextBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //전체 약관 체크여부
-                if(TERM_AGREE_4 != 1) {
-                    if(TERM_AGREE_3 == 1) {
-                        if(TERM_AGREE_2 == 1) {
-                            if(TERM_AGREE_1 == 1) {
-                                startActivity(new Intent(JoinActivity.this, MainActivity.class));
-                            } else {
-                                Toast.makeText(getApplicationContext(), "약관을 체크해주세요", Toast.LENGTH_SHORT).show();
-
-                                return;
-                            }
-                        } else {
-                            Toast.makeText(getApplicationContext(), "약관을 체크해주세요", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    //전체 약관 체크된 경우
-                    else {
-                        Intent intent = new Intent(JoinActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
-    }
-
-    public void signUp(View view) {
-        email = editTextEmail.getText().toString();
-        password = editTextPassword.getText().toString();
-
-        if(isValidEmail() && isValidPasswd()) {
-            createUser(email, password);
-        }
-    }
-
-    //이메일 유효성 조사
-    private boolean isValidEmail() {
-        if(email.isEmpty()) {
-            //이메일 공백
-            return false;
-        } else if (!EMAIL_PATTERN.matcher(email).matches()) {
-            //이메일 형식 불일치
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    //비밀번호 유효성 검사
-    private boolean isValidPasswd() {
-        if(password.isEmpty()) {
-            //비밀번호 공백
-            return false;
-        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            //비밀번호 형식 불일치
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    //회원가입
-    private void createUser(String email, String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            //회원가입 성공
-                            Toast.makeText(JoinActivity.this, R.string.success_signup, Toast.LENGTH_SHORT);
-                        } else {
-                            //회원가입 실패
-                            Toast.makeText(JoinActivity.this, R.string.failed_signup,Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
+        mRegisterbtn = (Button)findViewById(R.id.register_btn_finish);
+        mdatabase = FirebaseDatabase.getInstance().getReference().child("Users");
     }
 
     @Override
     public void onClick(View v) {
-
+        if(v == mRegisterbtn) {
+            UserRegister();
+        }
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+    private void UserRegister() {
+        name = editName.getText().toString().trim();
+        email = editTextEmail.getText().toString().trim();
+        password = editTextPassword.getText().toString().trim();
+        phoneNumber = editPhoneNumber.getText().toString().trim();
 
+        if(TextUtils.isEmpty(name)) {
+            Toast.makeText(JoinActivity.this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(email)) {
+            Toast.makeText(JoinActivity.this, "이메일을 입력하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(JoinActivity.this, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(phoneNumber)) {
+            Toast.makeText(JoinActivity.this, "전화번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (!EMAIL_PATTERN.matcher(email).matches()) {
+            Toast.makeText(JoinActivity.this, "이메일 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if(!PASSWORD_PATTERN.matcher(password).matches()) {
+            Toast.makeText(JoinActivity.this, "비밀번호 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    OnAuth(task.getResult().getUser());
+                    firebaseAuth.signOut();
+                    Toast.makeText(JoinActivity.this, "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(JoinActivity.this, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void OnAuth(FirebaseUser user) {
+        createAnewUser(user.getUid());
+    }
+    private void createAnewUser(String uid) {
+        User user = BuildNewuser();
+        mdatabase.child(uid).setValue(user);
+    }
+    private User BuildNewuser() {
+        return new User(
+                getDisplayName(),
+                getUserEmail(),
+                getUserPhone(),
+                new Date().getTime()
+        );
+    }
+    public String getDisplayName() {
+        return name;
+    }
+    public String getUserEmail() {
+        return email;
+    }
+    public String getUserPhone() {
+        return phoneNumber;
     }
 }
+
