@@ -28,16 +28,17 @@ public class Menu1Fragment extends Fragment {
         // return inflater.inflate(R.layout.fragment_menu1, container, false);
 
         View view = inflater.inflate(R.layout.fragment_menu1, container, false);
-        
+
         Button btn_search = (Button) view.findViewById(R.id.btn_search);
 
 
         btn_search.setOnClickListener(new View.OnClickListener() {
+//            Fragment NewFragment;
             @Override
             public void onClick(View v) {
                 Log.i("STATE", "SEARCH BUTTON 실행중");
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity)getActivity()).replaceSearchFrag(NewFragment.newInstance());
+                ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
                 // 새로 불러올 Fragment의 Instance를 Main으로 전달
                 Log.i("STATE", "fragment 변경완료");
 

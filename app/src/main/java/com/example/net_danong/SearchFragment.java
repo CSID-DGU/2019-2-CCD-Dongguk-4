@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class SearchFragment  extends Fragment {
+
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
+    }
+
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.search_fragment, container, false);
     }
