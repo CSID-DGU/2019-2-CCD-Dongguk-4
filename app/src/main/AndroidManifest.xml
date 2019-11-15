@@ -22,12 +22,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAkO91Lo8C7yj145Hw1bsDj0hm2sZNUDzo" />
 
-        <activity android:name=".TEMPLoginActivity"/>
+        <activity android:name=".LogInActivity"/>
         <activity android:name=".JoinActivity"/>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MapsActivity"/>
         <activity
-            android:name=".MapsActivity"
-            android:label="Map">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
