@@ -7,18 +7,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //navBar 관련 항목
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     //로그인 상태변화 확인
     private FirebaseAuth.AuthStateListener mAuthListener;
+    //firestore TAG
+    private static final String TAG = "DocSnippets";
 
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -77,6 +85,14 @@ public class MainActivity extends AppCompatActivity {
         addNewProduct("토마토", "2019-10-31", "9");
         addNewProduct("토마토", "2019-10-28", "10");
 */
+
+        //테스트용
+        //addNewUsers("dw3123j", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "11");
+        //addNewProduct("토마토", "2019-11-16", "11");
+
+        readUsers();
+        readProduct("11");
+        searchProduct();
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -104,6 +120,68 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("", "Error adding document", e);
+                    }
+                });
+    }
+
+    // 유저 데이터 READ
+    private void readUsers(){
+        DocumentReference docRef = db.collection("users").document("1");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "유저 DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    // 상품 데이터 READ (문서 번호 입력 시 반환)
+    private void readProduct(String docNum){
+       // DocumentReference docRef = db.collection("product").document("5YyVblkgkC7gMcslfy7L");
+        DocumentReference docRef = db.collection("users").document(docNum).collection("product").document("5YyVblkgkC7gMcslfy7L");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "상품 DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    // 상품 데이터 query
+    // 해야할 것 = document 모든 문서에 접근하는 방법, String으로 상품명 변수값 연결, 결과값 저장하기, 입력값이랑 xml레이아웃 연결
+    private void searchProduct(){
+        db.collection("users").document("11").collection("product")
+                .whereEqualTo("pdtName", "토마토")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " 짜란2 ?=> " + document.getData());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
                     }
                 });
     }

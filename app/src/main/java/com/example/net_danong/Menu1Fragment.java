@@ -17,7 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class Menu1Fragment extends Fragment {
 
-    // 각각의 Fragment마다 Instance를 반환해 줄 메소드를 생성합니다.
+    // 각각의 Fragment마다 Instance를 반환해 줄 메소드를 생성
     public static Menu1Fragment newInstance() {
         return new Menu1Fragment();
     }
@@ -36,12 +36,12 @@ public class Menu1Fragment extends Fragment {
 //            Fragment NewFragment;
             @Override
             public void onClick(View v) {
-                Log.i("STATE", "SEARCH BUTTON 실행중");
+                //Log.i("STATE", "SEARCH BUTTON 실행중");
                 // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
                 // 새로 불러올 Fragment의 Instance를 Main으로 전달
-                Log.i("STATE", "fragment 변경완료");
+                ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
 
+                //Log.i("STATE", "fragment 변경완료");
             }
         });
 
