@@ -49,7 +49,7 @@
         android:textStyle="bold"
         android:textColor="#ffffff"
         android:background="@color/colorPrimaryDark"
-        android:text="검색"
+        android:text="검색화면으로 이동"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"/>
 
