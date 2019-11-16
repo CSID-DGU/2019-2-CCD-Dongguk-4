@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     //firestore TAG
     private static final String TAG = "DocSnippets";
 
+    private String DAEUN = "TEST용";
+
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 5개의 메뉴에 들어갈 Fragment들
@@ -86,14 +88,10 @@ public class MainActivity extends AppCompatActivity {
         addNewProduct("토마토", "2019-10-28", "10");
 */
 
-        //테스트용
-        //addNewUsers("dw3123j", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "11");
-        //addNewProduct("토마토", "2019-11-16", "11");
-
-        readUsers();
-        readProduct("11");
-        searchProduct();
-        searchProduct2();
+     //   readUsers();
+     //   readProduct("11");
+     //   searchProduct();
+        searchQuery("토마토");
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -167,8 +165,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // 상품 데이터 query
-    // 해야할 것 = document 모든 문서에 접근하는 방법, String으로 상품명 변수값 연결, 결과값 저장하기, 입력값이랑 xml레이아웃 연결
+    // 상품 데이터 출력 query (document에 직접 접근)
     private void searchProduct(){
         db.collection("users").document("11").collection("product")
                 .whereEqualTo("pdtName", "토마토")
@@ -178,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " 짜란 ?=> " + document.getData());
+                                Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -187,21 +184,31 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-
-    //db.collectionGroup("product").where("pdtName", "==", "토마토").get()
-    // 상품 데이터 그룹 query
-    // 해야할 것 = document 모든 문서에 접근하는 방법, String으로 상품명 변수값 연결, 결과값 저장하기, 입력값이랑 xml레이아웃 연결
-    // collectionGroup 색인 목록 추가
-    private void searchProduct2(){
-        db.collectionGroup("product").whereEqualTo("pdtName", "토마토").get()
+    // 상품 데이터 그룹 query (컬렉션그룹쿼리)
+    // 해야할 것 = 결과값 map에 저장하기, 입력값이랑 xml레이아웃 연결+fragment연결
+    private void searchQuery(String productName){
+        db.collectionGroup("product").whereEqualTo("pdtName", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         // [START_EXCLUDE]
                         for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
                             Log.d(TAG, snap.getId() + " 그룹쿼리=> " + snap.getData());
-                        }
+                            //snap.getID는 해당 document 문서 num / getDATA는 내부 필드 및 데이터
+
+                            Map<String, Object> ProductList =snap.getData();
+
+                            //test용 출력
+                            for ( String key : ProductList.keySet() ) {
+                                System.out.println("방법1) key : " + key +" / value : " + ProductList.get(key));
+                            }
+                            System.out.println("=======================1");
+
+                            ProductList.get("pdtName");
+                            ProductList.get("pdtEnrollDate");
+
                         // [END_EXCLUDE]
+                    }
                     }
                 });
     }
