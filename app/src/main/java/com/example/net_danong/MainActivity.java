@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
      //   readUsers();
      //   readProduct("11");
      //   searchProduct();
-
       //  searchQuery("토마토");
     }
 
