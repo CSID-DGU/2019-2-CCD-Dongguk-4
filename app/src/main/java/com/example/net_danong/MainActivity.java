@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         readUsers();
         readProduct("11");
         searchProduct();
+        searchProduct2();
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -177,11 +178,30 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " 짜란2 ?=> " + document.getData());
+                                Log.d(TAG, document.getId() + " 짜란 ?=> " + document.getData());
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
+                    }
+                });
+    }
+
+
+    //db.collectionGroup("product").where("pdtName", "==", "토마토").get()
+    // 상품 데이터 그룹 query
+    // 해야할 것 = document 모든 문서에 접근하는 방법, String으로 상품명 변수값 연결, 결과값 저장하기, 입력값이랑 xml레이아웃 연결
+    // collectionGroup 색인 목록 추가
+    private void searchProduct2(){
+        db.collectionGroup("product").whereEqualTo("pdtName", "토마토").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        // [START_EXCLUDE]
+                        for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
+                            Log.d(TAG, snap.getId() + " 그룹쿼리=> " + snap.getData());
+                        }
+                        // [END_EXCLUDE]
                     }
                 });
     }
