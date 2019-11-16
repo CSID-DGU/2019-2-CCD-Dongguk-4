@@ -9,7 +9,12 @@ import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SearchView;
+
+import java.util.ArrayList;
 
 public class SearchFragment  extends Fragment {
 
@@ -22,8 +27,23 @@ public class SearchFragment  extends Fragment {
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.search_fragment, container, false);
+
+        View view = inflater.inflate(R.layout.search_fragment, container, false);
+
+        Button btn_search = (Button) view.findViewById(R.id.btn_pdtResult);
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            //            Fragment NewFragment;
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).searchQuery("토마토");
+            }
+        });
+
+        return view;
+
     }
 
 }

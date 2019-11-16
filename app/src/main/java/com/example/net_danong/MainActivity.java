@@ -16,6 +16,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     //추가 기능별 Fragment
     private SearchFragment searchFragment = new SearchFragment();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
-/* 테스트데이터 추가 11/06 5:04 am
+
+        /* 테스트데이터 추가 11/06 5:04 am
         addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
         addNewUsers("tbfxdn80", Arrays.asList("전북 임실군 덕치면 일중리", "35.4928087", "127.1220321"), "2");
         addNewUsers("dol4vpz4", Arrays.asList("경기 하남시 덕풍서로65", "37.5531092", "127.2009618"), "3");
@@ -91,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
      //   readUsers();
      //   readProduct("11");
      //   searchProduct();
-        searchQuery("토마토");
+
+      //  searchQuery("토마토");
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 상품 데이터 그룹 query (컬렉션그룹쿼리)
     // 해야할 것 = 결과값 map에 저장하기, 입력값이랑 xml레이아웃 연결+fragment연결
-    private void searchQuery(String productName){
+    public void searchQuery(String productName){
         db.collectionGroup("product").whereEqualTo("pdtName", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -202,10 +208,11 @@ public class MainActivity extends AppCompatActivity {
                             for ( String key : ProductList.keySet() ) {
                                 System.out.println("방법1) key : " + key +" / value : " + ProductList.get(key));
                             }
-                            System.out.println("=======================1");
+                            System.out.println("=======================");
 
-                            ProductList.get("pdtName");
-                            ProductList.get("pdtEnrollDate");
+                            // ProductList.get("pdtName");
+                            // ProductList.get("pdtEnrollDate");
+                            // String[] PdtList= {String.valueOf(ProductList.get("pdtName")), String.valueOf(ProductList.get("pdtEnrollDate"))};
 
                         // [END_EXCLUDE]
                     }
