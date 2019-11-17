@@ -14,17 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class SearchFragment  extends Fragment {
-
-    //내부 전환 하려면 newInstance 필수
+    //내부 전환 (menu1-search간) newInstance 필수
     public static SearchFragment newInstance() {
         return new SearchFragment();
     }
 
-    //SearchBar관련
+    //SearchBar관련 (일단X)
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
@@ -33,39 +34,38 @@ public class SearchFragment  extends Fragment {
 
         View view = inflater.inflate(R.layout.search_fragment, container, false);
 
+        //search_fragment.xml 내 view 변수들과 연결
         Button btn_search = (Button) view.findViewById(R.id.btn_pdtResult);
-        EditText edit_pdtSearch = (EditText) view.findViewById(R.id.edit_pdtSearch);
+        final EditText edit_pdtSearch = (EditText) view.findViewById(R.id.edit_pdtSearch);
+        //final TextView resultView = (TextView) view.findViewById(R.id.resultView);
+        //ListView pdt_list_view = (ListView) view.findViewById(R.id.pdt_list_view);
 
-        //검색 텍스트 초기화
-        edit_pdtSearch.setText("");
-        String pdtText = edit_pdtSearch.getText().toString();
+        //검색 텍스트 초기화 (필요 없는 듯,,)
+        //edit_pdtSearch.setText("");
+        //String pdtText = edit_pdtSearch.getText().toString();
 
         btn_search.setOnClickListener(new View.OnClickListener() {
-            //            Fragment NewFragment;
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).searchQuery("토마토");
+                //resultView.setText(edit_pdtSearch.getText().toString());
+                String search = edit_pdtSearch.getText().toString();
+                ((MainActivity)getActivity()).searchQuery(search);
+
             }
         });
-
-        edit_pdtSearch.requestFocus();
-        edit_pdtSearch.setCursorVisible(true);
 
         return view;
 
         /*해야하는 것
-        1. edit_pdtSearch 사용자 입력값 string 변수로 받아오고 이거 searchQuery랑 연결시키기 (동적으로 뭔가 이벤트 취해야 하는ㄴ둣,,)
-        2. Log에 찍히는 대로 ProductList.get("pdtName");를 string 변수,,배열?에 저장하기 ..아마 ArrayList인가 이용하면 될 듯
-        3. array어쩌고랑 search_frag.xml이랑 연동해서 ListView에 구현 ??
-        3-1. ListView 구현하거나, 다른 activity로 데이터 넘기는 원리 이용해서 Map에 값 넘겨주기..?ㅠㅠㅠㅠ
         4. 콜렉션그룹(하위 콜렉션) 검색 시, 상위 콜렉션 (user) 필드 값도 받아오는 방법 서치 ..
         5. 상위 콜렉션 필드값도 map/array로 받은 후에 ListView / MapActivity+MapFragment랑 연동
         6. 아마도? 복수 색인 index 정의 및 firestore 규칙 재정의
+        7. 지도 액티비티, 화면이랑 데이터 연결 후 데이터 변환 작업
         8. 주석 및 코드 정리
-
-        1번 하고, 4번 해서 일단 상품이름 입력 하면 상품+사용자 정보 데이터 값 가져오는 거 구현하기..
-        어차피 지도로 데이터 넘기는게 목적이니깐 1>4>3-1 순으로 먼저 구현하기.!!!!!
+        9. Search_xml파일 레이아웃 정리 (텍스트 자동완성,, 뭐 이런거..ㅠㅠ)
         */
+
+
 
     }
 

@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     //firestore TAG
     private static final String TAG = "DocSnippets";
-
-    private String DAEUN = "TEST용";
+    //검색 후 지도로 연결할 때 사용할 듯 (검색 후 결과값 저장)
+    Map<String, Object> ProductList;
 
     // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -196,24 +196,30 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        // [START_EXCLUDE]
                         for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
-                            Log.d(TAG, snap.getId() + " 그룹쿼리=> " + snap.getData());
-                            //snap.getID는 해당 document 문서 num / getDATA는 내부 필드 및 데이터
+                            Log.d(TAG, "그룹쿼리 결과" + snap.getId() + " => " + snap.getData());
 
-                            Map<String, Object> ProductList =snap.getData();
+                            ProductList=snap.getData();
 
-                            //test용 출력
+                            //test용 출력 (LOG확인)
                             for ( String key : ProductList.keySet() ) {
-                                System.out.println("방법1) key : " + key +" / value : " + ProductList.get(key));
+                                System.out.println("key : " + key +" / value : " + ProductList.get(key));
                             }
-                            System.out.println("=======================");
+                            String a = ProductList.get("pdtName").toString();
+                            String b = ProductList.get("pdtEnrollDate").toString();
+                            System.out.println("상품명? " + a + " 등록날짜? " + b );
+                            System.out.println("<=========================================>");
 
-                            // ProductList.get("pdtName");
-                            // ProductList.get("pdtEnrollDate");
-                            // String[] PdtList= {String.valueOf(ProductList.get("pdtName")), String.valueOf(ProductList.get("pdtEnrollDate"))};
+                            /*
+                             snap.getID는 해당 document 문서 num / getDATA는 내부 필드 및 데이터
+                             snap.getData() 이용해서 MAP에 저장하고
+                             Map 접근은 ProductList.get("pdtName"), ProductList.get("pdtEnrollDate")
+                             Map변수명.get(들어가는 key값) 이렇게 접근하면 Value값 나오는거
+                             Map <Key, Value> 형태에서 ProductList <pdtName, 토마토> <pdtEnrollDate, 2019-10-31> 이런 식으로 저장되는 구조..
+                             필요 시에 결과값 String으로 변환
 
-                        // [END_EXCLUDE]
+                             추후 지도기능 (MAP Activity로 연결할 때 데이터 적절히 변환해서 넘기는 과정 필요)
+                            */
                     }
                     }
                 });

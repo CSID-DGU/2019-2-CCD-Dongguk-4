@@ -34,12 +34,18 @@
         android:layout_marginTop="20dp"
         android:background="#AAAAAA"/>
 
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ListView
         android:id="@+id/pdt_list_view"
         android:layout_below="@+id/line1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent" />
+
+
 
 
 </RelativeLayout>
