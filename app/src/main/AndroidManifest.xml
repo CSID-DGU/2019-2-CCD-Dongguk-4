@@ -41,6 +41,7 @@
         </activity>
         <activity android:name=".FirstpageActivity" />
         <activity android:name=".SearchFragment" />
+        <activity android:name=".LoginFragment" />
     </application>
 
 </manifest>

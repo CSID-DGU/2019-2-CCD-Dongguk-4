@@ -46,32 +46,36 @@ public class MainActivity extends AppCompatActivity {
     Map<String, Object> ProductList;
     Map<String, Object> UserList;
 
-    // FrameLayout에 각 메뉴의 Fragment를 바꿔 줌
+    // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
-    // 5개의 메뉴에 들어갈 Fragment들
+    // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
     private Menu1Fragment menu1Fragment = new Menu1Fragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
     private Menu4Fragment menu4Fragment = new Menu4Fragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
-    //추가 기능별 Fragment
+    //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
     private SearchFragment searchFragment = new SearchFragment();
+    private LoginFragment loginFragment = new LoginFragment();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        //Acitivity_main페이지 초기화면
+        setContentView(R.layout.activity_main);
+        //Fragment Layout 초기 설정 (menu1화면)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment.newInstance()).commitAllowingStateLoss();
-
+        //하단 navigation bar 지정
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        //startActivity(intent);
 
         /* 테스트데이터 추가 11/06 5:04 am
         addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
@@ -96,10 +100,10 @@ public class MainActivity extends AppCompatActivity {
         addNewProduct("토마토", "2019-10-28", "10");
 */
 
-     //   readUsers();
-     //   readProduct("11");
-     //   searchProduct();
-      //  searchQuery("토마토");
+        //   readUsers();
+        //   readProduct("11");
+        //   searchProduct();
+        //  searchQuery("토마토");
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -220,15 +224,9 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
 
-//
-//                            //MAP<>에 들어갔는지 test용 출력 (LOG확인)
-//                            for ( String key : ProductList.keySet() ) {
-//                                System.out.println("key : " + key +" / value : " + ProductList.get(key));
-//                            }
 //                            //String a = ProductList.get("pdtName").toString();
 //                            //String b = ProductList.get("pdtEnrollDate").toString();
 //                            //System.out.println("상품명? " + a + " 등록날짜? " + b );
-//                            System.out.println("<=========================================>");
 
                             /*
                              추후 지도기능, MAP Activity로 연결할 때 데이터 적절히 변환해서 넘기는 과정 필요
@@ -263,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_menu5: {
-                    transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
                     break;
                 }
             }
@@ -271,12 +269,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //Fragment 교체 (Menu1에서 검색 버튼 클릭 시, Search_fragment로 이동)
+    //Fragment 교체
     public void replaceSearchFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, searchFragment).commitAllowingStateLoss();
-        // searchFragment띄우기
+        // 검색 searchFragment 연결
+    }
+    public void replaceLoginFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
+        // 회원가입 Fragment 연결 (추후 변경)
+    }
+    public void replaceJoinFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+        // 회원가입 Fragment 연결 (추후 변경)
+    }
+    public void replaceFindFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+        // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
     }
 
 
