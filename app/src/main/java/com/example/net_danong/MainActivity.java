@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.facebook.login.Login;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment = new SearchFragment();
     private LoginFragment loginFragment = new LoginFragment();
     private JoinFragment JoinFragment = new JoinFragment();
+
 
 
     @Override
@@ -239,6 +241,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_menu5: {
+                    /* 필요한 작업
+                    * fragment에서 생성한 method를 main.activity에서 불러올 것
+                    * fragment id랑 key 뭔지 이해하기
+                    * if문 이용해서 login 되어있으면 menu5Frag, 안 되어있으면 loginFrag로 연결 */
                     transaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
                     break;
                 }
@@ -246,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     }
+
 
     //Fragment 교체
     public void replaceSearchFrag(Fragment fragment) {
