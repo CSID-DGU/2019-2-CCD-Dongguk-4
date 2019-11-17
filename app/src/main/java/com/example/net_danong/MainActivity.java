@@ -3,7 +3,6 @@ package com.example.net_danong;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,8 +15,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +28,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import org.w3c.dom.Document;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -42,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     //firestore TAG
     private static final String TAG = "DocSnippets";
-    //검색 후 지도로 연결할 때 사용할 듯 (검색 후 결과값 저장)
-    Map<String, Object> ProductList;
-    Map<String, Object> UserList;
+
+    //필요한 변수들 선언하기
+    Map<String, Object> ProductList; //검색+지도에서 사용할 결과값 저장공간
+    Map<String, Object> UserList;    //검색+지도에서 사용할 결과값 저장공간2
 
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -57,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
     private SearchFragment searchFragment = new SearchFragment();
     private LoginFragment loginFragment = new LoginFragment();
-
+    private JoinFragment JoinFragment = new JoinFragment();
 
 
     @Override
@@ -66,44 +60,28 @@ public class MainActivity extends AppCompatActivity {
 
         //Acitivity_main페이지 초기화면
         setContentView(R.layout.activity_main);
+
         //Fragment Layout 초기 설정 (menu1화면)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment.newInstance()).commitAllowingStateLoss();
+
         //하단 navigation bar 지정
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
+
         //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         //startActivity(intent);
 
-        /* 테스트데이터 추가 11/06 5:04 am
-        addNewUsers("ps5f1868", Arrays.asList("충북 영동군 영동읍 상가 1길 6-7", "36.1823534", "127.8632923"), "1");
-        addNewUsers("tbfxdn80", Arrays.asList("전북 임실군 덕치면 일중리", "35.4928087", "127.1220321"), "2");
-        addNewUsers("dol4vpz4", Arrays.asList("경기 하남시 덕풍서로65", "37.5531092", "127.2009618"), "3");
-        addNewUsers("ylggw0t7", Arrays.asList("충북 충주시 노은면 가신리765-8", "37.0624677", "127.7119894"), "4");
-        addNewUsers("88vi9b1c", Arrays.asList("경북 영천시 북안면 북안서당길 85-42", "35.8979102", "128.9985232"), "5");
-        addNewUsers("cpw032z1", Arrays.asList("경북 안동시 은행나무로106-6", "36.5668203", "128.6928981"), "6");
-        addNewUsers("tu5hp7qc", Arrays.asList("인천 강화군 하점면 창후로 20", "37.7650304", "126.3776273"), "7");
-        addNewUsers("tlaamln8", Arrays.asList("전북 익산시 망성면 여강로 1173번지", "36.1416674", "127.0167843"), "8");
-        addNewUsers("ps5f1870", Arrays.asList("충남 부여군 남면 539", "36.2140921", "126.7762129"), "9");
+        /* 테스트데이터 추가 관련 함수들
         addNewUsers("jc9avahj", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "10");
-        addNewProduct("사과", "2019-10-20", "1");
-        addNewProduct("포도", "2019-10-21", "2");
-        addNewProduct("사과", "2019-09-30", "3");
-        addNewProduct("포도", "2019-10-30", "4");
-        addNewProduct("상추", "2019-10-24", "5");
-        addNewProduct("깻잎", "2019-10-11", "6");
-        addNewProduct("포도", "2019-10-16", "7");
-        addNewProduct("깻잎", "2019-10-05", "8");
-        addNewProduct("토마토", "2019-10-31", "9");
         addNewProduct("토마토", "2019-10-28", "10");
-*/
-
-        //   readUsers();
-        //   readProduct("11");
-        //   searchProduct();
-        //  searchQuery("토마토");
+        readUsers();
+        readProduct("11");
+        searchProduct();
+        searchQuery("토마토");
+        */
     }
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
@@ -285,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
     public void replaceJoinFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, JoinFragment).commitAllowingStateLoss();
         // 회원가입 Fragment 연결 (추후 변경)
     }
     public void replaceFindFrag(Fragment fragment) {
@@ -294,6 +272,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
         // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
     }
-
+    public void replaceMenu5Frag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
+        // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
+    }
 
 }

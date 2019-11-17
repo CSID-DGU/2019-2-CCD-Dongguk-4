@@ -28,6 +28,10 @@ public class LoginFragment extends Fragment {
     private FirebaseAuth mAuth;
     //현재 로그인 된 유저 정보를 담을 변수
     private FirebaseUser currentUser;
+    //내부 전환 newInstance 필수
+    public static LoginFragment newInstance() {
+        return new LoginFragment();
+    }
 
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,8 @@ public class LoginFragment extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //가입하러 가기 버튼 눌렀을 때 이벤트 처리
+                //가입하러 가기 버튼 눌렀을 때, 회원가입 페이지로 이동
+                ((MainActivity)getActivity()).replaceJoinFrag(JoinFragment.newInstance());
             }
         });
 
@@ -106,11 +111,12 @@ public class LoginFragment extends Fragment {
                     currentUser = mAuth.getCurrentUser();
 
                     Toast.makeText(getActivity(), "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid(), Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+                    //로그인 됐으면 menu5 페이지로 넘기기
+                    //데이터 넘길 때는 intent써서 넘겨야 한다고 함,, 보완 필요
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    //Intent intent = new Intent(getActivity(), MainActivity.class);
                     //startActivity(intent);
-
-                    //startActivity(Intent );
                     //finish();
                 }
 
