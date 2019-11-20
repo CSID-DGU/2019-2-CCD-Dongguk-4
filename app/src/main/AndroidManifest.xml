@@ -31,7 +31,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".LogInActivity" />
-        <activity android:name=".JoinActivity" />
+        <activity android:name=".JoinFragment" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

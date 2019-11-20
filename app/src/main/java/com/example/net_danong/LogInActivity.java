@@ -61,7 +61,7 @@ public class LogInActivity extends AppCompatActivity implements  GoogleApiClient
             @Override
             public void onClick(View v) {
                 //Toast.makeText(LogInActivity.this,"가입하러 가기 버튼 눌렀을 때",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LogInActivity.this, JoinActivity.class));
+                startActivity(new Intent(LogInActivity.this, JoinFragment.class));
                 finish();
             }
         });
