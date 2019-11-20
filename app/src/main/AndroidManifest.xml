@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -41,6 +42,8 @@
         </activity>
         <activity android:name=".FirstpageActivity" />
         <activity android:name=".SearchFragment" />
+        <activity android:name=".BasicActivity"/>//등록구현
+        <activity android:name=".WritePostActivity"/>//등록구현
         <activity android:name=".LoginFragment" />
     </application>
 

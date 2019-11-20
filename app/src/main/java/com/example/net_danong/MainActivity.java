@@ -29,6 +29,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import org.w3c.dom.Document;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -79,12 +84,32 @@ public class MainActivity extends AppCompatActivity {
         /* 테스트데이터 추가 관련 함수들
         addNewUsers("jc9avahj", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "10");
         addNewProduct("토마토", "2019-10-28", "10");
-        readUsers();
-        readProduct("11");
-        searchProduct();
-        searchQuery("토마토");
-        */
+*/
+
+     //   readUsers();
+     //   readProduct("11");
+     //   searchProduct();
+      //  searchQuery("토마토");
+
+       /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
+
+    /*View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.floatingActionButton:
+                    FirebaseAuth.getInstance().signOut();
+                    myStartActivity(WritePostActivity.class);
+                    break;
+            }
+        }
+    };
+
+    private void myStartActivity(Class c) {
+        Intent intent = new Intent(this, c);
+        startActivity(intent);
+    }//더보기 +버튼 클릭시 등록화면으로 이동하는 로직*/
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
     private void addNewUsers(String userId, List<String> userAdress, String docNum) {
