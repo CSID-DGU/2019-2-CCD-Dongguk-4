@@ -95,7 +95,7 @@
         <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register_check_2"
+            android:id="@+id/register_check_1"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="[필수] 다농 서비스 이용약관 동의"
@@ -122,7 +122,7 @@
         <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register_check_3"
+            android:id="@+id/register_check_2"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="[필수] 개인정보 처리방침"
@@ -134,33 +134,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/register_btn_2"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="약관보기"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:padding="3dp">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_check_4"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="[선택] 마케팅 정보 수신에 대한 동의"
-            >
-
-        </androidx.appcompat.widget.AppCompatCheckBox>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_btn_3"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:gravity="center"
@@ -182,7 +155,7 @@
         <androidx.appcompat.widget.AppCompatCheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/register_check_1"
+            android:id="@+id/register_check_3"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="모두 동의"

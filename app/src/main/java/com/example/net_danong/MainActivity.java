@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, TEMPLoginActivity.class);
-        startActivity(intent);/*
+        Intent intent = new Intent(this, JoinActivity.class);
+        startActivity(intent);
+        /*
         //첫 화면 지정 (menu1페이지)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();

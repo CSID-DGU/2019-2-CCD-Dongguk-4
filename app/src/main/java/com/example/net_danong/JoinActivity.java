@@ -2,15 +2,19 @@ package com.example.net_danong;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-public class JoinActivity extends AppCompatActivity  implements  View.OnClickListener{
+public class JoinActivity extends AppCompatActivity  {
 
     //비밀번호 정규식
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
@@ -41,6 +45,13 @@ public class JoinActivity extends AppCompatActivity  implements  View.OnClickLis
     private Button mRegisterbtn;
     private String name, email, password, phoneNumber;
 
+    public int TERMS_AGREE_1 = 0; //No Check = 0, Check = 1
+    public int TERMS_AGREE_2 = 0;
+    public int TERMS_AGREE_3 = 0;
+
+    AppCompatCheckBox checkBox1; //첫번째 동의
+    AppCompatCheckBox checkBox2; //두번째 동의
+    AppCompatCheckBox checkBox3; //모두 동의
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -56,14 +67,73 @@ public class JoinActivity extends AppCompatActivity  implements  View.OnClickLis
         editPhoneNumber = findViewById(R.id.phonenumberText);
         mRegisterbtn = (Button)findViewById(R.id.register_btn_finish);
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        final CheckBox checkBox1 = (CheckBox) findViewById(R.id.register_check_1);
+        checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+             if(isChecked) {
+                 TERMS_AGREE_1 = 1;
+             } else {
+                 TERMS_AGREE_1 = 0;
+             }
+            }
+        });
+        final CheckBox checkBox2 = (CheckBox) findViewById(R.id.register_check_2);
+        checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    TERMS_AGREE_2 = 1;
+                } else {
+                    TERMS_AGREE_2 = 0;
+                }
+            }
+        });
+        CheckBox checkBox3 = (CheckBox)findViewById(R.id.register_check_3);
+        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) {
+                    checkBox1.setChecked(true);
+                    checkBox2.setChecked(true);
+                    TERMS_AGREE_3 = 1;
+                } else {
+                    checkBox1.setChecked(false);
+                    checkBox2.setChecked(false);
+                    TERMS_AGREE_3 = 0;
+                }
+            }
+        });
+        Button button_finish = (Button)findViewById(R.id.register_btn_finish);
+        button_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //전체 약관 체크 여부
+                if(TERMS_AGREE_3 !=1) {
+                    //첫번째 약관 체크 여부
+                    if(TERMS_AGREE_2 == 1) {
+                        //두번째 약관 체크 여부
+                        if(TERMS_AGREE_1 == 1){
+                            UserRegister();
+                        }else {
+                            Toast.makeText(JoinActivity.this, "약관을 체크해주세요.", Toast.LENGTH_SHORT).show();
+                            return;
+                    }
+                } else {
+                        Toast.makeText(JoinActivity.this, "약관을 체크해주세요.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } //전체 약관 체크된 경우
+                else {
+                    UserRegister();
+                }
+            }
+
+        });
+
     }
 
-    @Override
-    public void onClick(View v) {
-        if(v == mRegisterbtn) {
-            UserRegister();
-        }
-    }
 
     private void UserRegister() {
         name = editName.getText().toString().trim();
