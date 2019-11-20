@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
-public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener{
+public class LogInActivity extends AppCompatActivity implements  GoogleApiClient.OnConnectionFailedListener{
 
     //이메일 비밀번호 로그인 모듈 변수
     private FirebaseAuth mAuth;
@@ -32,12 +32,11 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.temp_activity_login);
+        setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance(); //이메일 비밀번호 로그인 모듈 변수
 
         //이메일
-        final EditText userEmail = findViewById(R.id.et_eamil);
-        //비밀번호
+        final EditText userEmail = findViewById(R.id.et_eamil);        //비밀번호
         final EditText userPw = findViewById(R.id.et_password);
         //가입버튼
         Button btnSignUp = findViewById(R.id.btn_signUp);
@@ -61,8 +60,8 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(TEMPLoginActivity.this,"가입하러 가기 버튼 눌렀을 때",Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(TEMPLoginActivity.this, JoinActivity.class));
+                //Toast.makeText(LogInActivity.this,"가입하러 가기 버튼 눌렀을 때",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LogInActivity.this, JoinActivity.class));
                 finish();
             }
         });
@@ -71,28 +70,28 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(TEMPLoginActivity.this,"연결이 해제되었습니다",Toast.LENGTH_SHORT).show();
+        Toast.makeText(LogInActivity.this,"연결이 해제되었습니다",Toast.LENGTH_SHORT).show();
     }
 
     //public Boolean check;
     public void loginStart(String email, String password){
-        Toast.makeText(TEMPLoginActivity.this,"loginStart 함수 안으로" ,Toast.LENGTH_SHORT).show();
+        Toast.makeText(LogInActivity.this,"loginStart 함수 안으로" ,Toast.LENGTH_SHORT).show();
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                Toast.makeText(TEMPLoginActivity.this,"mAuth. onComplete 함수" ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(LogInActivity.this,"mAuth. onComplete 함수" ,Toast.LENGTH_SHORT).show();
                 if (!task.isSuccessful()) {
                     try {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException e) {
-                        Toast.makeText(TEMPLoginActivity.this,"존재하지 않는 id 입니다." ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this,"존재하지 않는 id 입니다." ,Toast.LENGTH_SHORT).show();
                     } catch (FirebaseAuthInvalidCredentialsException e) {
-                        Toast.makeText(TEMPLoginActivity.this,"이메일 형식이 맞지 않습니다." ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this,"이메일 형식이 맞지 않습니다." ,Toast.LENGTH_SHORT).show();
                     } catch (FirebaseNetworkException e) {
-                        Toast.makeText(TEMPLoginActivity.this,"Firebase NetworkException" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this,"Firebase NetworkException" ,Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
-                        Toast.makeText(TEMPLoginActivity.this,"Exception" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this,"Exception" ,Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
@@ -100,9 +99,9 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
 
                     currentUser = mAuth.getCurrentUser();
 
-                    Toast.makeText(TEMPLoginActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LogInActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
 
-                    startActivity(new Intent(TEMPLoginActivity.this, MainActivity.class));
+                    startActivity(new Intent(LogInActivity.this, MainActivity.class));
                     finish();
                 }
 
@@ -117,7 +116,7 @@ public class TEMPLoginActivity extends AppCompatActivity implements  GoogleApiCl
         // Check if user is signed in (non-null) and update UI accordingly.
         currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            startActivity(new Intent(TEMPLoginActivity.this, MainActivity.class));
+            startActivity(new Intent(LogInActivity.this, MainActivity.class));
             finish();
         }
     }

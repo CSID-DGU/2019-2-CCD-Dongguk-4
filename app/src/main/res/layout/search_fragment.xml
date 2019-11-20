@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--    데이터 입력 부분 ID 내용 입력, EDIT_ID는 값-->
+    <EditText
+        android:id="@+id/edit_pdtSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="15"
+        android:maxLength="20"
+        android:inputType="textPersonName"
+        />
+
+    <Button
+        android:id="@+id/btn_pdtResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/edit_pdtSearch"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="검색"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="2dip"
+        android:layout_below="@+id/edit_pdtSearch"
+        android:layout_marginTop="20dp"
+        android:background="#AAAAAA"/>
+
+    <TextView
+        android:id="@+id/resultView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ListView
+        android:id="@+id/pdt_list_view"
+        android:layout_below="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+
+</RelativeLayout>

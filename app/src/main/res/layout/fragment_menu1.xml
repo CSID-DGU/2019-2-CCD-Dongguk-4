@@ -41,6 +41,18 @@
         android:paddingLeft="16dp"
         />
 
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimaryDark"
+        android:text="검색화면으로 이동"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"/>
+
 <!--    <androidx.viewpager.widget.ViewPager-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="300dp"-->
