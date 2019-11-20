@@ -42,7 +42,6 @@ public class JoinActivity extends AppCompatActivity  {
 
     //이메일과 비밀번호
     private EditText editName, editTextEmail, editTextPassword, editPhoneNumber;
-    private Button mRegisterbtn;
     private String name, email, password, phoneNumber;
 
     public int TERMS_AGREE_1 = 0; //No Check = 0, Check = 1
@@ -65,7 +64,6 @@ public class JoinActivity extends AppCompatActivity  {
         editTextEmail = findViewById(R.id.emailText);
         editTextPassword = findViewById(R.id.passwordText);
         editPhoneNumber = findViewById(R.id.phonenumberText);
-        mRegisterbtn = (Button)findViewById(R.id.register_btn_finish);
         mdatabase = FirebaseDatabase.getInstance().getReference().child("Users");
 
         final CheckBox checkBox1 = (CheckBox) findViewById(R.id.register_check_1);
