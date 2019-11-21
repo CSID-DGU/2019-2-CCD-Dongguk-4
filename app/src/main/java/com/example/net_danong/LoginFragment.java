@@ -39,9 +39,15 @@ public class LoginFragment extends Fragment {
 //    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_login, container, false);
+       View view = inflater.inflate(R.layout.activity_login, container, false);
 
-        mAuth = FirebaseAuth.getInstance(); //이메일 비밀번호 로그인 모듈 변수
+        //로그인 되어있으면 menu5fragment로 교체
+        if (currentUser != null) {
+            ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+        }
+
+        //이메일 비밀번호 로그인 모듈 변수
+        mAuth = FirebaseAuth.getInstance();
 
         //변수들
         final EditText userEmail = (EditText) view.findViewById(R.id.et_eamil);
@@ -116,8 +122,8 @@ public class LoginFragment extends Fragment {
                     ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
 
                     //데이터 넘기기?
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
+                    // Intent intent = new Intent(getActivity(), MainActivity.class);
+                   // startActivity(intent);
                     //finish();
                 }
 
@@ -125,35 +131,20 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    /*
-    //로그아웃 안했으면, 즉 로그인 되어있으면 자동으로 메인페이지로 이동시키기
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            //Intent intent = new Intent(getActivity(), MainActivity.class);
-            //startActivity(intent);
-            //finish();
-        }
-    }
-    */
 
-    //로그인 체크?
-    public int loginCheck(){
-        super.onStart();
-        int a = 0;
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) { //로그인 되어있으면
-            a=1;
-        }else if (currentUser == null){
-            a=0;
-        }else{
-            a=2; //예외들?
-        }
-        return a;
-    }
+    //로그아웃 안했으면, 즉 로그인 되어있으면 자동으로 메인페이지로 이동시키기
+//   @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        currentUser = mAuth.getCurrentUser();
+//        if (currentUser != null) {
+//            //currentUSer == null 인 경우가 로그인 안 된 상태,, null아니면 로그인 되어있다는 뜻..
+//            //Intent intent = new Intent(getActivity(), MainActivity.class);
+//            //startActivity(intent);
+//            //finish();
+//        }
+//    }
 
 
 //Class End

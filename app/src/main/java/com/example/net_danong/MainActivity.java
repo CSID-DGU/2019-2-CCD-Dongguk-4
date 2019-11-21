@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -72,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        //startActivity(intent);
 
         /* 테스트데이터 추가 관련 함수들
         addNewUsers("jc9avahj", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "10");
@@ -260,10 +261,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_menu5: {
-                    /* 필요한 작업
-                    * fragment에서 생성한 method를 main.activity에서 불러올 것
-                    * fragment id랑 key 뭔지 이해하기
-                    * if문 이용해서 login 되어있으면 menu5Frag, 안 되어있으면 loginFrag로 연결 */
                     transaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
                     break;
                 }
