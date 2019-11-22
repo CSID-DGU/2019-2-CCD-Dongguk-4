@@ -21,7 +21,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
 
     public interface OnProductSelectedListener {
 
-        void OnProductSelected(DocumentSnapshot restaurant);
+        void OnProductSelected(DocumentSnapshot product);
 
     }
 

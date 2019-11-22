@@ -2,6 +2,7 @@ package com.example.net_danong;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -22,15 +23,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,7 +38,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.common.collect.Maps;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,15 +47,18 @@ import com.google.firebase.firestore.Query;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import javax.annotation.Nonnull;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback,  ProductListAdapter.OnProductSelectedListener {
     View rootView;
     MapView mapView;
     SlidingUpPanelLayout mLayout;
     GoogleMap mMap;
+    Context context;
 
     private static final int REQUEST_CODE_PERMISSIONS = 1000;//현재위치
     private FusedLocationProviderClient mFusedLocationClient;//현재위치 얻는 코드
@@ -75,33 +77,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.map, menu);
-        MenuItem item = menu.findItem(R.id.action_toggle);
-        if (mLayout != null) {
-            if (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-                item.setTitle(R.string.action_show);
-            } else {
-                item.setTitle(R.string.action_hide);
-            }
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
+        if (savedInstanceState == null) {
             MapsFragment mapsFragment = new MapsFragment();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.mapview, mapsFragment, "main")
                     .commit();
         }
 
-        mProductRecycler = (mProductRecycler).findViewById(R.id.recycler_product);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -109,26 +102,55 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
 
+        rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        mapView = rootView.findViewById(R.id.mapview);
+        mapView.getMapAsync(this);
+        mapView.onResume();
+        mapView.getMapAsync(this);
+
         // View model
         mViewModel = ViewModelProviders.of(this).get(MapActivityViewModel.class);
-
+        //map 버튼
+        Button button = (Button) rootView.findViewById(R.id.btn_lastLocation);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                onLastLocationButtonClicked(rootView);
+            }
+        });
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
 
         // Initialize Firestore and the main RecyclerView
         initFirestore();
-        initRecyclerView();
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_maps, container, false);
-        mapView = rootView.findViewById(R.id.mapview);
-        mapView.onCreate(savedInstanceState);
+        //리사이클러뷰 초기화
+        if (mQuery == null) {
+            Log.w(TAG, "No query, not initializing RecyclerView");
+        }
+        mProductRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_product);
+        mAdapter = new ProductListAdapter(mQuery, this) {
 
-        mapView.getMapAsync(this);
+            @Override
+            protected void onDataChanged() {
+                // Show/hide content if the query returns empty.
+                if (getItemCount() == 0) {
+                    mProductRecycler.setVisibility(View.GONE);
+                } else {
+                    mProductRecycler.setVisibility(View.VISIBLE);
+                }
+            }
 
+            @Override
+            protected void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                Snackbar.make(getActivity().findViewById(android.R.id.content),
+                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+            }
+        };
+        mProductRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mProductRecycler.setAdapter(mAdapter);
         return rootView;
     }
 
@@ -154,34 +176,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mFirestore = FirebaseFirestore.getInstance();
     }
 
-    private void initRecyclerView() {
-        if (mQuery == null) {
-            Log.w(TAG, "No query, not initializing RecyclerView");
-        }
-
-        mAdapter = new ProductListAdapter(mQuery, (MapsActivity)getActivity()) {
-
-            @Override
-            protected void onDataChanged() {
-                // Show/hide content if the query returns empty.
-                if (getItemCount() == 0) {
-                    mProductRecycler.setVisibility(View.GONE);
-                } else {
-                    mProductRecycler.setVisibility(View.VISIBLE);
-                }
-            }
-
-            @Override
-            protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-            }
-        };
-
-        mProductRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mProductRecycler.setAdapter(mAdapter);
-    }
     @Override
     public void onStart() {
         super.onStart();
@@ -209,7 +203,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public  void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -322,11 +316,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 return;
         }
     }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu,  MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.map, menu);
         MenuItem item = menu.findItem(R.id.action_toggle);
         if (mLayout != null) {
@@ -336,12 +328,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 item.setTitle(R.string.action_hide);
             }
         }
-        return super.onCreateOptionsMenu(menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.getActivity().onPrepareOptionsMenu(menu);
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.getActivity().onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -380,7 +373,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void onBackPressed() {
         if (mLayout != null &&
                 (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {

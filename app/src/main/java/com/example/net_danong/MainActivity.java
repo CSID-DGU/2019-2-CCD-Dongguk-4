@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-        startActivity(intent);
+/*        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+        startActivity(intent);*/
 
         /* 테스트데이터 추가 관련 함수들
         addNewUsers("jc9avahj", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "10");
