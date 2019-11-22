@@ -36,9 +36,9 @@
        android:hint="검색할 농작물을 입력해 주세요."
        android:clickable="true"
 
-       android:id="@+id/edit_main"
-       android:background="@drawable/edittext_design"
-       />
+       android:id="@+id/edit_main"/>
+<!--       android:background="@drawable/edittext_design"-->
+
 
     <TextView
         android:layout_width="match_parent"

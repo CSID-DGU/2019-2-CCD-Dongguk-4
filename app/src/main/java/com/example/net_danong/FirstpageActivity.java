@@ -2,14 +2,23 @@ package com.example.net_danong;
 
 import android.animation.ArgbEvaluator;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -31,18 +40,20 @@ public class FirstpageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_firstpage);
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
+        RequestManager mRequestManager= Glide.with(this);
 
         StorageReference storageRef = storage.getReference();
         StorageReference image1 = storageRef.child("images/lettuce.jpg");
         StorageReference image2 = storageRef.child("images/grape.jpg");
         StorageReference image3 = storageRef.child("images/orange.jpg");
 
+
         models = new ArrayList<>();
         models.add(new Model(image1, "상추", "싱싱한 상추"));
         models.add(new Model(image2, "포도", "맛있는 포도"));
         models.add(new Model(image3, "오렌지", "상큼한 오렌지"));
 
-        adapter = new Adapter(models, this);
+        adapter = new Adapter(models, this, mRequestManager);
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
         viewPager.setPadding(130, 0, 130, 0);
