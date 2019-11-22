@@ -28,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-// firebaseAuth..? 받아오는 과정에서 바로 앱다운되길래 일단 주석 처리 했습니다,,ㅠ_ㅠ
 
 public class JoinFragment extends Fragment {
 
@@ -39,6 +38,7 @@ public class JoinFragment extends Fragment {
     //파이어베이스 인증 객체 생성
     private FirebaseAuth firebaseAuth;
     DatabaseReference mdatabase;
+
 
     //이메일과 비밀번호
     private EditText editName, editTextEmail, editTextPassword, editPhoneNumber;

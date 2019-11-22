@@ -34,6 +34,7 @@ public class FirstpageActivity extends AppCompatActivity {
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,10 +43,12 @@ public class FirstpageActivity extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         RequestManager mRequestManager= Glide.with(this);
 
+
+
         StorageReference storageRef = storage.getReference();
-        StorageReference image1 = storageRef.child("images/lettuce.jpg");
-        StorageReference image2 = storageRef.child("images/grape.jpg");
-        StorageReference image3 = storageRef.child("images/orange.jpg");
+        StorageReference image1 = storageRef.child("images/lettuce.jpeg");
+        StorageReference image2 = storageRef.child("images/grape.jpeg");
+        StorageReference image3 = storageRef.child("images/orange.jpeg");
 
 
         models = new ArrayList<>();
