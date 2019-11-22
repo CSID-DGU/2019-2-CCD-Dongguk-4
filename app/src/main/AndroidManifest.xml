@@ -42,8 +42,8 @@
         </activity>
         <activity android:name=".FirstpageActivity" />
         <activity android:name=".SearchFragment" />
-        <activity android:name=".BasicActivity"/>//등록구현
-        <activity android:name=".WritePostActivity"/>//등록구현
+        <activity android:name=".BasicActivity"/>
+        <activity android:name=".WritePostActivity"/>
         <activity android:name=".LoginFragment" />
     </application>
 

@@ -10,13 +10,13 @@
 
     <ImageView
         android:id="@+id/danonglogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
         android:background="@null"
         android:contentDescription="danongimage"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@drawable/logo_1" />
 
     <TextView
         android:layout_width="wrap_content"

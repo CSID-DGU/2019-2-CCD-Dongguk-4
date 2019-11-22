@@ -2,9 +2,13 @@ package com.example.net_danong;
 
 import android.animation.ArgbEvaluator;
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +27,17 @@ public class FirstpageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstpage);
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        StorageReference storageRef = storage.getReference();
+        StorageReference image1 = storageRef.child("images/lettuce.jpg");
+        StorageReference image2 = storageRef.child("images/grape.jpg");
+        StorageReference image3 = storageRef.child("images/orange.jpg");
+
         models = new ArrayList<>();
-        models.add(new Model(R.drawable.one, "상추", "싱싱한 상추"));
-        models.add(new Model(R.drawable.two, "포도", "맛있는 포도"));
-        models.add(new Model(R.drawable.three, "오렌지", "상큼한 오렌지"));
+        models.add(new Model(image1, "상추", "싱싱한 상추"));
+        models.add(new Model(image2, "포도", "맛있는 포도"));
+        models.add(new Model(image3, "오렌지", "상큼한 오렌지"));
 
         adapter = new Adapter(models, this);
         viewPager = findViewById(R.id.viewPager);

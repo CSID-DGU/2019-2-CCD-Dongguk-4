@@ -1,12 +1,14 @@
 package com.example.net_danong;
 
+import com.google.firebase.storage.StorageReference;
+
 public class Model {
 
     private int image;
     private String title;
     private String desc;
 
-    public Model(int image, String title, String desc) {
+    public Model(StorageReference image, String title, String desc) {
         this.image = image;
         this.title = title;
         this.desc = desc;
