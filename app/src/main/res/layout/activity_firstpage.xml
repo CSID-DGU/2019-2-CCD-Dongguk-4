@@ -23,15 +23,22 @@
         android:paddingLeft="16dp"
         android:text="어떤 농작물을 찾고 계신가요?"
         android:textSize="28dp"
+        android:paddingBottom="30dp"
         />
 
-    <ImageView
-        android:id="@+id/ImageView_SearchBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher_background"
-        android:clickable="true"
-        />
+   <EditText
+       android:layout_width="300dp"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center"
+       android:paddingLeft="30dp"
+       android:paddingTop="8dp"
+       android:paddingBottom="8dp"
+       android:hint="검색할 농작물을 입력해 주세요."
+       android:clickable="true"
+
+       android:id="@+id/edit_main"
+       android:background="@drawable/edittext_design"
+       />
 
     <TextView
         android:layout_width="match_parent"

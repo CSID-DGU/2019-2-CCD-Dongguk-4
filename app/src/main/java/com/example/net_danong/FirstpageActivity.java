@@ -1,7 +1,10 @@
 package com.example.net_danong;
 
 import android.animation.ArgbEvaluator;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +46,15 @@ public class FirstpageActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
         viewPager.setPadding(130, 0, 130, 0);
+
+        EditText editText_main = (EditText) findViewById(R.id.edit_main);
+        editText_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchFragment.class);
+                startActivity(intent);
+            }
+        });
 
         Integer[] colors_temp = {
                 getResources().getColor(R.color.white),
