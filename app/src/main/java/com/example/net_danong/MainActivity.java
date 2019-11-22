@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        Intent intent = new Intent(MainActivity.this, FirstpageActivity.class);
+        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
 
         /* 테스트데이터 추가 관련 함수들

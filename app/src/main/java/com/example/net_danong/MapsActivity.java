@@ -63,6 +63,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        if (savedInstanceState == null) {
+
+            MapsFragment mapsFragment = new MapsFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.mapview, mapsFragment, "main")
+                    .commit();
+        }
+
         mProductRecycler = findViewById(R.id.recycler_product);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

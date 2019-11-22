@@ -1,6 +1,5 @@
 package com.example.net_danong;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,7 @@ public class LoginFragment extends Fragment {
     //현재 로그인 된 유저 정보를 담을 변수
     private FirebaseUser currentUser;
     //내부 전환 newInstance 필수
-    public static LoginFragment newInstance() {
+    public static LoginFragment newInstance(){
         return new LoginFragment();
     }
 
@@ -39,7 +38,7 @@ public class LoginFragment extends Fragment {
 //    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-       View view = inflater.inflate(R.layout.activity_login, container, false);
+        View view = inflater.inflate(R.layout.activity_login, container, false);
 
         //로그인 되어있으면 menu5fragment로 교체
         if (currentUser != null) {
@@ -123,7 +122,7 @@ public class LoginFragment extends Fragment {
 
                     //데이터 넘기기?
                     // Intent intent = new Intent(getActivity(), MainActivity.class);
-                   // startActivity(intent);
+                    // startActivity(intent);
                     //finish();
                 }
 
