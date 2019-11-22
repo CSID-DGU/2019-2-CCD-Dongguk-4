@@ -12,7 +12,6 @@ import com.google.firebase.firestore.Query;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-
 public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
 
     public RatingAdapter(Query query) {

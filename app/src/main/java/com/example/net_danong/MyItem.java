@@ -16,8 +16,8 @@ public class MyItem implements ClusterItem {
 
     @Override
     public String getTitle() {
-        return null;//값 지정시 타이틀 나옴 예를 들어 충무로역
-    }
+        return null;
+    }//마커 이름 주기
 
     @Override
     public String getSnippet() {
