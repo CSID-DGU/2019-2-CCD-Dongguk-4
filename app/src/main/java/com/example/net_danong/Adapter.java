@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+
 import java.util.List;
 
 public class Adapter extends PagerAdapter {
@@ -44,8 +47,8 @@ public class Adapter extends PagerAdapter {
         title = view.findViewById(R.id.title);
         desc = view.findViewById(R.id.desc);
 
-
-        //imageView.setImageResource(models.get(position).getImage());
+        Glide.with(context)
+                .load(models.get(position).getImage().getStorage()).into(imageView);
         title.setText(models.get(position).getTitle());
         desc.setText(models.get(position).getDesc());
 
