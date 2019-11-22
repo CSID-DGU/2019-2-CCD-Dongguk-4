@@ -1,39 +1,34 @@
 package com.example.net_danong;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 
-import com.facebook.login.Login;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 //navBar 관련 항목
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
-import org.w3c.dom.Document;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
@@ -266,10 +261,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_menu5: {
-                    /* 필요한 작업
-                    * fragment에서 생성한 method를 main.activity에서 불러올 것
-                    * fragment id랑 key 뭔지 이해하기
-                    * if문 이용해서 login 되어있으면 menu5Frag, 안 되어있으면 loginFrag로 연결 */
                     transaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
                     break;
                 }

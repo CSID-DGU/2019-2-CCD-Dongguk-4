@@ -51,7 +51,7 @@ public class LogInActivity extends AppCompatActivity implements  GoogleApiClient
                 String email = userEmail.getText().toString();
                 String password = userPw.getText().toString();
 
-                //로그인 성공
+                //로그인 시작
                 loginStart(email, password);
             }
         });

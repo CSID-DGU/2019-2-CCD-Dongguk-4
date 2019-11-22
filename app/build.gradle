@@ -43,6 +43,7 @@ dependencies {
     implementation 'codelight.studios:android-smart-login:1.2'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.maps.android:android-maps-utils:0.5'
-
+    implementation 'com.github.bumptech.glide:glide:4.9.0'//등록구현위한
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'//등록구현위한
 
 }

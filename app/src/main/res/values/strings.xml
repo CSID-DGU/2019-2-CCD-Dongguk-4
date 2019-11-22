@@ -8,6 +8,14 @@
     <string name="success_signup">회원가입 성공</string>
     <string name="failed_signup">회원가입 실패</string>
 
+    <string name="value_any_category">All product</string>
+    <string name="value_any_region">Anywhere</string>
+    <string name="value_any_price">Any price</string>
+
+    <string name="price_1">1000</string>
+    <string name="price_2">2000</string>
+    <string name="price_3">3000</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_hide">Hide Panel</string>
     <string name="action_show">Show Panel</string>
@@ -25,4 +33,48 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_maps2222">Map</string>
+    <string name="divider_bullet">•</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="add_random_items">Add Random Items</string>
+    <string name="fmt_num_ratings" translatable="false">(%d)</string>
+
+    <string-array name="categories">
+        <item>@string/value_any_category</item>
+
+        <item>카테고리1</item>
+        <item>카테고리2</item>
+        <item>카테고리3</item>
+        <item>카테고리4</item>
+        <item>카테고리5</item>
+        <item>카테고리6</item>
+        <item>카테고리7</item>
+        <item>카테고리8</item>
+        <item>카테고리9</item>
+        <item>카테고리10</item>
+    </string-array>
+
+    <string-array name="regions">
+        <item>@string/value_any_region</item>
+
+        <item>지역1</item>
+        <item>지역2</item>
+        <item>지역3</item>
+        <item>지역4</item>
+        <item>지역5</item>
+        <item>지역6</item>
+        <item>지역7</item>
+        <item>지역8</item>
+        <item>지역9</item>
+        <item>지역10</item>
+
+    </string-array>
+
+    <string-array name="prices">
+        <item>@string/value_any_price</item>
+
+        <item>@string/price_1</item>
+        <item>@string/price_2</item>
+        <item>@string/price_3</item>
+    </string-array>
+
 </resources>
