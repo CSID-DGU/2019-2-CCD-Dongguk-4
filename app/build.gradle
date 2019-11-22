@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'/*지도구현*/
     implementation 'com.google.android.gms:play-services-location:17.0.0'/*지도구현*/
     implementation 'com.google.maps.android:android-maps-utils:0.6.2'
-    compile 'com.google.android.gms:play-services:12.0.1'/*추가*/
+    implementation 'com.google.android.gms:play-services:12.0.1'/*추가*/
 
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
     implementation 'androidx.annotation:annotation:1.1.0'
