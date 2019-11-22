@@ -25,6 +25,7 @@ public class FirstpageActivity extends AppCompatActivity {
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
