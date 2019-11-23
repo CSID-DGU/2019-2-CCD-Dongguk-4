@@ -147,7 +147,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mProductRecycler = (RecyclerView) view.findViewById(R.id.recycler_products);
+        mProductRecycler = (RecyclerView) view.findViewById(R.id.recycler_product);
         mAdapter = new ProductListAdapter(mQuery, this) {
 
             @Override

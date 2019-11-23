@@ -33,7 +33,7 @@
     -->
 
 <!--다은 수정-->
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -41,23 +41,14 @@
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="250dp" />
+            android:layout_height="match_parent" />
         <Button
             android:id="@+id/btn_lastLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="현재위치" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_products"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/filter_bar_container"
-            android:background="@android:color/white"
-            tools:listitem="@layout/item_product" />
-
-    </LinearLayout>
+    </FrameLayout>
 
 
 
