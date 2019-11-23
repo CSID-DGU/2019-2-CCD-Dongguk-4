@@ -105,6 +105,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
             pdtName = extra.getString("pdtname");
             pdtEnrolldate = extra.getString("pdtenrolldate");
             Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
+
+            System.out.println(addressX +" / "+ addressY +" / "+  userID);
         }
     }
 
@@ -310,14 +312,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         //addItem();
 
 
-        if(extra != null) {
+        if(addressX != null) {
+            //번들로 값 가져온 경우 (검색 후 뜨는 화면)
             searchItem();
-        }else{
+        } else{
+            //기본 화면
             addItem();
         }
-        //else if(extra.isEmpty()) {
-        //    addItem();
-        //}
 
     }
 
@@ -336,7 +337,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     }
 
     private void searchItem() {
-        if(extra != null) {
+        if(addressX != null) {
             //double값에 MAP<>에서 받아온 적절한 값 넣기넣기.. for문 돌리기..ㅎㅎ(보완필요)
             double lat = Double.parseDouble(addressX) ;
             double lng = Double.parseDouble(addressY) ;

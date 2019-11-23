@@ -283,7 +283,7 @@ public class MainActivity extends AppCompatActivity{
                 }
                 case R.id.navigation_menu3: {
                     //bundle 초기화..할 필요가 있는 듯..
-                    //if(mapbundle!=null){ mapbundle.clear(); }
+                    if(mapbundle!=null){ mapbundle.clear(); }
                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     break;
                 }
