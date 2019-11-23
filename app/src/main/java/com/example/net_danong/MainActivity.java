@@ -223,7 +223,19 @@ public class MainActivity extends AppCompatActivity{
                                         for ( String key : ProductList.keySet() ) {
                                             System.out.println("key : " + key +" / value : " + ProductList.get(key));
                                         }
-                                        System.out.println("<=========================================>");
+
+                                        String address =  ProductList.get("userAddress").toString();
+                                        String x = address.split(",")[1];
+                                        String y = address.split(",")[2];
+                                        y = y.substring(0, y.length()-1);
+
+                                        // MapsFragment로 전달
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("addressx",x);
+                                        bundle.putString("addressy",y);
+                                        mapsFragment.setArguments(bundle);
+
+                                    System.out.println("<=========================================>");
                                 }
                             });
 
@@ -236,6 +248,9 @@ public class MainActivity extends AppCompatActivity{
                              Map <Key, Value> 형태에서 ProductList <pdtName, 토마토> <pdtEnrollDate, 2019-10-31> 이런 식으로 저장되는 구조..
                             */
                     }
+                        //결과값 저장 후 MAP화면으로 이동
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     }
                 });
     }

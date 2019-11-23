@@ -29,19 +29,19 @@ public class Menu1Fragment extends Fragment {
         //View view = inflater.inflate(R.layout.fragment_menu1, container, false);
         View view = inflater.inflate(R.layout.activity_firstpage, container, false);
 
-        //Button btn_search = (Button) view.findViewById(R.id.btn_search);
-        EditText edit = (EditText)view.findViewById(R.id.edit_main);
+        Button btn_search = (Button) view.findViewById(R.id.btn_search);
+        final EditText edit = (EditText)view.findViewById(R.id.edit_main);
 
-        edit.setOnClickListener(new View.OnClickListener() {
+        btn_search.setOnClickListener(new View.OnClickListener() {
 //            Fragment NewFragment;
             @Override
             public void onClick(View v) {
-                //Log.i("STATE", "SEARCH BUTTON 실행중");
-                // getActivity()로 MainActivity의 replaceFragment를 불러옵니다.
-                // 새로 불러올 Fragment의 Instance를 Main으로 전달
-                ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
+                // fragment search_frag로 전환
+                // ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
 
-                //Log.i("STATE", "fragment 변경완료");
+                String search = edit.getText().toString();
+                ((MainActivity)getActivity()).searchQuery(search);
+
             }
         });
 

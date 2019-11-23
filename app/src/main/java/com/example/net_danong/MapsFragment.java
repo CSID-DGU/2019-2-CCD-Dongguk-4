@@ -75,11 +75,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     ProductListAdapter mAdapter;
     MapActivityViewModel mViewModel;
 
+    //검색 후 결과값 저장해서 날아오는 변수들,,
+    Bundle extra;
+    String addressX;
+    String addressY;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
+        //MainActivity에서 검색 결과값 받아오기
+        extra = this.getArguments();
+        if(extra != null) {
+            extra = getArguments();
+            addressX = extra.getString("addressx");
+            addressY = extra.getString("addressy");
+
+            Toast.makeText(getActivity(),addressX+addressY,Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -283,12 +298,32 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
             }
         });
         addItem();
+
+
+        if(extra != null) {
+            searchItem();
+        }
+
     }
 
     private void addItem() {
 
         double lat = 37.5609739;
         double lng = 126.99134;
+
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            MyItem offsetItem = new MyItem(lat, lng);
+            mClusterManager.addItem(offsetItem);
+        }
+    }
+
+    private void searchItem() {
+        //double값에 MAP<>에서 받아온 적절한 값 넣기넣기.. for문 돌리기..ㅎㅎ
+        double lat = Double.parseDouble(addressX) ;
+        double lng = Double.parseDouble(addressY) ;
 
         for (int i = 0; i < 10; i++) {
             double offset = i / 60d;
