@@ -15,7 +15,7 @@
     sothree:umanoOverlay="true"
     sothree:umanoScrollableView="@+id/recycler_product">
 
-    <!-- 지도들어가는 고정 페이지 -->
+    <!-- 지도들어가는 고정 페이지
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +30,36 @@
             android:layout_height="wrap_content"
             android:text="현재위치" />
     </FrameLayout>
+    -->
+
+<!--다은 수정-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+        <Button
+            android:id="@+id/btn_lastLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현재위치" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_products"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/filter_bar_container"
+            android:background="@android:color/white"
+            tools:listitem="@layout/item_product" />
+
+    </LinearLayout>
+
+
 
 
     <!-- 위로 슬라이드하는 product list -->

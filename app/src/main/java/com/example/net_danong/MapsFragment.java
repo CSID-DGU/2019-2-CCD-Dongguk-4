@@ -1,6 +1,5 @@
 package com.example.net_danong;
 
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -84,34 +83,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        if (savedInstanceState == null) {
-            MapsFragment mapsFragment = new MapsFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.mapview, mapsFragment, "main")
-                    .commit();
-        }
+        View view  = inflater.inflate(R.layout.fragment_maps, container, false);
+        mapView = (MapView)view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
 
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
-
-        rootView = inflater.inflate(R.layout.fragment_maps, container, false);
-        mapView = rootView.findViewById(R.id.mapview);
         mapView.getMapAsync(this);
         mapView.onResume();
-        mapView.getMapAsync(this);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
 
         // View model
         mViewModel = ViewModelProviders.of(this).get(MapActivityViewModel.class);
         //map 버튼
-        Button button = (Button) rootView.findViewById(R.id.btn_lastLocation);
+        Button button = (Button) view.findViewById(R.id.btn_lastLocation);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -129,7 +116,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         if (mQuery == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
-        mProductRecycler = (RecyclerView) rootView.findViewById(R.id.recycler_product);
+
+        mProductRecycler = (RecyclerView) view.findViewById(R.id.recycler_products);
         mAdapter = new ProductListAdapter(mQuery, this) {
 
             @Override
@@ -151,13 +139,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         };
         mProductRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mProductRecycler.setAdapter(mAdapter);
-        return rootView;
+
+        return view;
     }
 
     @Override
     public void onResume() {
-        mapView.onResume();
         super.onResume();
+        mapView.onResume();
     }
 
     @Override
@@ -179,6 +168,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     @Override
     public void onStart() {
         super.onStart();
+        mapView.onStart();
     }
 
     @Override

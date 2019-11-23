@@ -30,7 +30,7 @@ import java.util.Map;
 
 //navBar 관련 항목
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     private FirebaseFirestore db;
     //로그인 상태변화 확인
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private SearchFragment searchFragment = new SearchFragment();
     private LoginFragment loginFragment = new LoginFragment();
     private JoinFragment JoinFragment = new JoinFragment();
+    private MapsFragment mapsFragment = new MapsFragment();
+
 
 
 
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, c);
         startActivity(intent);
     }//더보기 +버튼 클릭시 등록화면으로 이동하는 로직*/
+
 
     //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
     private void addNewUsers(String userId, List<String> userAdress, String docNum) {
@@ -253,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.navigation_menu3: {
-                    transaction.replace(R.id.frame_layout, menu3Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu4: {
