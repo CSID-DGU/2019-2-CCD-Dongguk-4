@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity{
 //                                    System.out.println("<=========================================>");
                                     System.out.println("마지막 루프 돌면 최종 결과값 나옴"+pdtlist);
 
-                                    //결과값 저장 후 MAP화면으로 이동
+                                    //MAP화면으로 이동
                                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                                 }
