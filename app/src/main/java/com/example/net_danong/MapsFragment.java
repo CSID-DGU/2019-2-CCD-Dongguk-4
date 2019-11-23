@@ -79,6 +79,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     Bundle extra;
     String addressX;
     String addressY;
+    String userID;
+    String pdtName;
+    String pdtEnrolldate;
+
+
+    //내부 전환 (menu1-search결과) newInstance 필수
+    public static MapsFragment newInstance() {
+        return new MapsFragment();
+    }
 
 
     @Override
@@ -86,16 +95,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
 
-        //MainActivity에서 검색 결과값 받아오기
+        //MainActivity에서 검색 결과값 받아오기 (있을 때)
         extra = this.getArguments();
         if(extra != null) {
             extra = getArguments();
             addressX = extra.getString("addressx");
             addressY = extra.getString("addressy");
-
-            Toast.makeText(getActivity(),addressX+addressY,Toast.LENGTH_SHORT).show();
+            userID = extra.getString("userid");
+            pdtName = extra.getString("pdtname");
+            pdtEnrolldate = extra.getString("pdtenrolldate");
+            Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
         }
-
     }
 
     @Override
@@ -297,12 +307,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                 return true;
             }
         });
-        addItem();
+        //addItem();
 
 
         if(extra != null) {
             searchItem();
+        }else{
+            addItem();
         }
+        //else if(extra.isEmpty()) {
+        //    addItem();
+        //}
 
     }
 
@@ -321,16 +336,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     }
 
     private void searchItem() {
-        //double값에 MAP<>에서 받아온 적절한 값 넣기넣기.. for문 돌리기..ㅎㅎ
-        double lat = Double.parseDouble(addressX) ;
-        double lng = Double.parseDouble(addressY) ;
+        if(extra != null) {
+            //double값에 MAP<>에서 받아온 적절한 값 넣기넣기.. for문 돌리기..ㅎㅎ(보완필요)
+            double lat = Double.parseDouble(addressX) ;
+            double lng = Double.parseDouble(addressY) ;
 
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            MyItem offsetItem = new MyItem(lat, lng);
-            mClusterManager.addItem(offsetItem);
+            for (int i = 0; i < 10; i++) {
+                double offset = i / 60d;
+                lat = lat + offset;
+                lng = lng + offset;
+                MyItem offsetItem = new MyItem(lat, lng);
+                mClusterManager.addItem(offsetItem);
+            }
         }
     }
 

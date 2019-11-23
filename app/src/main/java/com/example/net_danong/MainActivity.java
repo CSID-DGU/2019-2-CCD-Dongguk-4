@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity{
     //필요한 변수들 선언하기
     Map<String, Object> ProductList; //검색+지도에서 사용할 결과값 저장공간
     Map<String, Object> UserList;    //검색+지도에서 사용할 결과값 저장공간2
+    Bundle mapbundle; //검색Fragment로 전달할 때 사용할 것,,
 
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -224,18 +226,30 @@ public class MainActivity extends AppCompatActivity{
                                             System.out.println("key : " + key +" / value : " + ProductList.get(key));
                                         }
 
+                                        //Bundle로 보낼 변수들 (map파일에서 string으로 쪼개서 가져오기..)
                                         String address =  ProductList.get("userAddress").toString();
                                         String x = address.split(",")[1];
                                         String y = address.split(",")[2];
                                         y = y.substring(0, y.length()-1);
+                                        String userid = ProductList.get("userID").toString();
+                                        String pdtname = ProductList.get("pdtName").toString();
+                                        String pdtenrolldate = ProductList.get("pdtEnrolldate").toString();
 
-                                        // MapsFragment로 전달
-                                        Bundle bundle = new Bundle();
-                                        bundle.putString("addressx",x);
-                                        bundle.putString("addressy",y);
-                                        mapsFragment.setArguments(bundle);
+                                        // MapsFragment로 전달 + 수정할 것 = 번들로 다른 값들도 같이 전달하기.. 여러개 전달할라믄 어카냐;
+                                        mapbundle = new Bundle();
 
+                                        mapbundle.putString("addressx",x);
+                                        mapbundle.putString("addressy",y);
+                                        mapbundle.putString("userid",userid);
+                                        mapbundle.putString("pdtname",pdtname);
+                                        mapbundle.putString("pdtenrolldate",pdtenrolldate);
+                                        mapsFragment.setArguments(mapbundle);
                                     System.out.println("<=========================================>");
+
+                                    //결과값 저장 후 MAP화면으로 이동
+                                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                    transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+                                    System.out.println("화면전환");
                                 }
                             });
 
@@ -248,9 +262,6 @@ public class MainActivity extends AppCompatActivity{
                              Map <Key, Value> 형태에서 ProductList <pdtName, 토마토> <pdtEnrollDate, 2019-10-31> 이런 식으로 저장되는 구조..
                             */
                     }
-                        //결과값 저장 후 MAP화면으로 이동
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     }
                 });
     }
@@ -271,6 +282,8 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu3: {
+                    //bundle 초기화..할 필요가 있는 듯..
+                    //if(mapbundle!=null){ mapbundle.clear(); }
                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     break;
                 }
@@ -318,6 +331,12 @@ public class MainActivity extends AppCompatActivity{
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
         // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
+    }
+    public void replaceMapFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+        // 검색 쿼리 완료 후에 mapsFragment로 교체
     }
 
 }
