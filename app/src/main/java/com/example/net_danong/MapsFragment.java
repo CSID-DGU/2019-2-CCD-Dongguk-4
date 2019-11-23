@@ -47,6 +47,10 @@ import com.google.firebase.firestore.Query;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 
@@ -99,14 +103,31 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         extra = this.getArguments();
         if(extra != null) {
             extra = getArguments();
+
+
+            List list = extra.getParcelableArrayList("list");
+            System.out.println("제발 으아아아ㅏㄱ" + list);
+            /*
+            HashMap<String, Object> hMap = (HashMap<String, Object>)extra.getSerializable("hashmap");
+            String address =  hMap.get("userAddress").toString();
+            addressX = address.split(",")[1];
+            addressY = address.split(",")[2];
+            addressY = addressY.substring(0, addressY.length()-1);
+            userID = hMap.get("userID").toString();
+            pdtName = hMap.get("pdtName").toString();
+            pdtEnrolldate = hMap.get("pdtEnrolldate").toString();
+            */
+
             addressX = extra.getString("addressx");
             addressY = extra.getString("addressy");
             userID = extra.getString("userid");
             pdtName = extra.getString("pdtname");
             pdtEnrolldate = extra.getString("pdtenrolldate");
+
             Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
 
-            System.out.println(addressX +" / "+ addressY +" / "+  userID);
+            //확인용
+            System.out.println("지도 결과" + addressX +" / "+ addressY +" / "+  userID);
         }
     }
 
@@ -114,43 +135,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-
-        /*
-        if (savedInstanceState == null) {
-            MapsFragment mapsFragment = new MapsFragment();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.map, mapsFragment, "main")
-                    .commit();
-        }
-        */
-
-/*
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
- */
-
         View view  = inflater.inflate(R.layout.fragment_maps, container, false);
         mapView = (MapView)view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
 
-       // mapView.getMapAsync(this);
-        //mapView.onResume();
-
-        /*
-        rootView = inflater.inflate(R.layout.fragment_maps, container, false);
-        //다은 수정
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.mapview);
-        mapFragment.getMapAsync(this);
-*/
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
-
-        //rootView = inflater.inflate(R.layout.fragment_maps, container, false);
-
 
         // View model
         mViewModel = ViewModelProviders.of(this).get(MapActivityViewModel.class);
@@ -163,6 +154,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                 onLastLocationButtonClicked(rootView);
             }
         });
+
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
 
@@ -281,23 +273,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(37.5609417, 126.9911718);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-        // Add a marker in Sydney and move the camera
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tell:0212341234"));
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }//클릭한 마커 정보 들어와서 이 경우 전화걸기
-        });
-
         mClusterManager = new ClusterManager<>(getActivity(), mMap);
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
@@ -309,17 +284,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                 return true;
             }
         });
-        //addItem();
 
 
-        if(addressX != null) {
-            //번들로 값 가져온 경우 (검색 후 뜨는 화면)
+        if(addressX != null) { //검색 후 뜨는 화면
             searchItem();
         } else{
-            //기본 화면
+            //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
+            // Add a marker in Sydney and move the camera
+            LatLng sydney = new LatLng(37.5609417, 126.9911718);
+            mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+            // Add a marker in Sydney and move the camera
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tell:0212341234"));
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+            });
             addItem();
         }
-
     }
 
     private void addItem() {
@@ -338,19 +326,40 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 
     private void searchItem() {
         if(addressX != null) {
-            //double값에 MAP<>에서 받아온 적절한 값 넣기넣기.. for문 돌리기..ㅎㅎ(보완필요)
+
+            //검색 결과로 받아온 주소 좌표값 대입
+            // (보완필요) = for문이나 []배열값으로 여러개 뜨게 하기
             double lat = Double.parseDouble(addressX) ;
             double lng = Double.parseDouble(addressY) ;
 
-            for (int i = 0; i < 10; i++) {
-                double offset = i / 60d;
-                lat = lat + offset;
-                lng = lng + offset;
-                MyItem offsetItem = new MyItem(lat, lng);
-                mClusterManager.addItem(offsetItem);
+            // Add a marker in Sydney and move the camera
+            LatLng search = new LatLng(lat, lng);
+            mMap.addMarker(new MarkerOptions().position(search).title("결과값"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(search));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+
+            // Add a marker in Sydney and move the camera
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tell:0212341234"));
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+            });
+
+
+//            for (int i = 0; i < 10; i++) {
+//                double offset = i / 60d;
+//                lat = lat + offset;
+//                lng = lng + offset;
+//                MyItem offsetItem = new MyItem(lat, lng);
+//                mClusterManager.addItem(offsetItem);
             }
         }
-    }
+
 
     public void onLastLocationButtonClicked(View view) {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.

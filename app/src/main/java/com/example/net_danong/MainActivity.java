@@ -2,6 +2,7 @@ package com.example.net_danong;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
     Map<String, Object> ProductList; //검색+지도에서 사용할 결과값 저장공간
     Map<String, Object> UserList;    //검색+지도에서 사용할 결과값 저장공간2
     Bundle mapbundle; //검색Fragment로 전달할 때 사용할 것,,
+    List pdtlist = new ArrayList();
 
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -208,59 +210,57 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
                         for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
-                            //Log.d(TAG, "PRODUCT= " + snap.getId() + " => " + snap.getData());
                             ProductList=snap.getData();
-
                             //상위 Collection(user) 정보로 접근
                             DocumentReference docRef = snap.getReference().getParent().getParent();
+
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        DocumentSnapshot document = task.getResult();
-                                        UserList=document.getData();
-                                        //Log.d(TAG, "USER= " + document.getData());
-                                        ProductList.putAll(UserList); //USER+PRODUCT병합
+                                    DocumentSnapshot document = task.getResult();
+                                    UserList=document.getData();
+                                    ProductList.putAll(UserList); //USER+PRODUCT병합
+                                   //HashMap<String, Object> hMap = new HashMap<String, Object>(ProductList); //HashMap으로 변환
+                                    pdtlist.add(ProductList);
 
-                                        //MAP<>에 들어갔는지 test용 출력 (LOG확인)
-                                        for ( String key : ProductList.keySet() ) {
-                                            System.out.println("key : " + key +" / value : " + ProductList.get(key));
-                                        }
+                                    //MAP<>에 들어갔는지 test용 출력 (LOG확인)
+//                                    for ( String key : ProductList.keySet() ) {
+//                                        System.out.println("키 : " + key +" / 값 : " + ProductList.get(key));
+//                                    }
 
-                                        //Bundle로 보낼 변수들 (map파일에서 string으로 쪼개서 가져오기..)
-                                        String address =  ProductList.get("userAddress").toString();
-                                        String x = address.split(",")[1];
-                                        String y = address.split(",")[2];
-                                        y = y.substring(0, y.length()-1);
-                                        String userid = ProductList.get("userID").toString();
-                                        String pdtname = ProductList.get("pdtName").toString();
-                                        String pdtenrolldate = ProductList.get("pdtEnrolldate").toString();
 
-                                        // MapsFragment로 전달 + 수정할 것 = 번들로 다른 값들도 같이 전달하기.. 여러개 전달할라믄 어카냐;
-                                        mapbundle = new Bundle();
+                                    // MapsFragment로 전달 + 수정할 것 = 번들로 다른 값들도 같이 전달하기.. 여러개 전달할라믄 어카냐;
+                                    mapbundle = new Bundle();
+                                    mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) pdtlist);
+                                    /*
+                                    mapbundle.putSerializable("hashmap",hMap);
+                                    mapsFragment.setArguments(mapbundle);
+                                    */
 
-                                        mapbundle.putString("addressx",x);
-                                        mapbundle.putString("addressy",y);
-                                        mapbundle.putString("userid",userid);
-                                        mapbundle.putString("pdtname",pdtname);
-                                        mapbundle.putString("pdtenrolldate",pdtenrolldate);
-                                        mapsFragment.setArguments(mapbundle);
-                                    System.out.println("<=========================================>");
+                                    //Bundle로 보낼 변수들 (map파일에서 string으로 쪼개서 가져오기..)
+                                    String address =  ProductList.get("userAddress").toString();
+                                    String x = address.split(",")[1];
+                                    String y = address.split(",")[2];
+                                    y = y.substring(0, y.length()-1);
+                                    String userid = ProductList.get("userId").toString();
+                                    String pdtname = ProductList.get("pdtName").toString();
+                                    String pdtenrolldate = ProductList.get("pdtEnrollDate").toString();
+
+                                    mapbundle.putString("addressx",x);
+                                    mapbundle.putString("addressy",y);
+                                    mapbundle.putString("userid",userid);
+                                    mapbundle.putString("pdtname",pdtname);
+                                    mapbundle.putString("pdtenrolldate",pdtenrolldate);
+                                    mapsFragment.setArguments(mapbundle);
+
+//                                    System.out.println("<=========================================>");
+                                    System.out.println("마지막 루프 돌면 최종 결과값 나옴"+pdtlist);
 
                                     //결과값 저장 후 MAP화면으로 이동
                                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
-                                    System.out.println("화면전환");
                                 }
                             });
-
-//                            //String a = ProductList.get("pdtName").toString();
-//                            //String b = ProductList.get("pdtEnrollDate").toString();
-//                            //System.out.println("상품명? " + a + " 등록날짜? " + b );
-
-                            /*
-                             추후 지도기능, MAP Activity로 연결할 때 데이터 적절히 변환해서 넘기는 과정 필요
-                             Map <Key, Value> 형태에서 ProductList <pdtName, 토마토> <pdtEnrollDate, 2019-10-31> 이런 식으로 저장되는 구조..
-                            */
                     }
                     }
                 });
