@@ -38,7 +38,6 @@
             android:enabled="false"
             android:gravity="center"
             android:hint="검색할 농작물을 입력해 주세요."
-            android:paddingLeft="30dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp" />
 
