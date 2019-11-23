@@ -1,5 +1,6 @@
 package com.example.net_danong;
 
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -86,14 +87,43 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
+
+        /*
+        if (savedInstanceState == null) {
+            MapsFragment mapsFragment = new MapsFragment();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.map, mapsFragment, "main")
+                    .commit();
+        }
+        */
+
+/*
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+ */
+
         View view  = inflater.inflate(R.layout.fragment_maps, container, false);
         mapView = (MapView)view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
-
-        mapView.getMapAsync(this);
         mapView.onResume();
+        mapView.getMapAsync(this);
+
+       // mapView.getMapAsync(this);
+        //mapView.onResume();
+
+        /*
+        rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        //다은 수정
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.mapview);
+        mapFragment.getMapAsync(this);
+*/
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
+
+        //rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+
 
         // View model
         mViewModel = ViewModelProviders.of(this).get(MapActivityViewModel.class);

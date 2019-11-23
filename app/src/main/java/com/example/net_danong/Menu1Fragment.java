@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,12 +26,13 @@ public class Menu1Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // return inflater.inflate(R.layout.fragment_menu1, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_menu1, container, false);
+        //View view = inflater.inflate(R.layout.fragment_menu1, container, false);
+        View view = inflater.inflate(R.layout.activity_firstpage, container, false);
 
-        Button btn_search = (Button) view.findViewById(R.id.btn_search);
+        //Button btn_search = (Button) view.findViewById(R.id.btn_search);
+        EditText edit = (EditText)view.findViewById(R.id.edit_main);
 
-
-        btn_search.setOnClickListener(new View.OnClickListener() {
+        edit.setOnClickListener(new View.OnClickListener() {
 //            Fragment NewFragment;
             @Override
             public void onClick(View v) {

@@ -30,7 +30,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCilykelMrpy9-n9uWhXm9wqJ0Id9OE8B4" />
+            android:value="AIzaSyCMjul3piJ-E8BhQFP-DCJq8wYewNIKpes" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -44,7 +44,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
