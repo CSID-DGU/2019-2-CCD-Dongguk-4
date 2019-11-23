@@ -70,7 +70,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
         public void bind(final DocumentSnapshot snapshot,
                          final OnProductSelectedListener listener) {
 
-            Product product = snapshot.toObject(Product.class);
+            ProductWriteInfo product = snapshot.toObject(ProductWriteInfo.class);
             Resources resources = itemView.getResources();
 
             // Load image
@@ -78,14 +78,14 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
                     .load(product.getPhoto())
                     .into(imageView);
 
-            idView.setText(product.getUserName());
-            nameView.setText(product.getName());
+            idView.setText(product.getPublisher());
+            nameView.setText(product.getProduct());
             ratingBar.setRating((float) product.getAvgRating());
-            regionView.setText(product.getRegion());
+            regionView.setText(product.getLocation());
             categoryView.setText(product.getCategory());
             numRatingsView.setText(resources.getString(R.string.fmt_num_ratings,
                     product.getNumRatings()));
-            priceView.setText(ProductUtil.getPriceString(product));
+            priceView.setText(product.getPrice());
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

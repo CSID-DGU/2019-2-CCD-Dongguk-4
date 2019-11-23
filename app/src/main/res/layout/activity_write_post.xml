@@ -18,7 +18,12 @@
             android:ems="10"
             android:hint="제목"
             android:inputType="textPersonName" />
-
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:textColor="@color/black"/>
         <EditText
             android:id="@+id/productEditText"
             android:layout_width="match_parent"

@@ -8,9 +8,12 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +39,7 @@ import java.util.Date;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
+    public static String category;
     private FirebaseUser user;
     private ArrayList<String> pathList = new ArrayList<>();
     private LinearLayout parent;
@@ -48,8 +52,26 @@ public class WritePostActivity extends BasicActivity {
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.image).setOnClickListener(onClickListener);
-    }
 
+        Spinner spinner=findViewById(R.id.categorySpinner);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.spinnerArray, android.R.layout.simple_spinner_dropdown_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter1);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String str = adapterView.getItemAtPosition(i).toString();
+                if ( str != "")
+                    category = str;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -93,6 +115,8 @@ public class WritePostActivity extends BasicActivity {
         final String product = ((EditText) findViewById(R.id.productEditText)).getText().toString();
         final String price = ((EditText) findViewById(R.id.priceEditText)).getText().toString();
         final String location = ((EditText) findViewById(R.id.locationEditText)).getText().toString();
+
+
         String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
 
         if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() >0) {
@@ -131,8 +155,8 @@ public class WritePostActivity extends BasicActivity {
                                         successCount++;
                                         if(pathList.size() == successCount){
                                             //완료
-                                            WriteInfo writeInfo = new WriteInfo(title, product, price, location, contentsList,  user.getUid(), new Date());
-                                            storeUpload(writeInfo);
+                                            ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contentsList,user.getUid(), new Date(), category);
+                                            storeUpload(productWriteInfo);
                                             for(int a = 0; a < contentsList.size(); a++){
                                                 Log.e("로그: ","콘덴츠: "+contentsList.get(a));
                                             }
@@ -152,9 +176,9 @@ public class WritePostActivity extends BasicActivity {
         }
     }
 
-    private void storeUpload(WriteInfo writeInfo){
+    private void storeUpload(ProductWriteInfo productWriteInfo){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").add(writeInfo)
+        db.collection("posts").add(productWriteInfo)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

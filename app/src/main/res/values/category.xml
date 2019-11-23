@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerArray">
+        <item> 카테고리를 선택하세요 </item>
+        <item> 카테고리A </item>
+        <item> 카테고리B </item>
+        <item> 카테고리C </item>
+        <item> 카테고리D </item>
+        <item> 카테고리E </item>
+        <item> 카테고리F </item>
+        <item> 카테고리G </item>
+    </string-array>
+</resources>

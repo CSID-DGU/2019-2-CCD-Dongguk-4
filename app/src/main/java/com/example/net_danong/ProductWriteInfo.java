@@ -3,7 +3,8 @@ package com.example.net_danong;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class WriteInfo {
+public class ProductWriteInfo {
+
     private String title;
     private String product;
     private String price;
@@ -12,7 +13,16 @@ public class WriteInfo {
     private String publisher;
     private Date createdAt;
 
-    public WriteInfo(String title, String product, String price, String location, ArrayList<String> contents, String publisher,Date createdAt) {
+    private String category;
+    private String photo;
+    //평점
+    private int numRatings;
+    private double avgRating;
+
+    public ProductWriteInfo() {
+    }
+
+    public ProductWriteInfo(String title, String product, String price, String location, ArrayList<String> contents, String publisher, Date createdAt, String category) {
         this.title = title;
         this.product = product;
         this.price = price;
@@ -20,6 +30,39 @@ public class WriteInfo {
         this.contents = contents;
         this.publisher = publisher;
         this.createdAt = createdAt;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public int getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(int numRatings) {
+        this.numRatings = numRatings;
+    }
+
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
     }
 
     public String getTitle() {

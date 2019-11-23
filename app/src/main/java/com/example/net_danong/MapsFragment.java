@@ -228,18 +228,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         }
     }
 
-    private void onAddItemsClicked() {
-        // Get a reference to the restaurants collection
-        CollectionReference productRef = mFirestore.collection("users").document().collection("product");
-
-        for (int i = 0; i < 10; i++) {
-            // Get a random Restaurant POJO
-            Product restaurant = ProductUtil.getRandom(getActivity());
-
-            // Add a new document to the restaurants collection
-            productRef.add(restaurant);
-        }
-    }
 
     @Override
     public  void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -448,9 +436,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                 }
                 return true;
             }
-            case R.id.menu_add_items:
-                onAddItemsClicked();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
