@@ -26,23 +26,23 @@
         android:paddingBottom="30dp"
         />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-   <EditText
-       android:layout_width="300dp"
-       android:layout_height="wrap_content"
-       android:layout_gravity="center"
-       android:paddingLeft="30dp"
-       android:paddingTop="8dp"
-       android:paddingBottom="8dp"
-       android:hint="검색할 농작물을 입력해 주세요."
-       android:clickable="true"
-       android:id="@+id/edit_main"/>
-<!--       android:background="@drawable/edittext_design"-->
 
 
-    </RelativeLayout>
+        <EditText
+            android:id="@+id/edit_main"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/edittext_design"
+            android:clickable="true"
+            android:enabled="false"
+            android:gravity="center"
+            android:hint="검색할 농작물을 입력해 주세요."
+            android:paddingLeft="30dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
+
+
 
     <TextView
         android:layout_width="match_parent"
