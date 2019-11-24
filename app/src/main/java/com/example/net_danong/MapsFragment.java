@@ -155,6 +155,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
             }
         });
 
+        Button post = (Button) view.findViewById(R.id.btn_post);
+        post.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(getActivity(), WritePostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
 
@@ -345,8 +356,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 //                lng = lng + offset;
 //                MyItem offsetItem = new MyItem(lat, lng);
 //                mClusterManager.addItem(offsetItem);
-            }
         }
+    }
 
 
     public void onLastLocationButtonClicked(View view) {

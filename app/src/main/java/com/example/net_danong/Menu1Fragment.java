@@ -32,7 +32,7 @@ public class Menu1Fragment extends Fragment {
         final EditText edit = (EditText)view.findViewById(R.id.edit_main);
 
         btn_search.setOnClickListener(new View.OnClickListener() {
-//            Fragment NewFragment;
+            //            Fragment NewFragment;
             @Override
             public void onClick(View v) {
                 // fragment search_frag로 전환
