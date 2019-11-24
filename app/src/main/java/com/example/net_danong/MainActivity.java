@@ -1,6 +1,5 @@
 package com.example.net_danong;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -18,7 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +49,6 @@ public class MainActivity extends AppCompatActivity{
     // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
     private Menu1Fragment menu1Fragment = new Menu1Fragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
-    private Menu3Fragment menu3Fragment = new Menu3Fragment();
     private Menu4Fragment menu4Fragment = new Menu4Fragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
@@ -78,8 +76,11 @@ public class MainActivity extends AppCompatActivity{
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
+/*
+        addProductItem();
+*/
 
-/*        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+/*        Intent intent = new Intent(MainActivity.this, DaumWebViewActivity.class);
         startActivity(intent);*/
 
         /* 테스트데이터 추가 관련 함수들
@@ -94,7 +95,17 @@ public class MainActivity extends AppCompatActivity{
 
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
+    private void addProductItem() {
+        for (int i = 0; i < 10; i++) {
+            // Get a random Restaurant POJO
+            String[] document = {"1","2","3","4","5","6","7","8","9","10"};
+            CollectionReference users = db.collection("users");
+            ProductWriteInfo product = ProductUtil.getRandom(this);
 
+            // Add a new document to the restaurants collection
+            users.document(document[i]).collection("products").add(product);
+        }
+    }
     /*View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

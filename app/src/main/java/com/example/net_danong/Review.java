@@ -8,17 +8,16 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 
-public class Rating {
-
+public class Review {
     private String userUId;
     private String userName;
     private double rating;
     private String text;
     private @ServerTimestamp Date timestamp;
 
-    public Rating() {}
+    public Review() {}
 
-    public Rating(FirebaseUser user, double rating, String text) {
+    public Review(FirebaseUser user, double rating, String text) {
         this.userUId = user.getUid();
         this.userName = user.getDisplayName();
         if (TextUtils.isEmpty(this.userName)) {

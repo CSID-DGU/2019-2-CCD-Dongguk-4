@@ -32,14 +32,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -47,17 +45,13 @@ import com.google.firebase.firestore.Query;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nonnull;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapsFragment extends Fragment implements OnMapReadyCallback,  ProductListAdapter.OnProductSelectedListener {
+public class MapsFragment extends Fragment implements OnMapReadyCallback, ProductListAdapter.OnProductSelectedListener {
     View rootView;
     MapView mapView;
     SlidingUpPanelLayout mLayout;
@@ -72,12 +66,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 
     private static final int RC_SIGN_IN = 9001;
     private static final int LIMIT = 50;
-    RecyclerView mProductRecycler;
-    FirebaseUser user;
-    FirebaseFirestore mFirestore;
-    Query mQuery;
-    ProductListAdapter mAdapter;
-    MapActivityViewModel mViewModel;
+    private RecyclerView mProductRecycler;
+    private FirebaseUser user;
+    private FirebaseFirestore mFirestore;
+    private Query mQuery;
+    private ProductListAdapter mAdapter;
+    private MapFragmentViewModel mViewModel;
 
     //검색 후 결과값 저장해서 날아오는 변수들,,
     Bundle extra;
@@ -98,7 +92,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-
         //MainActivity에서 검색 결과값 받아오기 (있을 때)
         extra = this.getArguments();
         if(extra != null) {
@@ -136,17 +129,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         setHasOptionsMenu(true);
 
         View view  = inflater.inflate(R.layout.fragment_maps, container, false);
-        mapView = (MapView)view.findViewById(R.id.map);
+        mapView = view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
+        mProductRecycler = view.findViewById(R.id.recycler_product);
 
         // View model
-        mViewModel = ViewModelProviders.of(this).get(MapActivityViewModel.class);
+        mViewModel = ViewModelProviders.of(this).get(MapFragmentViewModel.class);
         //map 버튼
-        Button button = (Button) view.findViewById(R.id.btn_lastLocation);
+        Button button = view.findViewById(R.id.btn_lastLocation);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -166,7 +160,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mProductRecycler = (RecyclerView) view.findViewById(R.id.recycler_product);
         mAdapter = new ProductListAdapter(mQuery, this) {
 
             @Override
@@ -174,6 +167,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                 // Show/hide content if the query returns empty.
                 if (getItemCount() == 0) {
                     mProductRecycler.setVisibility(View.GONE);
+
                 } else {
                     mProductRecycler.setVisibility(View.VISIBLE);
                 }
@@ -212,12 +206,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
-    }
+
+        // Get the 50 highest rated restaurants
+        mQuery = mFirestore.collectionGroup("products")
+                .orderBy("avgRating", Query.Direction.DESCENDING)
+                .limit(LIMIT);    }
 
     @Override
     public void onStart() {
         super.onStart();
         mapView.onStart();
+        mAdapter.startListening();
     }
 
     @Override
@@ -237,8 +236,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     @Override
     public void OnProductSelected(DocumentSnapshot restaurant) {
         // Go to the details page for the selected restaurant
-        Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
-        intent.putExtra(ProductDetailActivity.KEY_PRODUCT_UID, restaurant.getId());
+        Intent intent = new Intent(getActivity(), ProductDetailActivity1.class);
+        intent.putExtra(ProductDetailActivity1.KEY_PRODUCT_UID, restaurant.getId());
 
         startActivity(intent);
     }
