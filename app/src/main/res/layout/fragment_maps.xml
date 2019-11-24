@@ -32,7 +32,7 @@
     </FrameLayout>
     -->
 
-<!--다은 수정-->
+    <!--다은 수정-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,12 +41,20 @@
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
         <Button
             android:id="@+id/btn_lastLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="현재위치" />
+
+        <Button
+            android:id="@+id/btn_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:gravity="center_vertical"
+            android:text="등록" />
 
     </FrameLayout>
 
