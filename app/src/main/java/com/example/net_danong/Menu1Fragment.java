@@ -39,8 +39,7 @@ public class Menu1Fragment extends Fragment {
                 // ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
 
                 String search = edit.getText().toString();
-                ((MainActivity)getActivity()).searchQuery(search);
-
+                ((MainActivity)getActivity()).searchQ(search);
             }
         });
 

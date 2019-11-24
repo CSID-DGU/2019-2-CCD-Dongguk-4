@@ -81,8 +81,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 
     //검색 후 결과값 저장해서 날아오는 변수들,,
     Bundle extra;
-    String addressX;
-    String addressY;
+    Double addressX;
+    Double addressY;
+    String y;
     String userID;
     String pdtName;
     String pdtEnrolldate;
@@ -92,7 +93,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
     public static MapsFragment newInstance() {
         return new MapsFragment();
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,30 +104,23 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         if(extra != null) {
             extra = getArguments();
 
-
             List list = extra.getParcelableArrayList("list");
-            System.out.println("제발 으아아아ㅏㄱ" + list);
-            /*
-            HashMap<String, Object> hMap = (HashMap<String, Object>)extra.getSerializable("hashmap");
-            String address =  hMap.get("userAddress").toString();
-            addressX = address.split(",")[1];
-            addressY = address.split(",")[2];
-            addressY = addressY.substring(0, addressY.length()-1);
-            userID = hMap.get("userID").toString();
-            pdtName = hMap.get("pdtName").toString();
-            pdtEnrolldate = hMap.get("pdtEnrolldate").toString();
-            */
+            System.out.println("리스트값 받아온 것 출력= " + list);
 
-            addressX = extra.getString("addressx");
-            addressY = extra.getString("addressy");
-            userID = extra.getString("userid");
-            pdtName = extra.getString("pdtname");
-            pdtEnrolldate = extra.getString("pdtenrolldate");
+            //0번째 list값 받아옴.. 결과는 여러개니까 for문 돌려서 또 배열에 넣던지.. ㅠ ㅠ ...ㅠㅠㅠㅠㅠ..(ex 0번째, 1번째, ...n번째?)
+            HashMap getMap = new HashMap();
+            getMap = (HashMap)list.get(0);
 
-            Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
+            String address =  getMap.get("userAddress").toString();
+            addressX = Double.parseDouble(address.split(",")[1]);
+            y = address.split(",")[2];
+            addressY = Double.parseDouble(y.substring(0, y.length()-1));
+            userID = getMap.get("userId").toString();
+            pdtName = getMap.get("pdtName").toString();
+            pdtEnrolldate = getMap.get("pdtEnrollDate").toString();
 
             //확인용
-            System.out.println("지도 결과" + addressX +" / "+ addressY +" / "+  userID);
+            Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -275,7 +268,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
 
 
         if(addressX != null) { //검색 후 뜨는 화면
-            searchItem();
+            searchItem(addressX,addressY);
         } else{
             //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
             // Add a marker in Sydney and move the camera
@@ -312,13 +305,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
         }
     }
 
-    private void searchItem() {
+    private void searchItem(double x, double y) {
+        //검색 후 반환하는 x, y 좌표 값 대입 !!
         if(addressX != null) {
 
             //검색 결과로 받아온 주소 좌표값 대입
             // (보완필요) = for문이나 []배열값으로 여러개 뜨게 하기
-            double lat = Double.parseDouble(addressX) ;
-            double lng = Double.parseDouble(addressY) ;
+            double lat = x ;
+            double lng = y ;
 
             // Add a marker in Sydney and move the camera
             LatLng search = new LatLng(lat, lng);
@@ -337,7 +331,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback,  Produ
                     }
                 }//클릭한 마커 정보 들어와서 이 경우 전화걸기
             });
-
 
 //            for (int i = 0; i < 10; i++) {
 //                double offset = i / 60d;
