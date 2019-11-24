@@ -42,7 +42,7 @@ public class SearchFragment  extends Fragment {
             public void onClick(View v) {
                 //resultView.setText(edit_pdtSearch.getText().toString());
                 String search = edit_pdtSearch.getText().toString();
-                ((MainActivity)getActivity()).searchQuery(search);
+                ((MainActivity)getActivity()).searchQ(search);
 
             }
         });

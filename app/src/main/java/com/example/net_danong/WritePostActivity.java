@@ -1,7 +1,9 @@
 package com.example.net_danong;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,10 +54,13 @@ public class WritePostActivity extends BasicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_post);
 
+        parent = findViewById(R.id.contentsLayout);
+
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.image).setOnClickListener(onClickListener);
+        findViewById(R.id.video).setOnClickListener(onClickListener);
 
-        Spinner spinner=findViewById(R.id.categorySpinner);
+        Spinner spinner = findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.spinnerArray, android.R.layout.simple_spinner_dropdown_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter1);
@@ -61,7 +68,7 @@ public class WritePostActivity extends BasicActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String str = adapterView.getItemAtPosition(i).toString();
-                if ( str != "")
+                if (str != "")
                     category = str;
             }
 
@@ -71,12 +78,14 @@ public class WritePostActivity extends BasicActivity {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 0: {
-                if (resultCode == Activity.RESULT_OK) {String profilePath = data.getStringExtra("profilePath");
+                if (resultCode == Activity.RESULT_OK) {
+                    String profilePath = data.getStringExtra("profilePath");
                     pathList.add(profilePath);
 
                     ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -99,12 +108,29 @@ public class WritePostActivity extends BasicActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.check:
                     storageUpload();
                     break;
                 case R.id.image:
-                    myStartActivity(GalleryActivity.class);//이미지 클릭시 갤러리 열기
+                    if (ContextCompat.checkSelfPermission(WritePostActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(WritePostActivity.this,
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                1);
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(WritePostActivity.this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                        } else {
+                            startToast("권한을 허용해 주세요");
+                        }
+                    } else {
+                        myStartActivity(GalleryActivity.class, "image");
+                    }
+                    break;
+                case R.id.video:
+                    myStartActivity(GalleryActivity.class, "video");
                     break;
             }
         }
@@ -119,25 +145,25 @@ public class WritePostActivity extends BasicActivity {
 
         String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
 
-        if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() >0) {
+        if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
             final ArrayList<String> contentsList = new ArrayList<>();//내용 하나씩 추가 위해서
             user = FirebaseAuth.getInstance().getCurrentUser();
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
 
-            for(int i = 0; i < parent.getChildCount(); i++){
+            for (int i = 0; i < parent.getChildCount(); i++) {
                 View view = parent.getChildAt(i);
-                if(view instanceof EditText){
-                    String text = ((EditText)view).getText().toString();
-                    if(text.length() > 0){
+                if (view instanceof EditText) {
+                    String text = ((EditText) view).getText().toString();
+                    if (text.length() > 0) {
                         contentsList.add(text);
                     }
                 } else {//이미지뷰의 경우
                     contentsList.add(pathList.get(pathCount));
-                    final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/"+pathCount+".jpg");
+                    final StorageReference mountainImagesRef = storageRef.child("users/" + user.getUid() + "/" + pathCount + ".jpg");
                     try {
                         InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
-                        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index",""+(contentsList.size()-1)).build();
+                        StorageMetadata metadata = new StorageMetadata.Builder().setCustomMetadata("index", "" + (contentsList.size() - 1)).build();
                         UploadTask uploadTask = mountainImagesRef.putStream(stream, metadata);
                         uploadTask.addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -153,12 +179,12 @@ public class WritePostActivity extends BasicActivity {
                                     public void onSuccess(Uri uri) {
                                         contentsList.set(index, uri.toString());
                                         successCount++;
-                                        if(pathList.size() == successCount){
+                                        if (pathList.size() == successCount) {
                                             //완료
-                                            ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contentsList,user.getUid(), new Date(), category);
+                                            ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contentsList, user.getUid(), new Date(), category);
                                             storeUpload(productWriteInfo);
-                                            for(int a = 0; a < contentsList.size(); a++){
-                                                Log.e("로그: ","콘덴츠: "+contentsList.get(a));
+                                            for (int a = 0; a < contentsList.size(); a++) {
+                                                Log.e("로그: ", "콘덴츠: " + contentsList.get(a));
                                             }
                                         }
                                     }
@@ -172,11 +198,11 @@ public class WritePostActivity extends BasicActivity {
                 }
             }
         } else {
-            startToast("회원정보를 입력해주세요.");
+            startToast("상품정보를 입력해주세요.");
         }
     }
 
-    private void storeUpload(ProductWriteInfo productWriteInfo){
+    private void storeUpload(ProductWriteInfo productWriteInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").add(productWriteInfo)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -198,20 +224,21 @@ public class WritePostActivity extends BasicActivity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    private void myStartActivity(Class c) {
+    private void myStartActivity(Class c, String media) {
         Intent intent = new Intent(this, c);
-        startActivity(intent);
+        intent.putExtra("media", media);
+        startActivityForResult(intent, 0);
     }
 }
 //주소>위도,경도 변환 코드 추가,,
 //데이터베이스에 입력되는 것은 주소>그 주소를 받아 위도, 경도 변환값 반환>반환값(위도, 경도)데이터베이스에 넣기
 
-    /**
-     * 주소로부터 위치정보 취득
-     *
-     * @param address
-     *            주소
-     */
+/**
+ * 주소로부터 위치정보 취득
+ *
+ * @param address
+ * 주소
+ */
 /*    public static Location findGeoPoint(Context mcontext, String address) {
         Location loc = new Location("");
         Geocoder coder = new Geocoder(mcontext);
@@ -235,3 +262,4 @@ public class WritePostActivity extends BasicActivity {
         }
         return loc;
     }*/
+/*TO do:갤러리 접근, 파이어스토어 연결*/
