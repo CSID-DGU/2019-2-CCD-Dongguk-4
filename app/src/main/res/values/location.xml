@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cities">
+        <item>도시1</item>
+        <item>도시2</item>
+        <item>도시3</item>
+        <item>도시4</item>
+        <item>도시5</item>
+        <item>도시6</item>
+        <item>도시7</item>
+        <item>도시8</item>
+        <item>도시9</item>
+        <item>도시10</item>
+    </string-array>
+</resources>

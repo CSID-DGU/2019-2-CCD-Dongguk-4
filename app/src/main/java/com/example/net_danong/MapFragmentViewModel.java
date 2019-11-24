@@ -2,11 +2,11 @@ package com.example.net_danong;
 
 import androidx.lifecycle.ViewModel;
 
-public class MapActivityViewModel extends ViewModel {
+public class MapFragmentViewModel extends ViewModel {
 
         private boolean mIsSigningIn;
 
-        public MapActivityViewModel() {
+        public MapFragmentViewModel() {
             mIsSigningIn = false;
         }
 

@@ -15,24 +15,6 @@
     sothree:umanoOverlay="true"
     sothree:umanoScrollableView="@+id/recycler_product">
 
-    <!-- 지도들어가는 고정 페이지
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapview"
-            android:layout_width="match_parent"
-            android:layout_height="250dp" />
-        <Button
-            android:id="@+id/btn_lastLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="현재위치" />
-    </FrameLayout>
-    -->
-
-    <!--다은 수정-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,19 +55,26 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="68dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/pdtName"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="14sp"
+                android:id="@+id/txt_pdtCnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:paddingLeft="10dp"/>
+                android:padding="10dp"
+                android:text="판매중인 제품수"
+                android:textSize="20dp" />
 
-
+            <TextView
+                android:id="@+id/txt_pdtCntNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="20dp"
+                android:text="20"
+                android:textSize="20dp" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -94,9 +83,27 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/filter_bar_container"
             android:background="@android:color/white"
-            tools:listitem="@layout/item_product" />
+            tools:listitem="@layout/item_productlist" />
 
+        <LinearLayout
+            android:id="@+id/view_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="gone">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/message_no_results" />
+
+        </LinearLayout>
         <ProgressBar
             android:id="@+id/progress_loading"
             android:layout_width="wrap_content"

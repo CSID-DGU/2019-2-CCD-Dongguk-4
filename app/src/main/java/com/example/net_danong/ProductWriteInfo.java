@@ -2,6 +2,7 @@ package com.example.net_danong;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ProductWriteInfo {
 
@@ -19,8 +20,7 @@ public class ProductWriteInfo {
     private int numRatings;
     private double avgRating;
 
-
-    public ProductWriteInfo(String title, String product, String price, String location, String contents, String photoUrl, Date createdAt) {
+    public ProductWriteInfo(String title, String product, String price, String location, String contents, Date createdAt, String category, String photoUrl) {
         this.title = title;
         this.product = product;
         this.price = price;
@@ -28,6 +28,7 @@ public class ProductWriteInfo {
         this.contents = contents;
         this.photoUrl = photoUrl;
         this.createdAt = createdAt;
+        this.category = category;
     }
 
     public ProductWriteInfo(String title, String product, String price, String location, String contents) {

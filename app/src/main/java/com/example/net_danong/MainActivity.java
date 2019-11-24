@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +25,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,13 +44,13 @@ public class MainActivity extends AppCompatActivity{
     Map<String, Object> UserList;    //검색+지도에서 사용할 결과값 저장공간2
     Bundle mapbundle; //검색Fragment로 전달할 때 사용할 것,,
     List pdtlist = new ArrayList();
+    int loopNum; //검색 관련 loop문 변수
 
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
     private Menu1Fragment menu1Fragment = new Menu1Fragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
-    private Menu3Fragment menu3Fragment = new Menu3Fragment();
     private Menu4Fragment menu4Fragment = new Menu4Fragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
@@ -77,8 +78,11 @@ public class MainActivity extends AppCompatActivity{
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         db = FirebaseFirestore.getInstance();
+/*
+        addProductItem();
+*/
 
-/*        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+/*        Intent intent = new Intent(MainActivity.this, DaumWebViewActivity.class);
         startActivity(intent);*/
 
         /* 테스트데이터 추가 관련 함수들
@@ -93,7 +97,17 @@ public class MainActivity extends AppCompatActivity{
 
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
+    private void addProductItem() {
+        for (int i = 0; i < 10; i++) {
+            // Get a random Restaurant POJO
+            String[] document = {"1","2","3","4","5","6","7","8","9","10"};
+            CollectionReference users = db.collection("users");
+            ProductWriteInfo product = ProductUtil.getRandom(this);
 
+            // Add a new document to the restaurants collection
+            users.document(document[i]).collection("products").add(product);
+        }
+    }
     /*View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -202,65 +216,64 @@ public class MainActivity extends AppCompatActivity{
                 });
     }
 
-    // 상품 데이터 그룹 query (컬렉션그룹쿼리)
-    public void searchQuery(String productName){
+
+    public void searchQ(String productName){
         db.collectionGroup("product").whereEqualTo("pdtName", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
-                            ProductList=snap.getData();
-                            //상위 Collection(user) 정보로 접근
-                            DocumentReference docRef = snap.getReference().getParent().getParent();
+                        if (queryDocumentSnapshots.size()>0){ //검색값이 존재할 때
 
-                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    DocumentSnapshot document = task.getResult();
-                                    UserList=document.getData();
-                                    ProductList.putAll(UserList); //USER+PRODUCT병합
-                                   //HashMap<String, Object> hMap = new HashMap<String, Object>(ProductList); //HashMap으로 변환
-                                    pdtlist.add(ProductList);
+                            loopNum=0;
+                            final List list = new ArrayList();
 
-                                    //MAP<>에 들어갔는지 test용 출력 (LOG확인)
-//                                    for ( String key : ProductList.keySet() ) {
-//                                        System.out.println("키 : " + key +" / 값 : " + ProductList.get(key));
-//                                    }
+                            for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
 
+                                //Product 컬렉션 값 받아옴
+                                ProductList=snap.getData();
 
-                                    // MapsFragment로 전달 + 수정할 것 = 번들로 다른 값들도 같이 전달하기.. 여러개 전달할라믄 어카냐;
-                                    mapbundle = new Bundle();
-                                    mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) pdtlist);
-                                    /*
-                                    mapbundle.putSerializable("hashmap",hMap);
-                                    mapsFragment.setArguments(mapbundle);
-                                    */
+                                //상위 Collection(user) 정보로 접근
+                                DocumentReference docRef = snap.getReference().getParent().getParent();
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            //User컬렉션 값 받아옴
+                                            DocumentSnapshot document = task.getResult();
+                                            UserList=document.getData();
+                                            ProductList.putAll(UserList); //USER+PRODUCT병합
+                                            list.add(ProductList); //list로 변환
 
-                                    //Bundle로 보낼 변수들 (map파일에서 string으로 쪼개서 가져오기..)
-                                    String address =  ProductList.get("userAddress").toString();
-                                    String x = address.split(",")[1];
-                                    String y = address.split(",")[2];
-                                    y = y.substring(0, y.length()-1);
-                                    String userid = ProductList.get("userId").toString();
-                                    String pdtname = ProductList.get("pdtName").toString();
-                                    String pdtenrolldate = ProductList.get("pdtEnrollDate").toString();
+                                            System.out.println("결과값 리스트"+list);
 
-                                    mapbundle.putString("addressx",x);
-                                    mapbundle.putString("addressy",y);
-                                    mapbundle.putString("userid",userid);
-                                    mapbundle.putString("pdtname",pdtname);
-                                    mapbundle.putString("pdtenrolldate",pdtenrolldate);
-                                    mapsFragment.setArguments(mapbundle);
+                                            /* 해야하는 것
+                                            * list에 왜 중복으로 덮여서 추가되는건지 ㅠㅠㅠㅠ오류 해결하기,,ㅠㅠㅠㅠ
+                                            * MapsFragment에서 Double형 array만들고 for문 돌려서 마커 여러 개 찍기..
+                                            * 인근 지역 좌표로 테스트 데이터 만들어서 테스트하기,,, */
 
-//                                    System.out.println("<=========================================>");
-                                    System.out.println("마지막 루프 돌면 최종 결과값 나옴"+pdtlist);
+                                            //마지막 query문 돌면 list 데이터 전송
+                                            if(loopNum==queryDocumentSnapshots.size()-1){
+                                                System.out.println("최종 리스트"+list);
 
-                                    //MAP화면으로 이동
-                                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                    transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
-                                }
-                            });
-                    }
+                                                mapbundle = new Bundle();
+                                                mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) list);
+                                                mapsFragment.setArguments(mapbundle);
+
+                                                //MAP화면으로 이동
+                                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                                transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+                                            }
+                                            loopNum = loopNum+1;
+
+                                        }else{
+                                            Log.d(TAG, "Error getting document/1 ");
+                                        }
+                                    }
+                                });
+                            } //for문 종료
+                        } else{
+                            Log.d(TAG, "Error getting documents/2 ");
+                        }
                     }
                 });
     }
@@ -281,7 +294,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu3: {
-                    //bundle 초기화..할 필요가 있는 듯..
+                    //bundle 초기화 (바로 지도 클릭하면 초기화면 뜨도록)
                     if(mapbundle!=null){ mapbundle.clear(); }
                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     break;

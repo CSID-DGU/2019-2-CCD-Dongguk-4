@@ -336,8 +336,9 @@ public class WritePostActivity extends BasicActivity {
         if (addr != null) {
             for (int i = 0; i < addr.size(); i++) {
                 Address lating = addr.get(i);
-                double lat = lating.getLatitude(); // 위도가져오기
-                double lon = lating.getLongitude(); // 경도가져오기
+\\
+
+                 double lon = lating.getLongitude(); // 경도가져오기
                 loc.setLatitude(lat);
                 loc.setLongitude(lon);
             }
