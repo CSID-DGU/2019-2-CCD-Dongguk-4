@@ -9,28 +9,34 @@ public class ProductWriteInfo {
     private String product;
     private String price;
     private String location;
-    private ArrayList<String> contents;
+    private String contents;
     private String publisher;
     private Date createdAt;
 
     private String category;
-    private String photo;
+    private String photoUrl;
     //평점
     private int numRatings;
     private double avgRating;
 
-    public ProductWriteInfo() {
-    }
 
-    public ProductWriteInfo(String title, String product, String price, String location, ArrayList<String> contents, String publisher, Date createdAt, String category) {
+    public ProductWriteInfo(String title, String product, String price, String location, String contents, String photoUrl, Date createdAt) {
         this.title = title;
         this.product = product;
         this.price = price;
         this.location = location;
         this.contents = contents;
-        this.publisher = publisher;
+        this.photoUrl = photoUrl;
         this.createdAt = createdAt;
-        this.category = category;
+    }
+
+    public ProductWriteInfo(String title, String product, String price, String location, String contents) {
+        this.title = title;
+        this.product = product;
+        this.price = price;
+        this.location = location;
+        this.contents = contents;
+
     }
 
     public String getCategory() {
@@ -41,13 +47,9 @@ public class ProductWriteInfo {
         this.category = category;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
+    public String getPhotoUrl(){ return this.photoUrl; }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+    public void setPhotoUrl(String photoUrl){ this.photoUrl = photoUrl; }
 
     public int getNumRatings() {
         return numRatings;
@@ -93,15 +95,13 @@ public class ProductWriteInfo {
         return this.location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    public void setLocation(String location) { this.location = location; }
 
-    public ArrayList<String> getContents() {
+    public String getContents() {
         return this.contents;
     }
 
-    public void setContents(ArrayList<String> contents) {
+    public void setContents(String contents) {
         this.contents = contents;
     }
 

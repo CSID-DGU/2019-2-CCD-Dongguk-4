@@ -75,7 +75,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
 
             // Load image
             Glide.with(imageView.getContext())
-                    .load(product.getPhoto())
+                    .load(product.getPhotoUrl())
                     .into(imageView);
 
             idView.setText(product.getPublisher());

@@ -53,6 +53,7 @@
         <activity android:name=".BasicActivity"/><!--//등록구현-->
         <activity android:name=".WritePostActivity"/><!--//등록구현-->
         <activity android:name=".LoginFragment" />
+        <activity android:name=".GalleryActivity"/>
     </application>
 
 </manifest>
