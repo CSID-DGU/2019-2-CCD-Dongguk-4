@@ -201,7 +201,7 @@ public class WritePostActivity extends BasicActivity {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
 
-                                ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, downloadUri.toString(), new Date());
+                                ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
                                 uploader(productWriteInfo);
                             } else {
                                 startToast("등록정보를 보내는데 실패하였습니다.");
