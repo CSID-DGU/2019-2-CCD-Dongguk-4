@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -231,6 +232,7 @@ public class MainActivity extends AppCompatActivity{
                                             UserList=document.getData();
                                             ProductList.putAll(UserList); //USER+PRODUCT병합
                                             list.add(ProductList); //list로 변환
+
                                             System.out.println("결과값 리스트"+list);
 
                                             /* 해야하는 것
@@ -281,7 +283,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu3: {
-                    //bundle 초기화..할 필요가 있는 듯..
+                    //bundle 초기화 (바로 지도 클릭하면 초기화면 뜨도록)
                     if(mapbundle!=null){ mapbundle.clear(); }
                     transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
                     break;
