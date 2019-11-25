@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);*/
 
         /* 테스트데이터 추가 관련 함수들
-        addNewUsers("jc9avahj", Arrays.asList("충남 부여군 만지동로 182-38", "36.194088", "126.8583308"), "10");
         addNewProduct("토마토", "2019-10-28", "10");
 */
 
@@ -126,11 +125,7 @@ public class MainActivity extends AppCompatActivity{
     }//더보기 +버튼 클릭시 등록화면으로 이동하는 로직*/
 
 
-    //새로운 유저 등록, 추후에 가입/로그인 구현 후 document 이름  docNum -> uid로 변경
-    private void addNewUsers(String userId, List<String> userAdress, String docNum) {
-        newUser newUser = new newUser(userId, userAdress);
-        db.collection("users").document(docNum).set(newUser);
-    }
+
 
     //제품 등록, 추후에 상품 등록 구현 후 유저가 상품을 등록했을 때 함수 실행
     private void addNewProduct(String pdtName, String pdtEnrollDate, String docNum) {

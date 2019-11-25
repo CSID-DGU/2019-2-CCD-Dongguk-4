@@ -1,180 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="회원가입"
-        android:textSize="26dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="30dp"
-        android:paddingLeft="6dp"
-        android:text="이름" />
-
-    <EditText
-        android:id="@+id/nameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="한글 또는 영문만 입력가능"
-        android:inputType="textPersonName"
-        android:paddingTop="16dp" />
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="6dp"
-        android:text="이메일" />
-
-    <EditText
-        android:id="@+id/emailText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="hello@danong.com"
-        android:inputType="textEmailAddress"
-        android:paddingTop="16dp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="6dp"
-        android:text="비밀번호" />
-
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="8자리 이상 영문, 숫자 포함"
-        android:inputType="textPassword"
-        android:paddingTop="16dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="6dp"
-        android:text="휴대폰 번호" />
-
-    <EditText
-        android:id="@+id/phonenumberText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="-없이 입력"
-        android:inputType="phone"
-        android:paddingTop="16dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingLeft="6dp"
-        android:text="약관동의" />
-
-
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:padding="3dp">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_check_1"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="[필수] 다농 서비스 이용약관 동의"
-            >
-
-        </androidx.appcompat.widget.AppCompatCheckBox>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_btn_1"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="약관보기"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:padding="3dp">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_check_2"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="[필수] 개인정보 처리방침"
-            >
-
-        </androidx.appcompat.widget.AppCompatCheckBox>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/register_btn_2"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="약관보기"/>
-    </RelativeLayout>
-
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginTop="3dp"
-        android:background="@color/light_gray">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="3dp"
-        >
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/register_check_3"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="모두 동의"
+            android:gravity="center"
+            android:text="회원가입"
+            android:textSize="26dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:paddingLeft="6dp"
+            android:text="이름" />
+
+        <EditText
+            android:id="@+id/nameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="한글 또는 영문만 입력가능"
+            android:inputType="textPersonName"
+            android:paddingTop="16dp" />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="6dp"
+            android:text="이메일" />
+
+        <EditText
+            android:id="@+id/emailText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="hello@danong.com"
+            android:inputType="textEmailAddress"
+            android:paddingTop="16dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="6dp"
+            android:text="비밀번호" />
+
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="8자리 이상 영문, 숫자 포함"
+            android:inputType="textPassword"
+            android:paddingTop="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="6dp"
+            android:text="휴대폰 번호" />
+
+        <EditText
+            android:id="@+id/phonenumberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="-없이 입력"
+            android:inputType="phone"
+            android:paddingTop="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingLeft="6dp"
+            android:text="약관동의" />
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:padding="3dp">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_check_1"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="[필수] 다농 서비스 이용약관 동의"
+                >
+
+            </androidx.appcompat.widget.AppCompatCheckBox>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_btn_1"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="약관보기"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:padding="3dp">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_check_2"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="[필수] 개인정보 처리방침"
+                >
+
+            </androidx.appcompat.widget.AppCompatCheckBox>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_btn_2"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="약관보기"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/light_gray">
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
             >
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/register_check_3"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="모두 동의"
+                >
 
-        </androidx.appcompat.widget.AppCompatCheckBox>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="15dp"
-        android:text="*만 14세 이상 회원 가입 가능합니다." />
+            </androidx.appcompat.widget.AppCompatCheckBox>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:text="*만 14세 이상 회원 가입 가능합니다." />
 
-    <Button
-        android:id="@+id/register_btn_finish"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="회원가입 완료" />
+        <Button
+            android:id="@+id/register_btn_finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원가입 완료" />
+    </LinearLayout>
 
-
-</LinearLayout>
+</ScrollView>

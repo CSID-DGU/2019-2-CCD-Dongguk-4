@@ -20,6 +20,9 @@ public class ProductWriteInfo {
     private int numRatings;
     private double avgRating;
 
+    public ProductWriteInfo() {
+    }
+
     public ProductWriteInfo(String title, String product, String price, String location, String contents, Date createdAt, String category, String photoUrl) {
         this.title = title;
         this.product = product;
@@ -37,7 +40,6 @@ public class ProductWriteInfo {
         this.price = price;
         this.location = location;
         this.contents = contents;
-
     }
 
     public String getCategory() {

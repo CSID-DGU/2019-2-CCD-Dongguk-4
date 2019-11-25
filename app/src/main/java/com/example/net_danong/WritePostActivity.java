@@ -41,12 +41,12 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class WritePostActivity extends BasicActivity {
-    private static final String TAG = "WritePostActivity";
+  /*  private static final String TAG = "WritePostActivity";
     private ImageView profileImageView;
     private String profilePath;
     public static String category;
     private FirebaseUser user;
-    /*private ArrayList<String> pathList = new ArrayList<>(); *//*이미지경로만들기*/
+    *//*private ArrayList<String> pathList = new ArrayList<>(); *//**//*이미지경로만들기*//*
     private LinearLayout parent;
     private int pathCount, successCount;
 
@@ -89,7 +89,7 @@ public class WritePostActivity extends BasicActivity {
         switch (requestCode) {
             case 0: {
                 if (resultCode == Activity.RESULT_OK) {
-                    /*pathList.add(profilePath);*/ /*경로 생성될 때마다 추가*/
+                    *//*pathList.add(profilePath);*//* *//*경로 생성될 때마다 추가*//*
                     profilePath = data.getStringExtra("profilePath");
                     Glide.with(this).load(profilePath).centerCrop().override(500).into(profileImageView);
                 }
@@ -98,7 +98,7 @@ public class WritePostActivity extends BasicActivity {
         }
     }//profileImageView에 이미지 넣기
 
-/*    @Override
+*//*    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -122,7 +122,7 @@ public class WritePostActivity extends BasicActivity {
                 break;
             }
         }
-    }*///이미지가 내용에 들어가도록하는 코드
+    }*//*//이미지가 내용에 들어가도록하는 코드
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -171,7 +171,7 @@ public class WritePostActivity extends BasicActivity {
         final String price = ((EditText) findViewById(R.id.priceEditText)).getText().toString();
         final String location = ((EditText) findViewById(R.id.locationEditText)).getText().toString();
         final String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
-       /* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*/
+       *//* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*//*
 
         if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
 //            final ArrayList<String> contentsList = new ArrayList<>();//내용 하나씩 추가 위해서
@@ -217,7 +217,7 @@ public class WritePostActivity extends BasicActivity {
         }
     }
 
-            /*for (int i = 0; i < parent.getChildCount(); i++) {
+            *//*for (int i = 0; i < parent.getChildCount(); i++) {
                 View view = parent.getChildAt(i);
                 if (view instanceof EditText) {
                     String text = ((EditText) view).getText().toString();
@@ -266,9 +266,9 @@ public class WritePostActivity extends BasicActivity {
         } else {
             startToast("상품정보를 입력해주세요.");
         }
-    }*/
+    }*//*
 
-   /* private void storeUpload(ProductWriteInfo productWriteInfo) {
+   *//* private void storeUpload(ProductWriteInfo productWriteInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").add(productWriteInfo)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -284,12 +284,12 @@ public class WritePostActivity extends BasicActivity {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-    }*///db에 넣기
+    }*//*//db에 넣기
 
 
     private void uploader(ProductWriteInfo productWriteInfo){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("post").add(productWriteInfo)/*바뀐부분*/
+        db.collection("post").add(productWriteInfo)*//*바뀐부분*//*
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -311,7 +311,7 @@ public class WritePostActivity extends BasicActivity {
     private void myStartActivity(Class c) {
         Intent intent = new Intent(this, c);
         startActivityForResult(intent, 0);
-    }
+    }*/
 }
 //주소>위도,경도 변환 코드 추가,,
 //데이터베이스에 입력되는 것은 주소>그 주소를 받아 위도, 경도 변환값 반환>반환값(위도, 경도)데이터베이스에 넣기

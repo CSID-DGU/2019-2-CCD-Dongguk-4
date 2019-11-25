@@ -86,15 +86,13 @@ public class ProductUtil {
         // Categories (first element is 'Any')
         String[] categories = context.getResources().getStringArray(R.array.categories);
         categories = Arrays.copyOfRange(categories, 1, categories.length);
-
-        ArrayList<String> contents = new ArrayList<String>();
         String[] prices = new String[]{"10000", "20000", "30000"};
 
         product.setTitle(getRandomTitle(random));
         product.setProduct(getRandomProduct(random));
         product.setPrice(getPriceString(prices, random));
         product.setLocation(getRandomString(cities, random));
-        product.setContents(getRandomContents(contents,random));
+        product.setContents(getRandomContents(random));
         product.setPublisher(getRandomPublisher(random));
         product.setCategory(getRandomString(categories, random));
         product.setAvgRating(getRandomRating(random));
@@ -108,12 +106,12 @@ public class ProductUtil {
 
     }
 
-    private static ArrayList<String> getRandomContents(ArrayList<String> contents, Random random) {
-        contents.add(getRandomTitle(random));
-        contents.add(getRandomTitle(random));
-        contents.add(getRandomImageUrl(random));
-        contents.add(getRandomTitle(random));
-        return contents;
+    private static String getRandomContents(Random random) {
+        return getRandomString(TITLE_FIRST_WORDS, random) + " "
+                + getRandomString(TITLE_SECOND_WORDS, random) + " "
+                + getRandomString(TITLE_FIRST_WORDS, random) + " "
+                + getRandomString(TITLE_SECOND_WORDS, random);
+
     }
 
 

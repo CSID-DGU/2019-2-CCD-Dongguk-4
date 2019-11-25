@@ -45,6 +45,7 @@ import com.google.firebase.firestore.Query;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -145,7 +146,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             }
         });
 
-        Button post = (Button) view.findViewById(R.id.btn_post);
+
+        //writeposst클래스 오류
+        /*Button post = (Button) view.findViewById(R.id.btn_post);
         post.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -153,7 +156,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                 Intent intent = new Intent(getActivity(), WritePostActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
 
         // Enable Firestore logging
@@ -241,10 +244,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     }
 
     @Override
-    public void OnProductSelected(DocumentSnapshot restaurant) {
+    public void OnProductSelected(DocumentSnapshot product) {
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(getActivity(), ProductDetailActivity1.class);
-        intent.putExtra(ProductDetailActivity1.KEY_PRODUCT_UID, restaurant.getId());
+        intent.putExtra(ProductDetailActivity1.KEY_PRODUCT_UID, product.getId());
 
         startActivity(intent);
     }
