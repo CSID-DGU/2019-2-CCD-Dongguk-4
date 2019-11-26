@@ -35,7 +35,7 @@ public class ContentsItemView extends LinearLayout {
         addView(layoutInflater.inflate(R.layout.view_contents_edit_text, this, false));
 
         imageView = findViewById(R.id.contentsImageView);
-        editText = findViewById(R.id.contentsEditText);
+        editText = findViewById(R.id.board_contentsEditText);
     }
 
     public void setImage(String path){

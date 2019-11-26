@@ -207,7 +207,7 @@ public class BoardActivity extends BasicActivity {
     };
 
     private void storageUpload() {
-        final String title = ((EditText) findViewById(R.id.titleEditText)).getText().toString();
+        final String title = ((EditText) findViewById(R.id.board_titleEditText)).getText().toString();
         if (title.length() > 0) {
             loaderLayout.setVisibility(View.VISIBLE);
             final ArrayList<String> contentsList = new ArrayList<>();
