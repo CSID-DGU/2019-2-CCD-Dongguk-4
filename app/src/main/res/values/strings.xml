@@ -46,6 +46,7 @@
     <string name="fragment_user_list">User List</string>
     <string name="action_chatroom_user_list">User list</string>
     <string name="action_leave_chatroom">Leave chatroom</string>
+    <string name="grant_permission">권한을 허용해 주세요.</string>
 
     <string-array name="categories">
         <item>@string/value_any_category</item>
