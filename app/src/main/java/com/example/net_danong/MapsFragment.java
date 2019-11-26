@@ -78,10 +78,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     Bundle extra;
     Double addressX;
     Double addressY;
-    String y;
+
+    //firestore 담긴 변수들
+//    String y;
+    String title;
+    String product;
+    String location;
     String userID;
-    String pdtName;
-    String pdtEnrolldate;
     List list;
 
 
@@ -106,17 +109,18 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                 //0번째 list값 받아옴.. 결과는 여러개니까 for문 돌려서 또 배열에 넣던지.. ㅠ ㅠ ...ㅠㅠㅠㅠㅠ..(ex 0번째, 1번째, ...n번째?)
                 HashMap getMap = new HashMap();
                 getMap = (HashMap)list.get(0);
-
-                String address =  getMap.get("userAddress").toString();
-                addressX = Double.parseDouble(address.split(",")[1]);
-                y = address.split(",")[2];
-                addressY = Double.parseDouble(y.substring(0, y.length()-1));
-                userID = getMap.get("userId").toString();
-                pdtName = getMap.get("pdtName").toString();
-                pdtEnrolldate = getMap.get("pdtEnrollDate").toString();
+//                String address =  getMap.get("userAddress").toString();
+//                addressX = Double.parseDouble(address.split(",")[1]);
+//                y = address.split(",")[2];
+//                addressY = Double.parseDouble(y.substring(0, y.length()-1));
+                title = getMap.get("title").toString();
+                userID = getMap.get("user_id").toString();
+                product = getMap.get("product").toString();
+                location = getMap.get("location").toString();
+                //주소 값을 경도, 위도로 변환 필요..?  여기서 변환하고 숫자값 나중에 아래 함수로 넘기기..?
 
                 //확인용
-                Toast.makeText(getActivity(),addressX+addressY+userID,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),userID+product,Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -284,7 +288,26 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
 
 
         if(list != null) { //검색 후 뜨는 화면
-            searchItem(addressX,addressY);
+            // searchItem(addressX,addressY);
+            // 아직 주소값 연결 못 해서 걍 기본화면으로
+            LatLng sydney = new LatLng(37.5609417, 126.9911718);
+            mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+            // Add a marker in Sydney and move the camera
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tell:0212341234"));
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivity(intent);
+                    }
+                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+            });
+            addItem();
+
+
         } else{
             //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
             // Add a marker in Sydney and move the camera
@@ -347,13 +370,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                     }
                 }//클릭한 마커 정보 들어와서 이 경우 전화걸기
             });
-
-//            for (int i = 0; i < 10; i++) {
-//                double offset = i / 60d;
-//                lat = lat + offset;
-//                lng = lng + offset;
-//                MyItem offsetItem = new MyItem(lat, lng);
-//                mClusterManager.addItem(offsetItem);
         }
     }
 

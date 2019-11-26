@@ -80,20 +80,10 @@ public class MainActivity extends AppCompatActivity{
         db = FirebaseFirestore.getInstance();
 /*
         addProductItem();
+        addProductItem2("BOoqcINx8MhwSYlWXzIfmXdfwLm2");
 */
-
 /*        Intent intent = new Intent(MainActivity.this, DaumWebViewActivity.class);
         startActivity(intent);*/
-
-        /* 테스트데이터 추가 관련 함수들
-        addNewProduct("토마토", "2019-10-28", "10");
-*/
-
-     //   readUsers();
-     //   readProduct("11");
-     //   searchProduct();
-      //  searchQuery("토마토");
-
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
     private void addProductItem() {
@@ -107,6 +97,18 @@ public class MainActivity extends AppCompatActivity{
             users.document(document[i]).collection("products").add(product);
         }
     }
+
+    private void addProductItem2(String name) {
+        for (int i = 0; i < 10; i++) {
+            // Get a random Restaurant POJO
+            CollectionReference users = db.collection("users");
+            ProductWriteInfo product = ProductUtil.getRandom(this);
+            // Add a new document to the restaurants collection
+            users.document(name).collection("products").add(product);
+        }
+    }
+
+
     /*View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -212,8 +214,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    //상품 검색 쿼리  // product> products 로 컬렉션 아이디 변경 , firestore 규칙 변경, 변수추가, map-frag에서 받을 변수 변경..
     public void searchQ(String productName){
-        db.collectionGroup("product").whereEqualTo("pdtName", productName).get()
+        db.collectionGroup("products").whereEqualTo("product", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
@@ -272,6 +275,54 @@ public class MainActivity extends AppCompatActivity{
                     }
                 });
     }
+
+    //상품 검색 쿼리 - ProductWriteInfo Class 이용
+    public void searchQuery(String productName){
+        db.collectionGroup("products").whereEqualTo("product", productName).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.size()>0){ //검색값이 존재할 때
+                            loopNum=0;
+                            for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
+
+                                ProductWriteInfo productSearch = snap.toObject(ProductWriteInfo.class);
+
+                                //상위 Collection(users)로 접근
+                                DocumentReference docRef = snap.getReference().getParent().getParent();
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()){
+                                            //User컬렉션 값 받아옴
+                                            DocumentSnapshot document = task.getResult();
+                                            //UseClass? 이용해서 변수 받기
+                                            System.out.println("관련 유저 정보"+document.getData());
+
+                                            //마지막 query문 돌면 화면 전환
+                                            if(loopNum==queryDocumentSnapshots.size()-1){
+                                                // map번들.. 클래스는 어떻게 ㅕ연결되는거지,, 모른다
+                                                // mapbundle = new Bundle();
+                                                // mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) list);
+                                                // mapsFragment.setArguments(mapbundle);
+
+                                                //MAP화면으로 이동
+                                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                                transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+                                            }
+                                            loopNum = loopNum+1;
+                                        }else{ Log.d(TAG, "Error getting document/1 "); }
+                                    }
+                                });
+                            } //for문 종료
+                        } else{ Log.d(TAG, "Error getting documents/2 "); }
+                    }
+                });
+    }
+
+
+
+
 
     // navBar 클래스 navBar 클릭 시 이동
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {

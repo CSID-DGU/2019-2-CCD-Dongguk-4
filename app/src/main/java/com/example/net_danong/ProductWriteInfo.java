@@ -62,9 +62,7 @@ public class ProductWriteInfo {
         this.numRatings = numRatings;
     }
 
-    public double getAvgRating() {
-        return avgRating;
-    }
+    public double getAvgRating() { return avgRating; }
 
     public void setAvgRating(double avgRating) {
         this.avgRating = avgRating;
