@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLatout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loaderLayout"
+    android:background="#A34A4A4A"
+    android:clickable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:progress="50"
+        android:layout_centerInParent="true"
+        android:layout_width = "wrap_content"
+        android:layout_height="12dp"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progressbar"
+        />
+
+</RelativeLatout>
