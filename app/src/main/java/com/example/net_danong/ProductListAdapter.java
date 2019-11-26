@@ -35,7 +35,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_productlist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -75,7 +75,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
 
             // Load image
             Glide.with(imageView.getContext())
-                    .load(product.getPhoto())
+                    .load(product.getPhotoUrl())
                     .into(imageView);
 
             idView.setText(product.getPublisher());

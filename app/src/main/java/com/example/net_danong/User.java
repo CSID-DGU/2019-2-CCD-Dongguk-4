@@ -3,17 +3,23 @@ package com.example.net_danong;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable  {
+import java.sql.Timestamp;
 
+public class User {
+
+    private String userUid;
     private String email;
     private String user_id;
     private String displayname;
     private String PhoneNumber;
-    private long createdAt;
+    private Timestamp createdAt;
 
 
-    public User(){};
-    public User(String displayname, String email, String phoneNumber, long createdAt) {
+    public User(){
+
+    };
+    public User(String userUid, String displayname, String email, String phoneNumber, Timestamp createdAt) {
+        this.userUid = userUid;
         this.user_id = email.substring(0,email.lastIndexOf("@"));
         this.displayname = displayname;
         this.email = email;
@@ -26,6 +32,14 @@ public class User implements Parcelable  {
         displayname = in.readString();
     }
 
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
+    }
+
     public String getDisplayname() {
         return displayname;
     }
@@ -35,7 +49,7 @@ public class User implements Parcelable  {
     public String getPhoneNumber() {
         return PhoneNumber;
     }
-    public long getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
     public String getUser_id() {
@@ -58,19 +72,8 @@ public class User implements Parcelable  {
         PhoneNumber = phoneNumber;
     }
 
-    public void setCreatedAt(long createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
-        dest.writeString(user_id);
-        dest.writeString(displayname);
-    }
 }

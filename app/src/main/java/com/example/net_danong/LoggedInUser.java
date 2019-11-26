@@ -1,4 +1,4 @@
-package com.example.net_danong.data.model;
+package com.example.net_danong;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

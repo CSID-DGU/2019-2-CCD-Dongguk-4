@@ -27,7 +27,7 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getSnapshot(position).toObject(Rating.class));
+        holder.bind(getSnapshot(position).toObject(Review.class));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,7 +43,7 @@ public class RatingAdapter extends FirestoreAdapter<RatingAdapter.ViewHolder> {
             textView = itemView.findViewById(R.id.rating_pdtText);
         }
 
-        public void bind(Rating rating) {
+        public void bind(Review rating) {
             nameView.setText(rating.getUserName());
             ratingBar.setRating((float) rating.getRating());
             textView.setText(rating.getText());

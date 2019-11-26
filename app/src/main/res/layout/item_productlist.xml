@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/img_pdt"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="#757575"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/one" />
@@ -20,14 +20,11 @@
         android:id="@+id/txt_pdtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/img_pdt"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="-2dp"
+        android:layout_marginLeft="10dp"
         android:layout_toLeftOf="@+id/txt_pdtPrice"
         android:layout_toRightOf="@+id/img_pdt"
-        android:ellipsize="end"
         android:maxLines="1"
+        android:textSize="20sp"
         tools:text="상추" />
 
 
@@ -36,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_pdtName"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/img_pdt"
         android:gravity="center_vertical"
         tools:text="pasd394" />
@@ -65,9 +62,9 @@
         android:id="@+id/txt_pdtCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_userId"
         android:layout_alignLeft="@+id/txt_pdtName"
         android:layout_toRightOf="@id/img_pdt"
-        android:layout_below="@+id/txt_userId"
         tools:text="채소" />
 
     <TextView

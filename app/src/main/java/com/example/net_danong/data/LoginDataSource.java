@@ -1,6 +1,6 @@
 package com.example.net_danong.data;
 
-import com.example.net_danong.data.model.LoggedInUser;
+import com.example.net_danong.LoggedInUser;
 
 import java.io.IOException;
 

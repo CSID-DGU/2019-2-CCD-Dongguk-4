@@ -67,6 +67,4 @@ dependencies {
 
     //review
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.2'
-
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.1'
 }
