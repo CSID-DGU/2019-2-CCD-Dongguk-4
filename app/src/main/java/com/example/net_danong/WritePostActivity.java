@@ -50,8 +50,8 @@ public class WritePostActivity extends BasicActivity {
     /*private ArrayList<String> pathList = new ArrayList<>(); *//*이미지경로만들기*/
     private LinearLayout parent;
     private int pathCount, successCount;
-    private static FirebaseAuth mAuth;
-    private static FirebaseFirestore mdb;/*바뀐부분*/
+    private static FirebaseAuth mAuth;/*선언하기*/
+    private static FirebaseFirestore mdb;/*바뀐부분*//*선언하기*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,8 +295,8 @@ public class WritePostActivity extends BasicActivity {
 
 
     private void uploader(ProductWriteInfo productWriteInfo){
-        mdb = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        mdb = FirebaseFirestore.getInstance();//mdb가져다 쓰기
+        mAuth = FirebaseAuth.getInstance();//제발!! 없으면 안됨!!
         mdb.collection("users").document(mAuth.getUid()).collection("products").add(productWriteInfo)/*바뀐부분*/
             /*db.collection("product").add(productWriteInfo)*/
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
