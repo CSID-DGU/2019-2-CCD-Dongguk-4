@@ -5,33 +5,62 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.example.net_danong.BasicActivity;
+import androidx.fragment.app.Fragment;
+
 import com.example.net_danong.Board.listener.OnBoardListener;
 import com.example.net_danong.Board.view.ReadContentsVIew;
+import com.example.net_danong.Menu5Fragment;
 import com.example.net_danong.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-public class BoardActivity extends BasicActivity {
+import javax.annotation.Nullable;
+
+public class BoardActivity extends Fragment {
     private BoardInfo boardInfo;
     private Board_FirebaseHelper firebaseHelper;
     private ReadContentsVIew readContentsVIew;
     private LinearLayout contentsLayout;
+    private FirebaseAuth mAuth;
+    public FirebaseUser currentUser;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_board);
+    public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_board, container, false);
 
         boardInfo = (BoardInfo) getIntent().getSerializableExtra("boardInfo");
-        contentsLayout = findViewById(R.id.contentsLayout);
-        readContentsVIew = findViewById(R.id.readContentsView);
+        contentsLayout = view.findViewById(R.id.contentsLayout);
+        readContentsVIew = view.findViewById(R.id.readContentsView);
 
         firebaseHelper = new Board_FirebaseHelper(this);
         firebaseHelper.setOnBoardListener(onBoardListener);
+        currentUser = mAuth.getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
         uiUpdate();
+
+        Button writeBtn = (Button)view.findViewById(R.id.BoardWritdBtn);
+        writeBtn.setOnClickListener(new Button.OnClickListener(){
+           @Override
+           public void onClick(View view) {
+               if (currentUser != null) {
+                   Intent intent1 = new Intent(getActivity(), WriteBoardActivity.class);
+               } else {
+                   Intent intent2 = new Intent(getActivity(), Menu5Fragment.class);
+               }
+
+
+           }
+        });
+
     }
 
     @Override
@@ -48,8 +77,7 @@ public class BoardActivity extends BasicActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.board, menu);
         return super.onCreateOptionsMenu(menu);
     }
