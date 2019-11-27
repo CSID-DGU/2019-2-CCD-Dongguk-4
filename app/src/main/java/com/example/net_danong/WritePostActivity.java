@@ -28,7 +28,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -187,6 +186,8 @@ public class WritePostActivity extends BasicActivity {
             if(profilePath == null){
                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents);
                 productWriteInfo.setUserUid(user.getUid());
+                productWriteInfo.setAvgRating(0);
+                productWriteInfo.setNumRatings(0);
                 uploader(productWriteInfo);
             }else{
                 try {
@@ -297,7 +298,7 @@ public class WritePostActivity extends BasicActivity {
     private void uploader(ProductWriteInfo productWriteInfo){
         mdb = FirebaseFirestore.getInstance();//mdb가져다 쓰기
         mAuth = FirebaseAuth.getInstance();//제발!! 없으면 안됨!!
-        mdb.collection("users").document(mAuth.getUid()).collection("products").add(productWriteInfo)/*바뀐부분*/
+        mdb.collection("products").add(productWriteInfo)/*바뀐부분*/
             /*db.collection("product").add(productWriteInfo)*/
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

@@ -13,11 +13,19 @@ public class User {
     private String displayname;
     private String PhoneNumber;
     private Timestamp createdAt;
+    private String photoURL;
 
 
     public User(){
 
     };
+    public User(String displayname, String email, String phoneNumber, Timestamp createdAt) {
+        this.user_id = email.substring(0,email.lastIndexOf("@"));
+        this.displayname = displayname;
+        this.email = email;
+        this.PhoneNumber = phoneNumber;
+        this.createdAt = createdAt;
+    }
     public User(String userUid, String displayname, String email, String phoneNumber, Timestamp createdAt) {
         this.userUid = userUid;
         this.user_id = email.substring(0,email.lastIndexOf("@"));
@@ -30,6 +38,14 @@ public class User {
         email = in.readString();
         user_id = in.readString();
         displayname = in.readString();
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public String getUserUid() {

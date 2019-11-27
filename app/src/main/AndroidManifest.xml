@@ -56,9 +56,10 @@
         <!--//등록구현-->
         <activity android:name=".LoginFragment" />
         <activity android:name=".GalleryActivity"/>
-        <activity android:name=".ProductDetailActivity1"/>
+        <activity android:name=".ProductDetailActivity"/>
 
         <activity android:name=".WritePostActivity"/>
+        <activity android:name=".ReviewActivity"/>
 
     </application>
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.inspector.StaticInspectionCompanionProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +18,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,7 +36,8 @@ import java.util.Map;
 //navBar 관련 항목
 
 public class MainActivity extends AppCompatActivity{
-    private FirebaseFirestore db;
+    private static FirebaseFirestore mdb;
+    private static FirebaseAuth mAuth;
     //로그인 상태변화 확인
     private FirebaseAuth.AuthStateListener mAuthListener;
     //firestore TAG
@@ -77,32 +81,51 @@ public class MainActivity extends AppCompatActivity{
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
-        db = FirebaseFirestore.getInstance();
-/*
-        addProductItem();
-        addProductItem2("BOoqcINx8MhwSYlWXzIfmXdfwLm2");
-*/
-/*        Intent intent = new Intent(MainActivity.this, DaumWebViewActivity.class);
+        mdb = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+
+        //유저추가하기
+       /* final User user = UserUtil.addUserUtil();
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getUser_id())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: AuthState: " + mAuth.getCurrentUser().getUid());
+                            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                                    .setTimestampsInSnapshotsEnabled(true)
+                                    .build();
+                            mdb.setFirestoreSettings(settings);
+
+                            DocumentReference newUserRef = mdb
+                                    .collection("users")
+                                    .document(mAuth.getCurrentUser().getUid());
+                            newUserRef.set(user);
+                        }
+
+                    }
+                });*/
+
+        /*Intent intent = new Intent(MainActivity.this, FristPageFragment.class);
         startActivity(intent);*/
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
 
     private void addProductItem() {
         for (int i = 0; i < 10; i++) {
-            // Get a random Restaurant POJO
-            String[] document = {"1","2","3","4","5","6","7","8","9","10"};
-            CollectionReference users = db.collection("users");
+            CollectionReference productRef = mdb.collection("products");
             ProductWriteInfo product = ProductUtil.getRandom(this);
-
             // Add a new document to the restaurants collection
-            users.document(document[i]).collection("products").add(product);
+            productRef.add(product);
         }
     }
 
     private void addProductItem2(String name) {
         for (int i = 0; i < 10; i++) {
             // Get a random Restaurant POJO
-            CollectionReference users = db.collection("users");
+            CollectionReference users = mdb.collection("users");
             ProductWriteInfo product = ProductUtil.getRandom(this);
             // Add a new document to the restaurants collection
             users.document(name).collection("products").add(product);
@@ -130,32 +153,9 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-    //제품 등록, 추후에 상품 등록 구현 후 유저가 상품을 등록했을 때 함수 실행
-    private void addNewProduct(String pdtName, String pdtEnrollDate, String docNum) {
-        Map<String, Object> newProduct = new HashMap<>();
-        newProduct.put("pdtName", pdtName);
-        newProduct.put("pdtEnrollDate", pdtEnrollDate);
-        //docNum -> 해당 유저를 찾아 수정,
-        db.collection("users").document(docNum)
-          .collection("product")
-                .add(newProduct)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d("", "DocumentSnapshot written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("", "Error adding document", e);
-                    }
-                });
-    }
-
     // 유저 데이터 READ
     private void readUsers(){
-        DocumentReference docRef = db.collection("users").document("1");
+        DocumentReference docRef = mdb.collection("users").document("1");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity{
     // 상품 데이터 READ (문서 번호 입력 시 반환)
     private void readProduct(String docNum){
        // DocumentReference docRef = db.collection("product").document("5YyVblkgkC7gMcslfy7L");
-        DocumentReference docRef = db.collection("users").document(docNum).collection("product").document("5YyVblkgkC7gMcslfy7L");
+        DocumentReference docRef = mdb.collection("users").document(docNum).collection("product").document("5YyVblkgkC7gMcslfy7L");
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity{
 
     // 상품 데이터 출력 query (document에 직접 접근)
     private void searchProduct(){
-        db.collection("users").document("11").collection("product")
+        mdb.collection("users").document("11").collection("product")
                 .whereEqualTo("pdtName", "토마토")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity{
 
     //상품 검색 쿼리  // product> products 로 컬렉션 아이디 변경 , firestore 규칙 변경, 변수추가, map-frag에서 받을 변수 변경..
     public void searchQ(String productName){
-        db.collectionGroup("products").whereEqualTo("product", productName).get()
+        mdb.collectionGroup("products").whereEqualTo("product", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity{
 
     //상품 검색 쿼리 - ProductWriteInfo Class 이용
     public void searchQuery(String productName){
-        db.collectionGroup("products").whereEqualTo("product", productName).get()
+        mdb.collectionGroup("products").whereEqualTo("product", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {

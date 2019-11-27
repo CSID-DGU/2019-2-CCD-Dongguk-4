@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     >
 
     <ImageView
@@ -38,7 +37,7 @@
        android:enabled="false"
        android:paddingBottom="8dp"
        android:hint="검색할 농작물을 입력해 주세요."
-       android:clickable="true"
+       android:clickable="false"
        android:id="@+id/edit_main"/>
 <!--       android:background="@drawable/edittext_design"-->
         <Button

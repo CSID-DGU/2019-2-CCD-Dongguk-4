@@ -224,7 +224,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         // Get the 50 highest rated restaurants
         mQuery = mFirestore.collectionGroup("products")
                 .orderBy("avgRating", Query.Direction.DESCENDING)
-                .limit(LIMIT);    }
+                .limit(LIMIT);
+    }
 
     @Override
     public void onStart() {
@@ -250,14 +251,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     @Override
     public void OnProductSelected(DocumentSnapshot product) {
         // Go to the details page for the selected restaurant
-        Intent intent = new Intent(getActivity(), ProductDetailActivity1.class);
-        intent.putExtra(ProductDetailActivity1.KEY_PRODUCT_UID, product.getId());
+        Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+        intent.putExtra(ProductDetailActivity.KEY_PRODUCT_ID, product.getId());
 
         startActivity(intent);
-    }
-
-    private void showTodoToast() {
-        Toast.makeText(getActivity(), "TODO: Implement", Toast.LENGTH_SHORT).show();
     }
 
     /**

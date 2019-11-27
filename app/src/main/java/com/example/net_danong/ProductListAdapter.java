@@ -44,7 +44,7 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
         holder.bind(getSnapshot(position), mListener);
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView nameView;
@@ -73,10 +73,10 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
             ProductWriteInfo product = snapshot.toObject(ProductWriteInfo.class);
             Resources resources = itemView.getResources();
 
-            // Load image
+/*            // Load image
             Glide.with(imageView.getContext())
                     .load(product.getPhotoUrl())
-                    .into(imageView);
+                    .into(imageView);*/
 
             idView.setText(product.getPublisher());
             nameView.setText(product.getProduct());
