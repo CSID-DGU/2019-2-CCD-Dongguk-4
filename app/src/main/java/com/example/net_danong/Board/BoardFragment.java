@@ -52,8 +52,8 @@ public class BoardFragment extends Fragment {
 
         firebaseHelper = new Board_FirebaseHelper(getActivity());
         firebaseHelper.setOnBoardListener(onBoardListener);
-        currentUser = mAuth.getCurrentUser();
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         uiUpdate();
 
         Button writeBtn = (Button)view.findViewById(R.id.BoardWritdBtn);
