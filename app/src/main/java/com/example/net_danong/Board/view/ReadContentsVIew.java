@@ -57,14 +57,14 @@ public class ReadContentsVIew extends LinearLayout {
         this.moreIndex = moreIndex;
     }
 
-    public void setPostInfo(BoardInfo postInfo){
+    public void setBoardInfo(BoardInfo boardInfo){
         TextView createdAtTextView = findViewById(R.id.createAtTextView);
-        createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(postInfo.getCreatedAt()));
+        createdAtTextView.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(boardInfo.getCreatedAt()));
 
         LinearLayout contentsLayout = findViewById(R.id.contentsLayout);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        ArrayList<String> contentsList = postInfo.getContents();
-        ArrayList<String> formatList = postInfo.getFormats();
+        ArrayList<String> contentsList = boardInfo.getContents();
+        ArrayList<String> formatList = boardInfo.getFormats();
 
         for (int i = 0; i < contentsList.size(); i++) {
             if (i == moreIndex) {
