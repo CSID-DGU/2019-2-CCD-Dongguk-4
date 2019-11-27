@@ -33,9 +33,8 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-storage:19.1.0'
-    implementation 'com.google.firebase:firebase-auth:19.1.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-firestore:21.3.0'
-    implementation 'com.google.firebase:firebase-database:19.2.0'
 
     implementation 'com.firebaseui:firebase-ui-storage:6.1.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.1.0'
@@ -69,5 +68,6 @@ dependencies {
     implementation 'me.zhanghai.android.materialratingbar:library:1.3.2'
 
     implementation 'com.google.android.exoplayer:exoplayer:2.10.5'
+    implementation 'com.github.frank-zhu:pullzoomview:1.0.0'
+
 }
-apply plugin: "com.google.gms.google-services"

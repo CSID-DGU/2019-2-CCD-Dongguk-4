@@ -26,7 +26,7 @@ public class Menu1Fragment extends Fragment {
         // return inflater.inflate(R.layout.fragment_menu1, container, false);
 
         //View view = inflater.inflate(R.layout.fragment_menu1, container, false);
-        View view = inflater.inflate(R.layout.activity_firstpage, container, false);
+        View view = inflater.inflate(R.layout.fragment_firstpage, container, false);
 
         Button btn_search = (Button) view.findViewById(R.id.btn_search);
         final EditText edit = (EditText)view.findViewById(R.id.edit_main);

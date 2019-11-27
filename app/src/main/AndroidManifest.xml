@@ -50,12 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FirstpageActivity" />
+        <activity android:name=".FristPageFragment" />
         <activity android:name=".SearchFragment" />
         <activity android:name=".BasicActivity"/><!--//등록구현-->
         <!--//등록구현-->
         <activity android:name=".LoginFragment" />
         <activity android:name=".GalleryActivity"/>
+        <activity android:name=".ProductDetailActivity1"/>
+
         <activity android:name=".WritePostActivity"/>
 
     </application>

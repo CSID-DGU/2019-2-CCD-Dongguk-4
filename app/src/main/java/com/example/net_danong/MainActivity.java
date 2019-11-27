@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.net_danong.Board.BoardFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,7 +26,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity{
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
-    private Menu1Fragment menu1Fragment = new Menu1Fragment();
+    private FristPageFragment FristPageFragment = new FristPageFragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
-    private Menu4Fragment menu4Fragment = new Menu4Fragment();
+    private BoardFragment boardFragment = new BoardFragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
     private SearchFragment searchFragment = new SearchFragment();
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
 
         //Fragment Layout 초기 설정 (menu1화면)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, menu1Fragment.newInstance()).commitAllowingStateLoss();
+        transaction.replace(R.id.frame_layout, FristPageFragment.newInstance()).commitAllowingStateLoss();
 
         //하단 navigation bar 지정
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);*/
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
+
     private void addProductItem() {
         for (int i = 0; i < 10; i++) {
             // Get a random Restaurant POJO
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity{
 
             switch (menuItem.getItemId()) {
                 case R.id.navigation_menu1: {
-                    transaction.replace(R.id.frame_layout, menu1Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, FristPageFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu2: {
@@ -346,7 +347,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu4: {
-                    transaction.replace(R.id.frame_layout, menu4Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, boardFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu5: {

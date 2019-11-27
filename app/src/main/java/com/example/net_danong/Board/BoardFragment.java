@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import javax.annotation.Nullable;
 
-public class BoardActivity extends Fragment {
+public class BoardFragment extends Fragment {
     private BoardInfo boardInfo;
     private Board_FirebaseHelper firebaseHelper;
     private ReadContentsVIew readContentsVIew;
@@ -32,16 +33,24 @@ public class BoardActivity extends Fragment {
     private FirebaseAuth mAuth;
     public FirebaseUser currentUser;
 
+    public static BoardFragment newInstance() {
+        return new BoardFragment();
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);//Make sure you have this line of code.
+    }
     @Override
     public View onCreateView(@Nullable LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_board, container, false);
 
-        boardInfo = (BoardInfo) getIntent().getSerializableExtra("boardInfo");
+        boardInfo = (BoardInfo) getActivity().getIntent().getSerializableExtra("boardInfo");
         contentsLayout = view.findViewById(R.id.contentsLayout);
         readContentsVIew = view.findViewById(R.id.readContentsView);
 
-        firebaseHelper = new Board_FirebaseHelper(this);
+        firebaseHelper = new Board_FirebaseHelper(getActivity());
         firebaseHelper.setOnBoardListener(onBoardListener);
         currentUser = mAuth.getCurrentUser();
         mAuth = FirebaseAuth.getInstance();
@@ -60,7 +69,7 @@ public class BoardActivity extends Fragment {
 
            }
         });
-
+        return view;
     }
 
     @Override
@@ -77,9 +86,8 @@ public class BoardActivity extends Fragment {
         }
     }
 
-    public void onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.board, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.board, menu);
     }
 
     @Override
@@ -114,7 +122,7 @@ public class BoardActivity extends Fragment {
     }
 
     private void myStartActivity(Class c, BoardInfo boardInfo) {
-        Intent intent = new Intent(this, c);
+        Intent intent = new Intent(getActivity(), c);
         intent.putExtra("boardInfo", boardInfo);
         startActivityForResult(intent, 0);
     }
