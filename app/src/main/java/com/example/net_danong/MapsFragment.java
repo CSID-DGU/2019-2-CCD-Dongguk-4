@@ -152,7 +152,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
 
 
         //writeposst클래스 오류
-        /*Button post = (Button) view.findViewById(R.id.btn_post);
+        Button post = (Button) view.findViewById(R.id.btn_post);
         post.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -160,7 +160,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                 Intent intent = new Intent(getActivity(), WritePostActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
 
         // Enable Firestore logging

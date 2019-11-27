@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ProductWriteInfo {
 
+    private String userUid;
     private String title;
     private String product;
     private String price;
@@ -40,6 +41,14 @@ public class ProductWriteInfo {
         this.price = price;
         this.location = location;
         this.contents = contents;
+    }
+
+    public String getUserUid() {
+        return userUid;
+    }
+
+    public void setUserUid(String userUid) {
+        this.userUid = userUid;
     }
 
     public String getCategory() {

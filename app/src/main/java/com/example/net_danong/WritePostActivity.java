@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -41,14 +42,16 @@ import java.io.InputStream;
 import java.util.Date;
 
 public class WritePostActivity extends BasicActivity {
-  /*  private static final String TAG = "WritePostActivity";
+    private static final String TAG = "WritePostActivity";
     private ImageView profileImageView;
     private String profilePath;
     public static String category;
     private FirebaseUser user;
-    *//*private ArrayList<String> pathList = new ArrayList<>(); *//**//*이미지경로만들기*//*
+    /*private ArrayList<String> pathList = new ArrayList<>(); *//*이미지경로만들기*/
     private LinearLayout parent;
     private int pathCount, successCount;
+    private static FirebaseAuth mAuth;
+    private static FirebaseFirestore mdb;/*바뀐부분*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,16 +83,16 @@ public class WritePostActivity extends BasicActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-    }
+            finish();
+        }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            switch (requestCode) {
             case 0: {
                 if (resultCode == Activity.RESULT_OK) {
-                    *//*pathList.add(profilePath);*//* *//*경로 생성될 때마다 추가*//*
+                    /*pathList.add(profilePath);*/ /*경로 생성될 때마다 추가*/
                     profilePath = data.getStringExtra("profilePath");
                     Glide.with(this).load(profilePath).centerCrop().override(500).into(profileImageView);
                 }
@@ -98,7 +101,7 @@ public class WritePostActivity extends BasicActivity {
         }
     }//profileImageView에 이미지 넣기
 
-*//*    @Override
+/*    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -122,7 +125,7 @@ public class WritePostActivity extends BasicActivity {
                 break;
             }
         }
-    }*//*//이미지가 내용에 들어가도록하는 코드
+    }*///이미지가 내용에 들어가도록하는 코드
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -165,13 +168,14 @@ public class WritePostActivity extends BasicActivity {
         }
     }
 
+
     private void profileUpdate() {
         final String title = ((EditText) findViewById(R.id.titleEditText)).getText().toString();
         final String product = ((EditText) findViewById(R.id.productEditText)).getText().toString();
         final String price = ((EditText) findViewById(R.id.priceEditText)).getText().toString();
         final String location = ((EditText) findViewById(R.id.locationEditText)).getText().toString();
         final String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
-       *//* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*//*
+       /* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*/
 
         if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
 //            final ArrayList<String> contentsList = new ArrayList<>();//내용 하나씩 추가 위해서
@@ -182,6 +186,7 @@ public class WritePostActivity extends BasicActivity {
 
             if(profilePath == null){
                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents);
+                productWriteInfo.setUserUid(user.getUid());
                 uploader(productWriteInfo);
             }else{
                 try {
@@ -203,6 +208,8 @@ public class WritePostActivity extends BasicActivity {
 
                                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
                                 uploader(productWriteInfo);
+                                startToast("상품등록을 성공하였습니다.");
+                                finish();
                             } else {
                                 startToast("등록정보를 보내는데 실패하였습니다.");
                             }
@@ -217,7 +224,7 @@ public class WritePostActivity extends BasicActivity {
         }
     }
 
-            *//*for (int i = 0; i < parent.getChildCount(); i++) {
+            /*for (int i = 0; i < parent.getChildCount(); i++) {
                 View view = parent.getChildAt(i);
                 if (view instanceof EditText) {
                     String text = ((EditText) view).getText().toString();
@@ -266,9 +273,9 @@ public class WritePostActivity extends BasicActivity {
         } else {
             startToast("상품정보를 입력해주세요.");
         }
-    }*//*
+    }*/
 
-   *//* private void storeUpload(ProductWriteInfo productWriteInfo) {
+   /* private void storeUpload(ProductWriteInfo productWriteInfo) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("posts").add(productWriteInfo)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -284,12 +291,14 @@ public class WritePostActivity extends BasicActivity {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-    }*//*//db에 넣기
+    }*///db에 넣기
 
 
     private void uploader(ProductWriteInfo productWriteInfo){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("post").add(productWriteInfo)*//*바뀐부분*//*
+        mdb = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mdb.collection("users").document(mAuth.getUid()).collection("products").add(productWriteInfo)/*바뀐부분*/
+            /*db.collection("product").add(productWriteInfo)*/
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -311,7 +320,7 @@ public class WritePostActivity extends BasicActivity {
     private void myStartActivity(Class c) {
         Intent intent = new Intent(this, c);
         startActivityForResult(intent, 0);
-    }*/
+    }
 }
 //주소>위도,경도 변환 코드 추가,,
 //데이터베이스에 입력되는 것은 주소>그 주소를 받아 위도, 경도 변환값 반환>반환값(위도, 경도)데이터베이스에 넣기
