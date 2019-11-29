@@ -74,19 +74,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     private ProductListAdapter mAdapter;
     private MapFragmentViewModel mViewModel;
 
-    //검색 후 결과값 저장해서 날아오는 변수들,,
-    Bundle extra;
-    Double addressX;
-    Double addressY;
-
-    //firestore 담긴 변수들
-//    String y;
-    String title;
-    String product;
-    String location;
-    String userID;
-    List list;
-
+    String productName = null;
 
     //내부 전환 (menu1-search결과) newInstance 필수
     public static MapsFragment newInstance() {
@@ -97,37 +85,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        //MainActivity에서 검색 결과값 받아오기 (있을 때)
-        extra = this.getArguments();
-        if(extra != null) {
-            extra = getArguments();
-
-            list = extra.getParcelableArrayList("list");
-            System.out.println("리스트값 받아온 것 출력= " + list);
-
-            if (list != null){
-                //0번째 list값 받아옴.. 결과는 여러개니까 for문 돌려서 또 배열에 넣던지.. ㅠ ㅠ ...ㅠㅠㅠㅠㅠ..(ex 0번째, 1번째, ...n번째?)
-                HashMap getMap = new HashMap();
-                getMap = (HashMap)list.get(0);
-//                String address =  getMap.get("userAddress").toString();
-//                addressX = Double.parseDouble(address.split(",")[1]);
-//                y = address.split(",")[2];
-//                addressY = Double.parseDouble(y.substring(0, y.length()-1));
-                title = getMap.get("title").toString();
-                userID = getMap.get("user_id").toString();
-                product = getMap.get("product").toString();
-                location = getMap.get("location").toString();
-                //주소 값을 경도, 위도로 변환 필요..?  여기서 변환하고 숫자값 나중에 아래 함수로 넘기기..?
-
-                //확인용
-                Toast.makeText(getActivity(),userID+product,Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        if(getArguments() != null){
+            productName = getArguments().getString("pdtName");
+        }
 
         View view  = inflater.inflate(R.layout.fragment_maps, container, false);
         mapView = view.findViewById(R.id.map);
@@ -197,6 +163,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         mProductRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mProductRecycler.setAdapter(mAdapter);
 
+        // 여기다 여기야!!!
+
         return view;
     }
 
@@ -222,9 +190,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         mFirestore = FirebaseFirestore.getInstance();
 
         // Get the 50 highest rated restaurants
-        mQuery = mFirestore.collectionGroup("products")
-                .orderBy("avgRating", Query.Direction.DESCENDING)
-                .limit(LIMIT);
+//        mQuery = mFirestore.collectionGroup("products")
+//                .orderBy("avgRating", Query.Direction.DESCENDING)
+//                .limit(LIMIT);
+
+
+        if(productName == null) {
+            //초기화면
+            mQuery = mFirestore.collectionGroup("products")
+                    .orderBy("avgRating", Query.Direction.DESCENDING)
+                    .limit(LIMIT);
+        }else{
+            //검색할 상품값 넣기
+            mQuery = mFirestore.collectionGroup("products").whereEqualTo("product", productName);
+        }
+
+
     }
 
     @Override
@@ -283,48 +264,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             }
         });
 
-
-        if(list != null) { //검색 후 뜨는 화면
-            // searchItem(addressX,addressY);
-            // 아직 주소값 연결 못 해서 걍 기본화면으로
-            LatLng sydney = new LatLng(37.5609417, 126.9911718);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-            // Add a marker in Sydney and move the camera
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tell:0212341234"));
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
-            });
-            addItem();
-
-
-        } else{
-            //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
-            // Add a marker in Sydney and move the camera
-            LatLng sydney = new LatLng(37.5609417, 126.9911718);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-            // Add a marker in Sydney and move the camera
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tell:0212341234"));
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
-            });
-            addItem();
-        }
+        //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(37.5609417, 126.9911718);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        // Add a marker in Sydney and move the camera
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tell:0212341234"));
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+        });
+        addItem();
     }
 
     private void addItem() {
@@ -338,35 +295,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             lng = lng + offset;
             MyItem offsetItem = new MyItem(lat, lng);
             mClusterManager.addItem(offsetItem);
-        }
-    }
-
-    private void searchItem(double x, double y) {
-        //검색 후 반환하는 x, y 좌표 값 대입 !!
-        if(list != null) {
-
-            //검색 결과로 받아온 주소 좌표값 대입
-            // (보완필요) = for문이나 []배열값으로 여러개 뜨게 하기
-            double lat = x ;
-            double lng = y ;
-
-            // Add a marker in Sydney and move the camera
-            LatLng search = new LatLng(lat, lng);
-            mMap.addMarker(new MarkerOptions().position(search).title("결과값"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(search));
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
-
-            // Add a marker in Sydney and move the camera
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
-                    intent.setData(Uri.parse("tell:0212341234"));
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }//클릭한 마커 정보 들어와서 이 경우 전화걸기
-            });
         }
     }
 

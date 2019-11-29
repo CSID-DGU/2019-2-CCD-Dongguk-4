@@ -150,125 +150,63 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }//더보기 +버튼 클릭시 등록화면으로 이동하는 로직*/
 
+    //검색 기능 (검색어 전달 기능)
+    public void searchWord(String productName){
+        String pdtName = productName;
 
+        mapbundle = new Bundle();
+        mapbundle.putString("pdtName", pdtName);
+        mapsFragment.setArguments(mapbundle);
 
-
-    // 유저 데이터 READ
-    private void readUsers(){
-        DocumentReference docRef = mdb.collection("users").document("1");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "유저 DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        //MAP화면으로 이동
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
     }
 
-    // 상품 데이터 READ (문서 번호 입력 시 반환)
-    private void readProduct(String docNum){
-       // DocumentReference docRef = db.collection("product").document("5YyVblkgkC7gMcslfy7L");
-        DocumentReference docRef = mdb.collection("users").document(docNum).collection("product").document("5YyVblkgkC7gMcslfy7L");
-
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "상품 DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    // 상품 데이터 출력 query (document에 직접 접근)
-    private void searchProduct(){
-        mdb.collection("users").document("11").collection("product")
-                .whereEqualTo("pdtName", "토마토")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
-
-    //상품 검색 쿼리  // product> products 로 컬렉션 아이디 변경 , firestore 규칙 변경, 변수추가, map-frag에서 받을 변수 변경..
+    //상품 검색 쿼리  (안 쓰는데 쿼리문때문에 일단 안 지웠ㅅ음,,)
     public void searchQ(String productName){
         mdb.collectionGroup("products").whereEqualTo("product", productName).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.size()>0){ //검색값이 존재할 때
-
                             loopNum=0;
-                            final List list = new ArrayList();
-
                             for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
-
                                 //Product 컬렉션 값 받아옴
                                 ProductList=snap.getData();
+                                System.out.println("Product정보"+ProductList);
 
-                                //상위 Collection(user) 정보로 접근
-                                DocumentReference docRef = snap.getReference().getParent().getParent();
+                                //유저 정보 연결
+                                String userID = ProductList.get("userUid").toString();
+                                System.out.println("userUid값은? "+userID);
+
+                                DocumentReference docRef = mdb.collection("users").document(userID);
                                 docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()){
-                                            //User컬렉션 값 받아옴
+                                        if (task.isSuccessful()) {
                                             DocumentSnapshot document = task.getResult();
-                                            UserList=document.getData();
-                                            ProductList.putAll(UserList); //USER+PRODUCT병합
-                                            list.add(ProductList); //list로 변환
+                                            if (document.exists()) {
+                                                UserList=document.getData();
+                                                System.out.println("유저 정보"+UserList);
 
-                                            System.out.println("결과값 리스트"+list);
-
-                                            /* 해야하는 것
-                                            * list에 왜 중복으로 덮여서 추가되는건지 ㅠㅠㅠㅠ오류 해결하기,,ㅠㅠㅠㅠ
-                                            * MapsFragment에서 Double형 array만들고 for문 돌려서 마커 여러 개 찍기..
-                                            * 인근 지역 좌표로 테스트 데이터 만들어서 테스트하기,,, */
-
-                                            //마지막 query문 돌면 list 데이터 전송
-                                            if(loopNum==queryDocumentSnapshots.size()-1){
-                                                System.out.println("최종 리스트"+list);
-
-                                                mapbundle = new Bundle();
-                                                mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) list);
-                                                mapsFragment.setArguments(mapbundle);
-
-                                                //MAP화면으로 이동
-                                                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                                transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+                                                //마지막 query문 돌고 화면 전환 / 데이터 전송
+                                                if(loopNum==queryDocumentSnapshots.size()-1){
+                                                    System.out.println("노 에러.. plz... ");
+                                                   // FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                                   // transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+                                                }
+                                                loopNum = loopNum+1;
+                                            } else {
+                                                Log.d(TAG, "No such document");
                                             }
-                                            loopNum = loopNum+1;
-
-                                        }else{
-                                            Log.d(TAG, "Error getting document/1 ");
+                                        } else {
+                                            Log.d(TAG, "get failed with ", task.getException());
                                         }
                                     }
                                 });
+
+                                // 하위 컬렉션 연결 시키는 방법 찾기.. product와 일치하는 review 정보 따오기
                             } //for문 종료
                         } else{
                             Log.d(TAG, "Error getting documents/2 ");
@@ -276,54 +214,6 @@ public class MainActivity extends AppCompatActivity{
                     }
                 });
     }
-
-    //상품 검색 쿼리 - ProductWriteInfo Class 이용
-    public void searchQuery(String productName){
-        mdb.collectionGroup("products").whereEqualTo("product", productName).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(final QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.size()>0){ //검색값이 존재할 때
-                            loopNum=0;
-                            for (QueryDocumentSnapshot snap : queryDocumentSnapshots) {
-
-                                ProductWriteInfo productSearch = snap.toObject(ProductWriteInfo.class);
-
-                                //상위 Collection(users)로 접근
-                                DocumentReference docRef = snap.getReference().getParent().getParent();
-                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                        if (task.isSuccessful()){
-                                            //User컬렉션 값 받아옴
-                                            DocumentSnapshot document = task.getResult();
-                                            //UseClass? 이용해서 변수 받기
-                                            System.out.println("관련 유저 정보"+document.getData());
-
-                                            //마지막 query문 돌면 화면 전환
-                                            if(loopNum==queryDocumentSnapshots.size()-1){
-                                                // map번들.. 클래스는 어떻게 ㅕ연결되는거지,, 모른다
-                                                // mapbundle = new Bundle();
-                                                // mapbundle.putParcelableArrayList("list",(ArrayList<? extends Parcelable>) list);
-                                                // mapsFragment.setArguments(mapbundle);
-
-                                                //MAP화면으로 이동
-                                                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                                transaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
-                                            }
-                                            loopNum = loopNum+1;
-                                        }else{ Log.d(TAG, "Error getting document/1 "); }
-                                    }
-                                });
-                            } //for문 종료
-                        } else{ Log.d(TAG, "Error getting documents/2 "); }
-                    }
-                });
-    }
-
-
-
-
 
     // navBar 클래스 navBar 클릭 시 이동
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener {

@@ -1,6 +1,7 @@
 package com.example.net_danong;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import java.util.ArrayList;
 
 //import android.support.annotation.NonNull;
 //import android.support.annotation.Nullable;
@@ -39,7 +43,15 @@ public class Menu1Fragment extends Fragment {
                 // ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
 
                 String search = edit.getText().toString();
-                ((MainActivity)getActivity()).searchQ(search);
+
+                MapsFragment mapsFragment = new MapsFragment();
+
+                Bundle mapbundle = new Bundle();
+                mapbundle.putString("productName",search);
+                mapsFragment.setArguments(mapbundle);
+
+
+//                ((MainActivity)getActivity()).searchQ(search);
             }
         });
 

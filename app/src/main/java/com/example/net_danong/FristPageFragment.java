@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FristPageFragment extends Fragment {
+
 
     public static FristPageFragment newInstance() {
         return new FristPageFragment();
@@ -64,12 +66,25 @@ public class FristPageFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setPadding(130, 0, 130, 0);
 
+        Button btn_search = (Button) view.findViewById(R.id.btn_search);
         EditText editText_main = (EditText) view.findViewById(R.id.edit_main);
-        editText_main.setOnClickListener(new View.OnClickListener() {
+//        editText_main.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getContext(), SearchFragment.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        //우선 SearchFrag, 다른 화면으로 연결하는거 말고 버튼 클릭시 바로 결과 연동되도록..
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            //            Fragment NewFragment;
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), SearchFragment.class);
-                startActivity(intent);
+                // fragment search_frag로 전환
+                // ((MainActivity)getActivity()).replaceSearchFrag(Menu1Fragment.newInstance());
+                String search = editText_main.getText().toString();
+                ((MainActivity)getActivity()).searchWord(search);
             }
         });
 
