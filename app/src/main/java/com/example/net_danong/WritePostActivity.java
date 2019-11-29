@@ -135,20 +135,19 @@ public class WritePostActivity extends BasicActivity {
                     break;
                 case R.id.gallery:
                     if (ContextCompat.checkSelfPermission(WritePostActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            Manifest.permission.READ_EXTERNAL_STORAGE)/*갤러리접근권한얻기*/
                             != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(WritePostActivity.this,
-                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                1);
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    1);/*권한이 없을 떄 나오는 작업*/
                         if (ActivityCompat.shouldShowRequestPermissionRationale(WritePostActivity.this,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
                         } else {
                             startToast("권한을 허용해 주세요");
-                        }
+                        }/*권한다시 묻는 작업*/
                     }else{
                         myStartActivity(GalleryActivity.class);
-                    }
+                    }/*권한 허용했을 때 나오는 작업*/
                     break;
             }
         }
