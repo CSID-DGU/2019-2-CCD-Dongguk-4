@@ -20,7 +20,7 @@ public class Util {
     }
 
     public static boolean isStorageUrl(String url){
-        return Patterns.WEB_URL.matcher(url).matches() && url.contains("gs://danong-53e3d.appspot.com/board");
+        return Patterns.WEB_URL.matcher(url).matches() && url.contains("https://firebasestorage.googleapis.com/v0/b/danong-53e3d.appspot.com/o/images");
     }
 
     public static String storageUrlToName(String url){

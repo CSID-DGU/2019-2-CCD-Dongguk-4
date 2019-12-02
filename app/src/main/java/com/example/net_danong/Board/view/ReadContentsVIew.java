@@ -27,7 +27,6 @@ import com.google.android.exoplayer2.video.VideoListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
 public class ReadContentsVIew extends LinearLayout {
     private Context context;
     private LayoutInflater layoutInflater;
