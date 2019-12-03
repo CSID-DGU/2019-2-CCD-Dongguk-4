@@ -60,6 +60,8 @@
 
         <activity android:name=".WritePostActivity"/>
         <activity android:name=".ReviewActivity"/>
+        <activity android:name=".Board.WriteBoardActivity"/>
+        <activity android:name=".Board.BoardActivity"/>
 
     </application>
 

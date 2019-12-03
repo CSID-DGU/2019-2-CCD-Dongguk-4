@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLatout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loaderLayout"
-    android:background="#A34A4A4A"
+    android:background="@color/darkGrey"
     android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -16,4 +16,4 @@
         android:progressDrawable="@drawable/progressbar"
         />
 
-</RelativeLatout>
+</RelativeLayout>
