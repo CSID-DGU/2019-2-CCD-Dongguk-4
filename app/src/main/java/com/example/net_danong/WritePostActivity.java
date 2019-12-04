@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,8 +21,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +45,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,8 +53,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Date;
 
-public class WritePostActivity extends BasicActivity {
+public class WritePostActivity extends BasicActivity  implements OnMapReadyCallback {
     private static final String TAG = "WritePostActivity";
+    View view;
     private ImageView profileImageView;
     private String profilePath;
     public static String category;
@@ -51,6 +65,16 @@ public class WritePostActivity extends BasicActivity {
     private int pathCount, successCount;
     private static FirebaseAuth mAuth;/*선언하기*/
     private static FirebaseFirestore mdb;/*바뀐부분*//*선언하기*/
+    private static LatLng pdtLocation;
+    MapView mapView;
+    GoogleMap mMap;
+    private static final int REQUEST_CODE_PERMISSIONS = 1000;//현재위치
+    private FusedLocationProviderClient mFusedLocationClient;//현재위치 얻는 코드
+    private MapFragmentViewModel mViewModel;
+
+    Bundle extra;
+    Double addressX;
+    Double addressY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +83,21 @@ public class WritePostActivity extends BasicActivity {
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.gallery).setOnClickListener(onClickListener);
+        mapView = findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+        mapView.getMapAsync(this);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);//현재위치
+        mViewModel = ViewModelProviders.of(this).get(MapFragmentViewModel.class);
+
+        Button button = findViewById(R.id.btn_lastLocation);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v){
+                onLastLocationButtonClicked();
+            }
+        });
 
         Spinner spinner = findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.spinnerArray, android.R.layout.simple_spinner_dropdown_item);
@@ -78,6 +117,83 @@ public class WritePostActivity extends BasicActivity {
             }
         });
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        LatLng sydney = new LatLng(37.5609417, 126.9911718);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        // Add a marker in Sydney and move the camera
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tell:0212341234"));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+        });
+    }
+
+
+
+    public void onLastLocationButtonClicked() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.
+                PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
+
+            return;
+        }
+
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                    pdtLocation = myLocation;
+                    mMap.addMarker(new MarkerOptions()
+                            .position(myLocation)
+                            .title("현재 위치"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -163,10 +279,13 @@ public class WritePostActivity extends BasicActivity {
                     startToast("권한을 허용해 주세요");
                 }
             }
+            case REQUEST_CODE_PERMISSIONS:
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "권한 체크 거부 됨", Toast.LENGTH_SHORT).show();
+                }
+                return;
         }
     }
-
-
     private void profileUpdate() {
         final String title = ((EditText) findViewById(R.id.titleEditText)).getText().toString();
         final String product = ((EditText) findViewById(R.id.productEditText)).getText().toString();
@@ -186,6 +305,7 @@ public class WritePostActivity extends BasicActivity {
                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents);
                 productWriteInfo.setUserUid(user.getUid());
                 productWriteInfo.setAvgRating(0);
+                productWriteInfo.setGoogleLocation(pdtLocation);
                 productWriteInfo.setNumRatings(0);
                 uploader(productWriteInfo);
             }else{
@@ -205,8 +325,8 @@ public class WritePostActivity extends BasicActivity {
                         public void onComplete(@NonNull Task<Uri> task) {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
-
                                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
+                                productWriteInfo.setGoogleLocation(pdtLocation);
                                 uploader(productWriteInfo);
                                 startToast("상품등록을 성공하였습니다.");
                                 finish();
@@ -303,6 +423,7 @@ public class WritePostActivity extends BasicActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

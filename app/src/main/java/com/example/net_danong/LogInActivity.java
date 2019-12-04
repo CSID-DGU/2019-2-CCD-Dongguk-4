@@ -98,7 +98,6 @@ public class LogInActivity extends AppCompatActivity implements  GoogleApiClient
 
 
                     currentUser = mAuth.getCurrentUser();
-
                     Toast.makeText(LogInActivity.this, "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid() ,Toast.LENGTH_SHORT).show();
 
                     startActivity(new Intent(LogInActivity.this, MainActivity.class));

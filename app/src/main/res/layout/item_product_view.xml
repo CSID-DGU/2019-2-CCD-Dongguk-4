@@ -168,15 +168,13 @@
             android:text="생산자"
             android:textSize="20dp" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_show_rating_dialog"
+        <Button
+            android:id="@+id/chat_button"
+            android:text="채팅하기"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:tooltipText="채팅하기"
-            app:srcCompat="@drawable/ic_add_black_24dp"/>
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
     <Button
         android:id="@+id/btn_goProvider"
@@ -226,4 +224,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="상품후기 모두보기>" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_show_rating_dialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
+        android:tooltipText="후기추가"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>
 </LinearLayout>
