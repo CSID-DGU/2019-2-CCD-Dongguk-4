@@ -37,7 +37,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         this.activity=activity;
     }
 
-    @NonNull
+//    /*@NonNull*/초기 Null checking 에러>초기 default 그림넣기
     @Override
     public GalleryAdapter.GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);//갤러리 자동으로 보이게
