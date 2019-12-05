@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,9 +16,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.net_danong.Board.adapter.BoardFragAdapter;
 import com.example.net_danong.Board.listener.OnBoardListener;
+import com.example.net_danong.MainActivity;
+import com.example.net_danong.Menu5Fragment;
 import com.example.net_danong.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -32,6 +36,7 @@ public class BoardFragment extends Fragment {
     private FirebaseFirestore firebaseFirestore;
     private BoardFragAdapter boardFragAdapter;
     private ArrayList<BoardInfo> boardList;
+    private FirebaseUser currentUser;
     private boolean updating;
     private boolean topScrolled;
 
@@ -125,8 +130,14 @@ public class BoardFragment extends Fragment {
             switch (v.getId()) {
 
                 case R.id.writeBtn:
-                    myStartActivity(WriteBoardActivity.class);
-                    break;
+                    if (currentUser != null) {
+                        myStartActivity(WriteBoardActivity.class);
+                        break;
+                    } else {
+                        Toast.makeText(getActivity(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
+                        ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+                    }
+
             }
         }
     };
