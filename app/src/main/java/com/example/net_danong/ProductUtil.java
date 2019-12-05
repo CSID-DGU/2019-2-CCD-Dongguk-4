@@ -110,7 +110,6 @@ public class ProductUtil {
 
         //주소 이름으로 위도, 경도 변환해서 저장하는 거
         String city = product.getLocation();
-        System.out.println("주목!!!!!!!!!!!!주목!!!!!!!!"+city);
         List<Address> addressList = null;
         try {
             addressList = geocoder.getFromLocationName(city, 10);

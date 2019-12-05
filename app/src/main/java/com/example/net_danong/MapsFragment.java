@@ -35,18 +35,24 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -162,9 +168,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         };
         mProductRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mProductRecycler.setAdapter(mAdapter);
-
-        // 여기다 여기야!!!
-
         return view;
     }
 
@@ -188,25 +191,16 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
 
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
-
-        // Get the 50 highest rated restaurants
-//        mQuery = mFirestore.collectionGroup("products")
-//                .orderBy("avgRating", Query.Direction.DESCENDING)
-//                .limit(LIMIT);
-
-
         if(productName == null) {
             //초기화면
             mQuery = mFirestore.collectionGroup("products")
                     .orderBy("avgRating", Query.Direction.DESCENDING)
                     .limit(LIMIT);
         }else{
-            //검색할 상품값 넣기
             mQuery = mFirestore.collectionGroup("products").whereEqualTo("product", productName);
         }
-
-
     }
+
 
     @Override
     public void onStart() {
@@ -281,7 +275,61 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                 }
             }//클릭한 마커 정보 들어와서 이 경우 전화걸기
         });
-        addItem();
+        initMark();
+    }
+
+    //진심 비효율적인 코드......리사이클러뷰랑 한 번에 연동시킬 수 있는 방법 찾기....ㅠㅠ
+    private void initMark(){
+        mFirestore = FirebaseFirestore.getInstance();
+        if(productName == null) {
+            //초기
+            mFirestore.collection("products")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //Log.d(TAG, document.getId() + " => " + document.getData());
+                                    String pdt = document.get("product").toString();
+
+                                    double lat = Double.valueOf(document.get("latitude").toString());
+                                    double lng = Double.valueOf(document.get("longitude").toString());
+                                    LatLng latLng = new LatLng(lat, lng);
+
+                                    mMap.addMarker(new MarkerOptions().position(latLng).title(pdt));
+                                }
+                            } else {
+                                Log.d(TAG, "에러 발생 :  ", task.getException());
+                            }
+                        }
+                    });
+        }else{
+            //검색 후 결과
+            mFirestore.collectionGroup("products").whereEqualTo("product", productName)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //Log.d(TAG, document.getId() + " => " + document.getData());
+                                    String pdt = document.get("product").toString();
+                                    double lat = Double.valueOf(document.get("latitude").toString());
+                                    double lng = Double.valueOf(document.get("longitude").toString());
+                                    LatLng latLng = new LatLng(lat, lng);
+
+                                    mMap.addMarker(new MarkerOptions().position(latLng).title(pdt));
+                                }
+                            } else {
+                                Log.d(TAG, "에러 발생 :  ", task.getException());
+                            }
+                        }
+                    });
+
+        }
+
+
     }
 
     private void addItem() {
