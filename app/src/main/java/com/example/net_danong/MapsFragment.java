@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -35,13 +36,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -73,6 +77,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     private Query mQuery;
     private ProductListAdapter mAdapter;
     private MapFragmentViewModel mViewModel;
+    private static int pdtCount;
+    //검색 후 결과값 저장해서 날아오는 변수들,,
+    Bundle extra;
+    Double addressX;
+    Double addressY;
+
+    //firestore 담긴 변수들
+//    String y;
+    String title;
+    String product;
+    String location;
+    String userID;
+    List list;
+
 
     String productName = null;
 
@@ -100,7 +118,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
         mProductRecycler = view.findViewById(R.id.recycler_product);
 
@@ -134,7 +151,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
 
         // Initialize Firestore and the main RecyclerView
         initFirestore();
-
+        //판매 제품 수
+        TextView textView = view.findViewById(R.id.txt_pdtCntNum);
+        mFirestore.collection("products")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            pdtCount = 0;
+                            for (DocumentSnapshot document : task.getResult()) {
+                                pdtCount++;
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        textView.setText(String.valueOf(pdtCount));
         //리사이클러뷰 초기화
         if (mQuery == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
@@ -204,7 +238,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             //검색할 상품값 넣기
             mQuery = mFirestore.collectionGroup("products").whereEqualTo("product", productName);
         }
-
 
     }
 

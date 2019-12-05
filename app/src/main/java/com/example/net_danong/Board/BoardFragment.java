@@ -3,6 +3,7 @@ package com.example.net_danong.Board;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

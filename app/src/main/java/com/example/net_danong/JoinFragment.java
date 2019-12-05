@@ -23,14 +23,16 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.regex.Pattern;
 
 
@@ -40,8 +42,7 @@ public class JoinFragment extends Fragment {
     View view;
     //비밀번호 정규식
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
-    //이메일 정규식
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^([a-z0-9_\\.-]+)@([\\da-z\\.-]+)\\.([a-z\\.])$");
+
     //파이어베이스 인증 객체 생성
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore mDb;
@@ -50,8 +51,8 @@ public class JoinFragment extends Fragment {
     //정보 위젯
     private EditText editName, editTextEmail, editTextPassword, editPhoneNumber;
     private String name, email, password, phoneNumber;
+    private com.google.firebase.Timestamp time;
     private Context context;
-    private Timestamp time = new Timestamp(System.currentTimeMillis());
     public int TERMS_AGREE_1 = 0; //No Check = 0, Check = 1
     public int TERMS_AGREE_2 = 0;
     public int TERMS_AGREE_3 = 0;
@@ -156,6 +157,7 @@ public class JoinFragment extends Fragment {
         email = editTextEmail.getText().toString().trim();
         password = editTextPassword.getText().toString().trim();
         phoneNumber = editPhoneNumber.getText().toString().trim();
+        time = Timestamp.now();
 
         if(TextUtils.isEmpty(name)) {
             Toast.makeText(context, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
