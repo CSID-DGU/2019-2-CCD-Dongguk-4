@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.net_danong.Board.adapter.BoardFragAdapter;
 import com.example.net_danong.Board.listener.OnBoardListener;
+import com.example.net_danong.LogInActivity;
 import com.example.net_danong.MainActivity;
 import com.example.net_danong.Menu5Fragment;
 import com.example.net_danong.R;
@@ -136,7 +137,7 @@ public class BoardFragment extends Fragment {
                         break;
                     } else {
                         Toast.makeText(getActivity(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
-                        ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+                        myStartActivity(LogInActivity.class);
                     }
 
             }
