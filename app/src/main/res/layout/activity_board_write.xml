@@ -4,22 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새 게시물"
+        android:textSize="20dp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:paddingTop="10dp"
+        android:id="@+id/new_text"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="25dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="10dp">
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/board_titleEditText"
-                android:ems="10"
-                android:hint="제목"
-                android:inputType="textPersonName"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -29,10 +34,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+                    <EditText
+                        android:id="@+id/board_titleEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="제목"
+                        android:inputType="textPersonName" />
+
                     <include
                         layout="@layout/view_contents_edit_text"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="439dp" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -51,6 +64,8 @@
                     android:id="@+id/board_video"
                     android:layout_weight="1"
                     android:text="비디오"/>
+
+
             </LinearLayout>
             <Button
                 android:layout_width="match_parent"
