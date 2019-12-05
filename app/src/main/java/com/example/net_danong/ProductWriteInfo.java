@@ -1,5 +1,7 @@
 package com.example.net_danong;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +13,10 @@ public class ProductWriteInfo {
     private String product;
     private String price;
     private String location;
+    //private LatLng googleLocation;
+    private double latitude;
+    private double longitude;
+
     private String contents;
     private String publisher;
     private Date createdAt;
@@ -41,6 +47,23 @@ public class ProductWriteInfo {
         this.price = price;
         this.location = location;
         this.contents = contents;
+    }
+
+    //public LatLng getGoogleLocation() {
+    //    return googleLocation;
+    //}
+
+    //public void setGoogleLocation(LatLng googleLocation) {
+    //    this.googleLocation = googleLocation;
+    //}
+
+    public double getLatitude(){return latitude;}
+    public void setLatitude(double latitude){
+        this.latitude = latitude;
+    }
+    public double getLongitude(){return longitude;}
+    public void setLongitude(double longitude){
+        this.longitude = longitude;
     }
 
     public String getUserUid() {

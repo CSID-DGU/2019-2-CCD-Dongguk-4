@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,8 +39,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.List;
 
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
@@ -187,6 +191,11 @@ public class WritePostActivity extends BasicActivity {
                 productWriteInfo.setUserUid(user.getUid());
                 productWriteInfo.setAvgRating(0);
                 productWriteInfo.setNumRatings(0);
+
+                String city = productWriteInfo.getLocation();
+                productWriteInfo.setLatitude(glatitude(city));
+                productWriteInfo.setLongitude(glongitude(city));
+
                 uploader(productWriteInfo);
             }else{
                 try {
@@ -207,6 +216,11 @@ public class WritePostActivity extends BasicActivity {
                                 Uri downloadUri = task.getResult();
 
                                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
+
+                                String city = productWriteInfo.getLocation();
+                                productWriteInfo.setLatitude(glatitude(city));
+                                productWriteInfo.setLongitude(glongitude(city));
+
                                 uploader(productWriteInfo);
                                 startToast("상품등록을 성공하였습니다.");
                                 finish();
@@ -222,6 +236,45 @@ public class WritePostActivity extends BasicActivity {
         } else {
             startToast("상품정보를 입력해주세요.");
         }
+    }
+
+    public double glatitude(String city){
+        Geocoder geocoder = new Geocoder(this);
+        //getCity 작업 필요
+        List<Address> addressList = null;
+        try {
+            addressList = geocoder.getFromLocationName(city, 10);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+        }
+        if (addressList != null) {
+            if (addressList.size() == 0) {
+                Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+            }
+        }
+
+        double latitude = addressList.get(0).getLatitude(); //위도
+        return latitude;
+    }
+
+    public double glongitude(String city){
+        Geocoder geocoder = new Geocoder(this);
+        //getCity 작업 필요
+        List<Address> addressList = null;
+        try {
+            addressList = geocoder.getFromLocationName(city, 10);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+        }
+        if (addressList != null) {
+            if (addressList.size() == 0) {
+                Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+            }
+        }
+        double longitude = addressList.get(0).getLongitude(); //경도
+        return longitude;
     }
 
             /*for (int i = 0; i < parent.getChildCount(); i++) {
