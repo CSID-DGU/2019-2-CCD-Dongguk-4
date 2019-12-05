@@ -1,3 +1,4 @@
+/*
 package com.example.net_danong;
 
 import android.content.Context;
@@ -10,12 +11,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Random;
-import java.util.concurrent.Executor;
+import java.util.concurrent.Executor;T=
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +30,7 @@ public class UserUtil{
     static FirebaseFirestore mdb;
     private static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(2, 4, 60,
             TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-    static Timestamp time;
+    static FieldValue time;
     private static final int MAX_IMAGE_NUM = 22;
     static Random random;
     private static final String[] EMAIL_FIRST_WORDS = {
@@ -45,16 +48,18 @@ public class UserUtil{
     static String email;
     static String id;
     static String password;
-    /**
+    */
+/**
      * Create a random User POJO.
-     */
+     *//*
+
     public static User addUserUtil() {
         id = "";
         email = "";
         password = "";
 
         random = new Random();
-        time = new Timestamp(System.currentTimeMillis());
+        time = FieldValue.serverTimestamp();
 
         id = getRandomID(random);
         email = id + getRandomEmail(random);
@@ -63,7 +68,7 @@ public class UserUtil{
         firebaseAuth = FirebaseAuth.getInstance();
         mdb = FirebaseFirestore.getInstance();
 
-        User user = new User(firebaseAuth.getCurrentUser().getUid(), getDisplayName(random), email, getRandomPhoneNum(random), time);
+        User user = new User(firebaseAuth.getCurrentUser().getUid(), getDisplayName(random), email, getRandomPhoneNum(random));
         return user;
 
         }
@@ -97,13 +102,15 @@ public class UserUtil{
 
 
 
-    /**
+    */
+/**
      * Get price represented as dollar signs.
-     */
+     *//*
+
 
 
     private static String getRandomString(String[] array, Random random) {
         int ind = random.nextInt(array.length);
         return array[ind];
     }
-}
+}*/

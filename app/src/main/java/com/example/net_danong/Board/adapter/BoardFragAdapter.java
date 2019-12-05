@@ -16,7 +16,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.net_danong.Board.BoardActivity;
+import com.example.net_danong.Board.BoardFragment;
 import com.example.net_danong.Board.BoardInfo;
 import com.example.net_danong.Board.Board_FirebaseHelper;
 import com.example.net_danong.Board.WriteBoardActivity;
@@ -66,7 +66,7 @@ public class BoardFragAdapter extends RecyclerView.Adapter<BoardFragAdapter.Main
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, BoardActivity.class);
+                Intent intent = new Intent(activity, BoardFragment.class);
                 intent.putExtra("boardInfo", mDataset.get(mainViewHolder.getAdapterPosition()));
                 activity.startActivity(intent);
             }

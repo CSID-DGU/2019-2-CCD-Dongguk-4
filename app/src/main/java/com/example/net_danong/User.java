@@ -1,43 +1,62 @@
 package com.example.net_danong;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 
 public class User {
 
     private String userUid;
     private String email;
-    private String user_id;
-    private String displayname;
-    private String PhoneNumber;
-    private Timestamp createdAt;
+    private String userId;
+    private String displayName;
+    private String PhoneNum;
+    private com.google.firebase.Timestamp createdAt;
     private String photoURL;
+    private String pushToken;
 
 
     public User(){
 
     };
-    public User(String displayname, String email, String phoneNumber, Timestamp createdAt) {
-        this.user_id = email.substring(0,email.lastIndexOf("@"));
-        this.displayname = displayname;
+    public User(String displayName, String email, String phoneNum, com.google.firebase.Timestamp createdAt) {
+        this.userId = email.substring(0,email.lastIndexOf("@"));
+        this.displayName = displayName;
         this.email = email;
-        this.PhoneNumber = phoneNumber;
+        this.PhoneNum = phoneNum;
         this.createdAt = createdAt;
     }
-    public User(String userUid, String displayname, String email, String phoneNumber, Timestamp createdAt) {
+    public User(String userUid, String displayName, String email, String phoneNum, com.google.firebase.Timestamp createdAt) {
         this.userUid = userUid;
-        this.user_id = email.substring(0,email.lastIndexOf("@"));
-        this.displayname = displayname;
+        this.userId = email.substring(0,email.lastIndexOf("@"));
+        this.displayName = displayName;
         this.email = email;
-        this.PhoneNumber = phoneNumber;
+        this.PhoneNum = phoneNum;
         this.createdAt = createdAt;
     }
     protected User(Parcel in) {
         email = in.readString();
-        user_id = in.readString();
-        displayname = in.readString();
+        userId = in.readString();
+        displayName = in.readString();
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+
+    public String getPushToken() {
+        return pushToken;
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 
     public String getPhotoURL() {
@@ -56,39 +75,31 @@ public class User {
         this.userUid = userUid;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
     public String getEmail() {
         return email;
     }
-    public String getPhoneNumber() {
-        return PhoneNumber;
+    public String getPhoneNum() {
+        return PhoneNum;
     }
-    public Timestamp getCreatedAt() {
+    public com.google.firebase.Timestamp getCreatedAt() {
         return createdAt;
     }
-    public String getUser_id() {
-        return user_id;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setPhoneNum(String phoneNum) {
+        PhoneNum = phoneNum;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        PhoneNumber = phoneNumber;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(com.google.firebase.Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 

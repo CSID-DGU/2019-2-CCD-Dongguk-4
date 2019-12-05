@@ -18,26 +18,30 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
-
-import java.util.zip.Inflater;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -63,12 +67,13 @@ public class ProductDetailActivity extends AppCompatActivity implements
         private ViewGroup mEmptyView;
 
         private ReviewFragment mReviewFragment;
-
+        private FirebaseAuth mAuth;
         private FirebaseFirestore mFirestore;
     private static DocumentReference mProductRef;
         private ListenerRegistration mProductRegistration;
 
         private ReviewAdapter mReviewAdapter;
+        ChatModel chatModel = new ChatModel();
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             loadViewForCode();
             scrollView = findViewById(R.id.scroll_view);
+            mFirestore = FirebaseFirestore.getInstance();
+            mAuth = FirebaseAuth.getInstance();
 
             DisplayMetrics localDisplayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(localDisplayMetrics);
@@ -98,7 +105,6 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
             mEmptyView = findViewById(R.id.view_empty_ratings);
 
-
             mRatingIndicator = findViewById(R.id.product_rating);
             mNumRatingsView = findViewById(R.id.product_num_ratings);
             mReviewRecycler= findViewById(R.id.recycler_reviews);
@@ -108,6 +114,15 @@ public class ProductDetailActivity extends AppCompatActivity implements
             findViewById(R.id.product_button_back).setOnClickListener(this);
             findViewById(R.id.fab_show_rating_dialog).setOnClickListener(this);
 
+            //채팅하기 버튼
+            Button button = findViewById(R.id.chat_button);
+            button.setOnClickListener(view -> {
+                String myUid = mAuth.getCurrentUser().getUid();
+                chatModel.users.put(myUid,true);
+
+                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
+            });
+
             // Get restaurant ID from extras
             String productId = getDocumentId();
             if (productId == null) {
@@ -115,12 +130,14 @@ public class ProductDetailActivity extends AppCompatActivity implements
             }
 
            // Initialize Firestore
-            mFirestore = FirebaseFirestore.getInstance();
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setTimestampsInSnapshotsEnabled(true)
+                    .build();
+            mFirestore.setFirestoreSettings(settings);
             mProductRef = mFirestore.collection("products").document(productId);
             // Get ratings
             Query ratingsQuery = mFirestore
                     .collection("reviews")
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
                     .limit(50);
 
             // RecyclerView
@@ -239,6 +256,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         }
 
         private void onProductLoaded(ProductWriteInfo product) {
+            mProviderIdView.setText(product.getPublisher());
             mTitleView.setText(product.getTitle());
             mNameView.setText(product.getProduct());
             mLocationView.setText(product.getLocation());
@@ -252,6 +270,27 @@ public class ProductDetailActivity extends AppCompatActivity implements
                     .load(product.getPhotoUrl())
                     .into(mPdtImageView);
             // Profile image
+   /*         DocumentReference docRef = mFirestore.collection("users").document(product.getUserUid());
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            User user = document.toObject(User.class);
+                            Glide.with(mPdtImageView.getContext())
+                                    .load(user.getPhotoURL())
+                                    .into(mPdtImageView);
+                            Log.d(TAG, "유저 DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });*/
+
 
         }
 
@@ -264,6 +303,11 @@ public class ProductDetailActivity extends AppCompatActivity implements
         }
 
         public void onAddRatingClicked(View view) {
+            if (mAuth.getCurrentUser() == null) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, LoginFragment.newInstance()).commitAllowingStateLoss();
+            }
             mReviewFragment.show(getSupportFragmentManager(), ReviewFragment.TAG);
         }
 
