@@ -16,6 +16,12 @@ class ChatModel {
         public String message;
         public Object timestamp;
         public Map<String,Object> readUsers = new HashMap<>();
+
+        public Comment(String uid, String message, Object timestamp) {
+            this.uid = uid;
+            this.message = message;
+            this.timestamp = timestamp;
+        }
     }
 
 }

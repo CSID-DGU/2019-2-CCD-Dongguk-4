@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -127,21 +128,14 @@ public class LoginFragment extends Fragment {
 
                     Toast.makeText(getActivity(), "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid(), Toast.LENGTH_SHORT).show();
 
+                     FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( instanceIdResult -> {
+                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                         String token = FirebaseInstanceId.getInstance().getToken();
+                         Map<String,Object> map = new HashMap<>();
+                         map.put("pushToken",token);
 
-                        String uid = mAuth.getCurrentUser().getUid();
-                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Executor) LoginFragment.this,  new OnSuccessListener<InstanceIdResult>() {
-                            @Override
-                            public void onSuccess(InstanceIdResult instanceIdResult) {
-                                String token = instanceIdResult.getToken();
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("pushToken",token);
-
-                                FirebaseFirestore.getInstance().collection("users")
-                                        .document(uid)
-                                        .update(map);
-                                Log.e("newToken",token);
-                            }
-                        });
+                         FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
+                     });
 
 
                     //로그인 됐으면 menu5 페이지로 넘기기

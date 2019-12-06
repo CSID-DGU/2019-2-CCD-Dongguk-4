@@ -91,10 +91,10 @@ public class MessageActivity extends AppCompatActivity {
                 });
 
             } else {
-                ChatModel.Comment comment = new ChatModel.Comment();
-                comment.uid = uid;
-                comment.message = editText.getText().toString();
-                comment.timestamp = ServerValue.TIMESTAMP;
+                List comment= new ArrayList<ChatModel.Comment>();
+
+                comment.add(new ChatModel.Comment(uid, editText.getText().toString(), ServerValue.TIMESTAMP));
+
                 FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -198,7 +198,6 @@ public class MessageActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     destinationUserModel = dataSnapshot.getValue(ChatUserModel.class);
                     getMessageList();
-
                 }
 
                 @Override
