@@ -2,6 +2,7 @@ package com.example.net_danong;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Contacts;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.inspector.StaticInspectionCompanionProvider;
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity{
     private LoginFragment loginFragment = new LoginFragment();
     private JoinFragment JoinFragment = new JoinFragment();
     private MapsFragment mapsFragment = new MapsFragment();
+    private ChatFragment ChatFragment= new ChatFragment();
+    private PeopleFragment PeopleFragment= new PeopleFragment();
+
 
 
 
@@ -85,70 +89,12 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
 
 
-        //유저추가하기
-       /* final User user = UserUtil.addUserUtil();
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getUser_id())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "onComplete: AuthState: " + mAuth.getCurrentUser().getUid());
-                            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                                    .setTimestampsInSnapshotsEnabled(true)
-                                    .build();
-                            mdb.setFirestoreSettings(settings);
 
-                            DocumentReference newUserRef = mdb
-                                    .collection("users")
-                                    .document(mAuth.getCurrentUser().getUid());
-                            newUserRef.set(user);
-                        }
-
-                    }
-                });*/
 
         /*Intent intent = new Intent(MainActivity.this, FristPageFragment.class);
         startActivity(intent);*/
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
-
-    private void addProductItem() {
-        for (int i = 0; i < 10; i++) {
-            CollectionReference productRef = mdb.collection("products");
-            ProductWriteInfo product = ProductUtil.getRandom(this);
-            // Add a new document to the restaurants collection
-            productRef.add(product);
-        }
-    }
-
-    private void addProductItem2(String name) {
-        for (int i = 0; i < 10; i++) {
-            // Get a random Restaurant POJO
-            CollectionReference users = mdb.collection("users");
-            ProductWriteInfo product = ProductUtil.getRandom(this);
-            // Add a new document to the restaurants collection
-            users.document(name).collection("products").add(product);
-        }
-    }
-
-
-    /*View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-                case R.id.floatingActionButton:
-                    FirebaseAuth.getInstance().signOut();
-                    myStartActivity(WritePostActivity.class);
-                    break;
-            }
-        }
-    };
-
-    private void myStartActivity(Class c) {
-        Intent intent = new Intent(this, c);
-        startActivity(intent);
-    }//더보기 +버튼 클릭시 등록화면으로 이동하는 로직*/
 
     //검색 기능 (검색어 전달 기능)
     public void searchWord(String productName){
@@ -227,7 +173,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu2: {
-                    transaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, PeopleFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu3: {
@@ -241,7 +187,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu5: {
-                    transaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
                     break;
                 }
             }

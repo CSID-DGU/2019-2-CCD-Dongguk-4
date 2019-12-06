@@ -28,12 +28,13 @@ public class User {
         this.PhoneNum = phoneNum;
         this.createdAt = createdAt;
     }
-    public User(String userUid, String displayName, String email, String phoneNum, com.google.firebase.Timestamp createdAt) {
+    public User(String userUid, String displayName, String email, String phoneNum, String photoURL, com.google.firebase.Timestamp createdAt) {
         this.userUid = userUid;
         this.userId = email.substring(0,email.lastIndexOf("@"));
         this.displayName = displayName;
         this.email = email;
         this.PhoneNum = phoneNum;
+        this.photoURL = photoURL;
         this.createdAt = createdAt;
     }
     protected User(Parcel in) {

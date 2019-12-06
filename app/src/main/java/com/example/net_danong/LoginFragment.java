@@ -1,6 +1,7 @@
 package com.example.net_danong;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
@@ -21,6 +24,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class LoginFragment extends Fragment {
     //이메일 비밀번호 로그인 모듈 변수
@@ -117,8 +127,30 @@ public class LoginFragment extends Fragment {
 
                     Toast.makeText(getActivity(), "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid(), Toast.LENGTH_SHORT).show();
 
+
+                        String uid = mAuth.getCurrentUser().getUid();
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Executor) LoginFragment.this,  new OnSuccessListener<InstanceIdResult>() {
+                            @Override
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                String token = instanceIdResult.getToken();
+                                Map<String,Object> map = new HashMap<>();
+                                map.put("pushToken",token);
+
+                                FirebaseFirestore.getInstance().collection("users")
+                                        .document(uid)
+                                        .update(map);
+                                Log.e("newToken",token);
+                            }
+                        });
+
+
                     //로그인 됐으면 menu5 페이지로 넘기기
-                    ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+                    //((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
+
+                    //로그인 완료시 프래그먼트 닫기
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().remove(LoginFragment.this).commit();
+                    fragmentManager.popBackStack();
 
                     //데이터 넘기기?
                     // Intent intent = new Intent(getActivity(), MainActivity.class);
