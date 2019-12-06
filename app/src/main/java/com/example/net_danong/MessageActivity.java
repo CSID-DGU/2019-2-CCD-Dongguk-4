@@ -76,10 +76,10 @@ public class MessageActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.messageActivity_reclclerview);
         button.setOnClickListener(view -> {
-            ChatModel chatModel = new ChatModel();
-            chatModel.users.put(uid, true);
-            chatModel.users.put(destinatonUid, true);
+            List chatModel = new ArrayList<ChatModel>();
 
+            chatModel.add(new ChatModel().users.put(uid, true));
+            chatModel.add(new ChatModel().users.put(destinatonUid, true));
 
             if (chatRoomUid == null) {
                 button.setEnabled(false);
@@ -155,9 +155,10 @@ public class MessageActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getValue() == null){
-                        ChatModel newRoom = new ChatModel();
-                        newRoom.users.put(uid, true);
-                        newRoom.users.put(destinatonUid, true);
+                        List newRoom = new ArrayList<ChatModel>();
+
+                        newRoom.add(new ChatModel().users.put(uid, true));
+                        newRoom.add(new ChatModel().users.put(destinatonUid, true));
                         FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(newRoom).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
