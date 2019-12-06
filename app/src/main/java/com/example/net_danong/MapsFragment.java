@@ -228,7 +228,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
         intent.putExtra(ProductDetailActivity.KEY_PRODUCT_ID, product.getId());
-
         startActivity(intent);
     }
 
@@ -258,23 +257,22 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             }
         });
 
-        //기본 화면 (하단 버튼 map 누르면 뜨는 초기 화면)
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(37.5609417, 126.9911718);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("충무로역"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //기본 화면 (초기 위치 설정 + 카메라 줌)
+        LatLng main = new LatLng(37.5613682, 126.9941803);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(main));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
         // Add a marker in Sydney and move the camera
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tell:0212341234"));
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivity(intent);
-                }
-            }//클릭한 마커 정보 들어와서 이 경우 전화걸기
-        });
+
+//        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+//                Intent intent = new Intent(Intent.ACTION_DIAL);
+//                intent.setData(Uri.parse("tell:0212341234"));
+//                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+//                    startActivity(intent);
+//                }
+//            }//클릭한 마커 정보 들어와서 이 경우 전화걸기
+//        });
         initMark();
     }
 
@@ -292,12 +290,17 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     //Log.d(TAG, document.getId() + " => " + document.getData());
                                     String pdt = document.get("product").toString();
+                                    String pdtID = document.getId();
 
                                     double lat = Double.valueOf(document.get("latitude").toString());
                                     double lng = Double.valueOf(document.get("longitude").toString());
                                     LatLng latLng = new LatLng(lat, lng);
 
-                                    mMap.addMarker(new MarkerOptions().position(latLng).title(pdt));
+                                    MyItem offsetItem = new MyItem(lat, lng);
+                                    mClusterManager.addItem(offsetItem);
+
+                                    mMap.addMarker(new MarkerOptions().position(latLng).title(pdtID));
+                                    mMap.setOnMarkerClickListener(markerClickListener);
                                 }
                             } else {
                                 Log.d(TAG, "에러 발생 :  ", task.getException());
@@ -319,7 +322,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                                     double lng = Double.valueOf(document.get("longitude").toString());
                                     LatLng latLng = new LatLng(lat, lng);
 
+                                    MyItem offsetItem = new MyItem(lat, lng);
+                                    mClusterManager.addItem(offsetItem);
+
                                     mMap.addMarker(new MarkerOptions().position(latLng).title(pdt));
+                                    mMap.setOnMarkerClickListener(markerClickListener);
                                 }
                             } else {
                                 Log.d(TAG, "에러 발생 :  ", task.getException());
@@ -328,9 +335,20 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                     });
 
         }
-
-
     }
+
+    //마커 클릭 리스너 (마커 클릭 시, 상품 세부 정보로 이동)
+    GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            String pdtID = marker.getTitle();
+            // Go to the details page for the selected restaurant
+            Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
+            intent.putExtra(ProductDetailActivity.KEY_PRODUCT_ID, pdtID);
+            startActivity(intent);
+            return false;
+        }
+    };
 
     private void addItem() {
 
@@ -351,7 +369,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.
                 PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_PERMISSIONS);
 
             return;

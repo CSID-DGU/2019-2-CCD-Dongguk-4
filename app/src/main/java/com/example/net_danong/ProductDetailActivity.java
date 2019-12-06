@@ -31,7 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -73,7 +73,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         private ListenerRegistration mProductRegistration;
 
         private ReviewAdapter mReviewAdapter;
-        ChatModel chatModel = new ChatModel();
+//        ChatModel chatModel = new ChatModel();
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +118,9 @@ public class ProductDetailActivity extends AppCompatActivity implements
             Button button = findViewById(R.id.chat_button);
             button.setOnClickListener(view -> {
                 String myUid = mAuth.getCurrentUser().getUid();
-                chatModel.users.put(myUid,true);
+//                chatModel.users.put(myUid,true);
 
-                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
+//                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
             });
 
             // Get restaurant ID from extras

@@ -93,7 +93,7 @@ public class JoinFragment extends Fragment {
         //파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
         mDb = FirebaseFirestore.getInstance();
-        splash_background = FirebaseRemoteConfig.getInstance().getString(getString(R.string.rc_color));
+//        splash_background = FirebaseRemoteConfig.getInstance().getString(getString(R.string.rc_color));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActivity().getWindow().setStatusBarColor(Color.parseColor(splash_background));
         }
@@ -227,16 +227,16 @@ public class JoinFragment extends Fragment {
 
                                             //리얼타임에 채팅용 유저데이터 저장
                                             String imageUrl = task.getResult().toString();
-                                            ChatUserModel userModel = new ChatUserModel();
-                                            userModel.userName = name;
-                                            userModel.profileImageUrl = imageUrl;
-                                            userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Toast.makeText(context, "채팅 데이터 등록.", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+//                                            ChatUserModel userModel = new ChatUserModel();
+//                                            userModel.userName = name;
+//                                            userModel.profileImageUrl = imageUrl;
+//                                            userModel.uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//                                            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void aVoid) {
+//                                                    Toast.makeText(context, "채팅 데이터 등록.", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
                                             //리얼타임에 채팅용 유저데이터 저장 완료
 
                                             //파이어스토어에 전체 유저데이터 저장

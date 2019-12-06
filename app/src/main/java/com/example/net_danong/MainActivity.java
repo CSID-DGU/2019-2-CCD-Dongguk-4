@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity{
     private LoginFragment loginFragment = new LoginFragment();
     private JoinFragment JoinFragment = new JoinFragment();
     private MapsFragment mapsFragment = new MapsFragment();
-    private ChatFragment ChatFragment= new ChatFragment();
-    private PeopleFragment PeopleFragment= new PeopleFragment();
+//    private ChatFragment ChatFragment= new ChatFragment();
+//    private PeopleFragment PeopleFragment= new PeopleFragment();
 
 
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu2: {
-                    transaction.replace(R.id.frame_layout, PeopleFragment).commitAllowingStateLoss();
+//                    transaction.replace(R.id.frame_layout, PeopleFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu3: {
@@ -207,13 +207,11 @@ public class MainActivity extends AppCompatActivity{
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
-        // 회원가입 Fragment 연결 (추후 변경)
     }
     public void replaceJoinFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, JoinFragment).commitAllowingStateLoss();
-        // 회원가입 Fragment 연결 (추후 변경)
     }
     public void replaceFindFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -225,7 +223,6 @@ public class MainActivity extends AppCompatActivity{
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
-        // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
     }
     public void replaceMapFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
