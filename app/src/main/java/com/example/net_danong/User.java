@@ -2,10 +2,6 @@ package com.example.net_danong;
 
 import android.os.Parcel;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-
 public class User {
 
     private String userUid;
@@ -15,19 +11,11 @@ public class User {
     private String PhoneNum;
     private com.google.firebase.Timestamp createdAt;
     private String photoURL;
-    private String pushToken;
-
 
     public User(){
 
     };
-    public User(String displayName, String email, String phoneNum, com.google.firebase.Timestamp createdAt) {
-        this.userId = email.substring(0,email.lastIndexOf("@"));
-        this.displayName = displayName;
-        this.email = email;
-        this.PhoneNum = phoneNum;
-        this.createdAt = createdAt;
-    }
+
     public User(String userUid, String displayName, String email, String phoneNum, String photoURL, com.google.firebase.Timestamp createdAt) {
         this.userUid = userUid;
         this.userId = email.substring(0,email.lastIndexOf("@"));
@@ -52,13 +40,6 @@ public class User {
     }
 
 
-    public String getPushToken() {
-        return pushToken;
-    }
-
-    public void setPushToken(String pushToken) {
-        this.pushToken = pushToken;
-    }
 
     public String getPhotoURL() {
         return photoURL;

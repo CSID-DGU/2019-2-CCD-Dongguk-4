@@ -91,4 +91,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="message_no_results">결과가 없습니다.</string>
     <string name="cancel">cancel</string>
+    <string name="rc_color">splash_background</string>
 </resources>

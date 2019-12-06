@@ -1,13 +1,12 @@
 package com.example.net_danong;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,13 +24,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -42,6 +40,8 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
+
+import java.util.List;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -73,11 +73,14 @@ public class ProductDetailActivity extends AppCompatActivity implements
         private ListenerRegistration mProductRegistration;
 
         private ReviewAdapter mReviewAdapter;
-//        ChatModel chatModel = new ChatModel();
+        ChatModel chatModel = new ChatModel();
+        List<User> users;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            String productId = getDocumentId();
+
             setContentView(R.layout.activity_product_detail);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             loadViewForCode();
@@ -118,13 +121,12 @@ public class ProductDetailActivity extends AppCompatActivity implements
             Button button = findViewById(R.id.chat_button);
             button.setOnClickListener(view -> {
                 String myUid = mAuth.getCurrentUser().getUid();
-//                chatModel.users.put(myUid,true);
+                chatModel.users.put(myUid,true);
 
-//                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
+                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
             });
 
             // Get restaurant ID from extras
-            String productId = getDocumentId();
             if (productId == null) {
                 throw new IllegalArgumentException("Must pass extra " + KEY_PRODUCT_ID);
             }
