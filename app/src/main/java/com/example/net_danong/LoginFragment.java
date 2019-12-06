@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -142,9 +143,15 @@ public class LoginFragment extends Fragment {
                     //((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
 
                     //로그인 완료시 프래그먼트 닫기
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+/*                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction().remove(LoginFragment.this).commit();
-                    fragmentManager.popBackStack();
+                    fragmentManager.popBackStack();*/
+
+                Fragment newFragment = new LoginFragment();
+                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, newFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
 
                     //데이터 넘기기?
                     // Intent intent = new Intent(getActivity(), MainActivity.class);
