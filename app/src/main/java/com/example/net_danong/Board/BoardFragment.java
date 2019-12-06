@@ -23,6 +23,7 @@ import com.example.net_danong.Menu5Fragment;
 import com.example.net_danong.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -131,8 +132,9 @@ public class BoardFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.writeBtn:
-                    if (currentUser != null) {
-                        myStartActivity(WriteBoardActivity.class);
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                        Intent intent = new Intent(getActivity(), WriteBoardActivity.class);
+                        startActivity(intent);
                         break;
                     } else {
                         Toast.makeText(getActivity(), "로그인이 필요한 서비스입니다.", Toast.LENGTH_SHORT).show();
