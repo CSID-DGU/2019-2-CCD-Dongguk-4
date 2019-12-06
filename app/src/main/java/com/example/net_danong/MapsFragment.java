@@ -341,12 +341,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
+            marker.hideInfoWindow();
             String pdtID = marker.getTitle();
             // Go to the details page for the selected restaurant
             Intent intent = new Intent(getActivity(), ProductDetailActivity.class);
             intent.putExtra(ProductDetailActivity.KEY_PRODUCT_ID, pdtID);
             startActivity(intent);
-            return false;
+            return true;
         }
     };
 
