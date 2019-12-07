@@ -52,11 +52,6 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_login, container, false);
 
-        //로그인 되어있으면 menu5fragment로 교체
-        if (currentUser != null) {
-            ((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
-        }
-
         //이메일 비밀번호 로그인 모듈 변수
         mAuth = FirebaseAuth.getInstance();
 
@@ -75,6 +70,11 @@ public class LoginFragment extends Fragment {
                 String password = userPw.getText().toString();
                 //로그인 성공
                 loginStart(email, password);
+                userEmail.setText(null);
+                userPw.setText(null);
+                //닫아라
+
+
             }
         });
 
@@ -105,20 +105,16 @@ public class LoginFragment extends Fragment {
 
     //public Boolean check; (로그인 처리 함수)
     public void loginStart(String email, String password) {
-        Toast.makeText(getActivity(),"loginStart 함수 안으로",Toast.LENGTH_SHORT).show();
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
-                Toast.makeText(getActivity(), "mAuth. onComplete 함수", Toast.LENGTH_SHORT).show();
-
                 if (!task.isSuccessful()) {
                     try {
                         throw task.getException();
                     } catch (FirebaseAuthInvalidUserException e) {
                         Toast.makeText(getActivity(), "존재하지 않는 id 입니다.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseAuthInvalidCredentialsException e) {
-                        Toast.makeText(getActivity(), "이메일 형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "비밀번호가 옳지 않습니다.", Toast.LENGTH_SHORT).show();
                     } catch (FirebaseNetworkException e) {
                         Toast.makeText(getActivity(), "Firebase NetworkException", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
@@ -126,32 +122,28 @@ public class LoginFragment extends Fragment {
                     }
                 } else {
                     currentUser = mAuth.getCurrentUser();
-
-                    Toast.makeText(getActivity(), "로그인 성공" + "/" + currentUser.getEmail() + "/" + currentUser.getUid(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "어서오세요, " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
 
                      FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( instanceIdResult -> {
-                         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                         String uid = currentUser.getUid();
                          String token = FirebaseInstanceId.getInstance().getToken();
                          Map<String,Object> map = new HashMap<>();
                          map.put("pushToken",token);
-
                          FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
                      });
 
-
-                    //로그인 됐으면 menu5 페이지로 넘기기
-                    //((MainActivity)getActivity()).replaceMenu5Frag(Menu5Fragment.newInstance());
 
                     //로그인 완료시 프래그먼트 닫기
 /*                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction().remove(LoginFragment.this).commit();
                     fragmentManager.popBackStack();*/
 
-                Fragment newFragment = new LoginFragment();
+/*                    Fragment newFragment = new LoginFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, newFragment);
                     transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.commit();*/
+
 
                     //데이터 넘기기?
                     // Intent intent = new Intent(getActivity(), MainActivity.class);
