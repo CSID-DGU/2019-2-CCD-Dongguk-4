@@ -61,7 +61,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         private ImageView mPdtImageView, mProviderProfileView;
         private TextView mViewNumView, mTitleView, mLoveNumView, mNameView, mCategoryView, mPriceView
                 , mContentsView, mProviderIdView, mLocationView;
-        private Button goProvider, goReview;
+        private Button goProvider, goReview, btn_chat;
 
         private FieldPath fieldPath;
         private MaterialRatingBar mRatingIndicator;
@@ -121,13 +121,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
             findViewById(R.id.fab_show_rating_dialog).setOnClickListener(this);
 
             //채팅하기 버튼
-            Button button = findViewById(R.id.chat_button);
-            button.setOnClickListener(view -> {
-                String myUid = mAuth.getCurrentUser().getUid();
-                chatModel.users.put(myUid,true);
+            btn_chat = findViewById(R.id.chat_button);
 
-                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel);
-            });
 
             // Get restaurant ID from extras
             if (productId == null) {
@@ -300,8 +295,15 @@ public class ProductDetailActivity extends AppCompatActivity implements
                     }
                 }
             });
-            //시작 user 에서 image 불러오기
-        // Profile image
+            btn_chat.setOnClickListener(view -> {
+                Intent intent = new Intent(view.getContext(), MessageActivity.class);
+                intent.putExtra("destinationUid",product.getUserUid());
+                ActivityOptions activityOptions = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(), R.anim.fromright,R.anim.toleft);
+                    startActivity(intent,activityOptions.toBundle());
+                }
+            });
 
 
         }
