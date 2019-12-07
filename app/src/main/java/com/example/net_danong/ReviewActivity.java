@@ -26,8 +26,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
-import me.zhanghai.android.materialratingbar.MaterialRatingBar;
-
 public class ReviewActivity extends AppCompatActivity implements
         View.OnClickListener,
         EventListener<DocumentSnapshot>,
@@ -54,7 +52,7 @@ public class ReviewActivity extends AppCompatActivity implements
         setContentView(R.layout.layout_total_review);
 
         mReviewRecycler= findViewById(R.id.recycler_totalReviews);
-        findViewById(R.id.fab_show_rating_dialog).setOnClickListener(this);
+        findViewById(R.id.fab_show_review_dialog).setOnClickListener(this);
 
         mEmptyView = findViewById(R.id.view_empty_ratings);
 
@@ -113,7 +111,7 @@ public class ReviewActivity extends AppCompatActivity implements
             case R.id.product_button_back:
                 onBackArrowClicked(v);
                 break;
-            case R.id.fab_show_rating_dialog:
+            case R.id.fab_show_review_dialog:
                 onAddRatingClicked(v);
                 break;
         }

@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -74,6 +75,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     private static final int RC_SIGN_IN = 9001;
     private static final int LIMIT = 50;
     private RecyclerView mProductRecycler;
+    private TextView mPdtCntNum;
     private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private Query mQuery;
@@ -106,7 +108,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
-
+        mPdtCntNum = view.findViewById(R.id.txt_pdtCntNum);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());//현재위치
         mProductRecycler = view.findViewById(R.id.recycler_product);
 
@@ -156,6 +158,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
 
                 } else {
                     mProductRecycler.setVisibility(View.VISIBLE);
+                    mPdtCntNum.setText(Integer.toString(getItemCount()));
                 }
             }
 
@@ -402,59 +405,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
                 return;
         }
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu,  MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getActivity().getMenuInflater().inflate(R.menu.map, menu);
-        MenuItem item = menu.findItem(R.id.action_toggle);
-        if (mLayout != null) {
-            if (mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
-                item.setTitle(R.string.action_show);
-            } else {
-                item.setTitle(R.string.action_hide);
-            }
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-
-    }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.getActivity().onPrepareOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_toggle: {
-                if (mLayout != null) {
-                    if (mLayout.getPanelState() != SlidingUpPanelLayout.PanelState.HIDDEN) {
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                        item.setTitle(R.string.action_show);
-                    } else {
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                        item.setTitle(R.string.action_hide);
-                    }
-                }
-                return true;
-            }
-            case R.id.action_anchor: {
-                if (mLayout != null) {
-                    if (mLayout.getAnchorPoint() == 1.0f) {
-                        mLayout.setAnchorPoint(0.7f);
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.ANCHORED);
-                        item.setTitle(R.string.action_anchor_disable);
-                    } else {
-                        mLayout.setAnchorPoint(1.0f);
-                        mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                        item.setTitle(R.string.action_anchor_enable);
-                    }
-                }
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public void onBackPressed() {
         if (mLayout != null &&

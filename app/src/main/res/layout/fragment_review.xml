@@ -10,7 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Review" />
-
+    <ImageView
+        android:src="@drawable/ic_add_to_photos_black_24dp"
+        android:id="@+id/iv_rvPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"/>
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
         android:id="@+id/product_form_rating"
         style="@style/Widget.MaterialRatingBar.RatingBar"

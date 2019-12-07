@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +31,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -43,8 +41,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
-
-import java.util.List;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -59,7 +55,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         public static final String KEY_PRODUCT_ID = "key_product_id";
 
         private ImageView mPdtImageView, mProviderProfileView;
-        private TextView mViewNumView, mTitleView, mLoveNumView, mNameView, mCategoryView, mPriceView
+        private TextView  mTitleView, mNameView, mCategoryView, mPriceView
                 , mContentsView, mProviderIdView, mLocationView;
         private Button goProvider, goReview, btn_chat;
 
@@ -76,8 +72,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         private ListenerRegistration mProductRegistration;
 
         private ReviewAdapter mReviewAdapter;
-        ChatModel chatModel = new ChatModel();
-        List<User> users;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +93,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
             scrollView.setHeaderLayoutParams(localObject);
 
             mPdtImageView = findViewById(R.id.img_productZoom);
-            mViewNumView = findViewById(R.id.txt_pdtViewNum);
             mTitleView = findViewById(R.id.txt_pdtTitle);
-            mLoveNumView = findViewById(R.id.txt_pdtViewNum);
             mNameView = findViewById(R.id.txt_pdtName);
             mCategoryView = findViewById(R.id.txt_pdtCategory);
             mPriceView = findViewById(R.id.txt_pdtPrice);
@@ -118,7 +111,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
             findViewById(R.id.btn_goProvider).setOnClickListener(this);
             findViewById(R.id.btn_goReview).setOnClickListener(this);
             findViewById(R.id.product_button_back).setOnClickListener(this);
-            findViewById(R.id.fab_show_rating_dialog).setOnClickListener(this);
+            findViewById(R.id.fab_show_review_dialog).setOnClickListener(this);
 
             //채팅하기 버튼
             btn_chat = findViewById(R.id.chat_button);
@@ -136,12 +129,12 @@ public class ProductDetailActivity extends AppCompatActivity implements
             mFirestore.setFirestoreSettings(settings);
             mProductRef = mFirestore.collection("products").document(productId);
             // Get ratings
-            Query ratingsQuery = mFirestore
+            Query reviewQuery = mProductRef
                     .collection("reviews")
                     .limit(50);
 
             // RecyclerView
-            mReviewAdapter = new ReviewAdapter(ratingsQuery) {
+            mReviewAdapter = new ReviewAdapter(reviewQuery) {
                 @Override
                 protected void onDataChanged() {
                     if (getItemCount() == 0) {
@@ -197,8 +190,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
                 case R.id.product_button_back:
                     onBackArrowClicked(v);
                     break;
-                case R.id.fab_show_rating_dialog:
-                    onAddRatingClicked(v);
+                case R.id.fab_show_review_dialog:
+                    onAddReviewClicked(v);
                     break;
                 case R.id.btn_goProvider:
 /*                    Intent intent = new Intent(ProductDetailActivity.this, 판매자마켓.class);
@@ -274,7 +267,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
                     .into(mPdtImageView);
 
 
-            //시작 user 에서 image 불러오기
+            // user 에서 image 불러오기
             DocumentReference userDocRef = mFirestore.collection("users").document(product.getUserUid());
             userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -285,7 +278,6 @@ public class ProductDetailActivity extends AppCompatActivity implements
                             User user = document.toObject(User.class);
                             Glide.with(mPdtImageView.getContext())
                                     .load(user.getPhotoURL())
-                                    .apply(new RequestOptions().circleCrop())
                                     .into(mProviderProfileView);
                         } else {
                             Log.d(TAG, "No such document");
@@ -315,8 +307,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
         public void onBackArrowClicked(View view) {
             onBackPressed();
         }
-
-        public void onAddRatingClicked(View view) {
+        //리뷰추가
+        public void onAddReviewClicked(View view) {
             if (mAuth.getCurrentUser() == null) {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

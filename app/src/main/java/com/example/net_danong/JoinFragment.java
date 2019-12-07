@@ -211,8 +211,7 @@ public class JoinFragment extends Fragment {
             return;
         }
 
-
-        //클라우드에 유저데이터 전체 저장
+        //계정생성
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity{
     private LoginFragment loginFragment = new LoginFragment();
     private JoinFragment JoinFragment = new JoinFragment();
     private MapsFragment mapsFragment = new MapsFragment();
-//    private ChatFragment ChatFragment= new ChatFragment();
-    private PeopleFragment PeopleFragment= new PeopleFragment();
+    private ChatFragment ChatFragment= new ChatFragment();
 
 
 
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu2: {
-                    transaction.replace(R.id.frame_layout, PeopleFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, ChatFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu3: {

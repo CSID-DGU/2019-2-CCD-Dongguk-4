@@ -115,7 +115,7 @@ public class ChatFragment extends Fragment {
                             .apply(new RequestOptions().circleCrop())
                             .into(customViewHolder.imageView);
 
-                    customViewHolder.textView_title.setText(userModel.uid);
+                    customViewHolder.textView_title.setText(userModel.userName);
 
                 }
 

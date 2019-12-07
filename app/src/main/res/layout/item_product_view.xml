@@ -14,55 +14,26 @@
 
         <ImageView
             android:id="@+id/product_button_back"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="?attr/selectableItemBackground"
             app:srcCompat="?attr/actionModeCloseDrawable" />
 
         <TextView
             android:id="@+id/txt_pdtTitle"
-            android:layout_width="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="20dp"
             android:text="제목"
-            android:textSize="20sp" />
+            android:textStyle="bold"
+            android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            app:srcCompat="@android:drawable/ic_menu_view" />
-
-        <TextView
-            android:id="@+id/txt_pdtViewNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="조회수"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center_vertical"
-            app:srcCompat="@android:drawable/btn_star_big_off" />
-
-        <TextView
-            android:id="@+id/txt_pdtLoveNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="찜수"
-            android:textSize="10sp" />
 
         <me.zhanghai.android.materialratingbar.MaterialRatingBar
             android:id="@+id/product_rating"
@@ -95,6 +66,12 @@
             android:padding="15dp"
             android:text="상품명"
             android:textSize="20sp" />
+        <!-- divider -->
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="#eeeeee" />
+
         <TextView
             android:id="@+id/txt_pdtLocation"
             android:layout_width="wrap_content"
@@ -103,6 +80,11 @@
             android:padding="15dp"
             android:text="지역"
             android:textSize="20sp" />
+        <!-- divider -->
+        <TextView
+            android:layout_width="5dp"
+            android:layout_height="match_parent"
+            android:background="#eeeeee" />
         <TextView
             android:id="@+id/txt_pdtCategory"
             android:layout_width="wrap_content"
@@ -111,19 +93,19 @@
             android:padding="15dp"
             android:text="카테고리"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/txt_pdtPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:padding="15dp"
+            android:text="가격"
+            android:textSize="20sp" />
     </LinearLayout>
 
+    <!-- divider -->
     <TextView
-        android:id="@+id/txt_pdtPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="15dp"
-        android:text="가격"
-        android:textSize="20sp" />
-
-    //divider
-    <TextView
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#eeeeee" />
@@ -153,8 +135,6 @@
             android:id="@+id/img_providerProfile"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:adjustViewBounds="false"
-            android:cropToPadding="false"
             android:gravity="center_vertical"
             app:srcCompat="@drawable/com_facebook_profile_picture_blank_square" />
 
@@ -163,7 +143,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:padding="20dp"
+            android:layout_centerInParent="true"
+            android:padding="10dp"
             android:layout_toRightOf="@+id/img_providerProfile"
             android:text="생산자"
             android:textSize="20dp" />
@@ -171,11 +152,13 @@
         <Button
             android:id="@+id/chat_button"
             android:text="채팅하기"
+            android:layout_centerInParent="true"
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+
     <Button
         android:id="@+id/btn_goProvider"
         android:layout_width="match_parent"
@@ -202,20 +185,15 @@
     <!-- View for empty ratings -->
     <LinearLayout
         android:id="@+id/view_empty_ratings"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/restaurant_top_card"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="후기가 없습니다."
+            android:layout_gravity="center"
+            android:text="아직 후기가 없습니다."
             android:textSize="20dp"/>
 
     </LinearLayout>
@@ -226,7 +204,7 @@
         android:text="상품후기 모두보기>" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_rating_dialog"
+        android:id="@+id/fab_show_review_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

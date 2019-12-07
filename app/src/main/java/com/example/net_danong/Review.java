@@ -13,19 +13,25 @@ public class Review {
     private String userName;
     private double rating;
     private String text;
+    private String rvPhoto;
     private @ServerTimestamp Date timestamp;
 
     public Review() {}
 
-    public Review(FirebaseUser user, double rating, String text) {
+    public Review(FirebaseUser user, double rating, String text, String rvPhoto) {
         this.userUId = user.getUid();
-        this.userName = user.getDisplayName();
-        if (TextUtils.isEmpty(this.userName)) {
-            this.userName = user.getEmail();
-        }
-
+        this.userName = user.getEmail().substring(0,user.getEmail().lastIndexOf("@"));
         this.rating = rating;
         this.text = text;
+        this.rvPhoto = rvPhoto;
+    }
+
+    public String getRvPhoto() {
+        return rvPhoto;
+    }
+
+    public void setRvPhoto(String rvPhoto) {
+        this.rvPhoto = rvPhoto;
     }
 
     public String getUserUId() {

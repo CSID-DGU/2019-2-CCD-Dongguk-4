@@ -99,7 +99,6 @@ public class MessageActivity extends AppCompatActivity {
                 FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "comment,, 추가했음", Toast.LENGTH_SHORT).show();
                         sendGcm();
                         editText.setText("");
                     }
