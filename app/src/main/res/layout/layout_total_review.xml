@@ -1,41 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_totalReviews"
+        android:id="@+id/recycler_total_reviews"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        tools:listitem="@layout/item_detail_review" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
+        android:paddingTop="28dp"
+        android:visibility="gone" />
 
     <!-- View for empty ratings -->
     <LinearLayout
-        android:id="@+id/view_empty_ratings"
-        android:layout_width="wrap_content"
+        android:id="@+id/view_empty_total_reviews"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="후기가 없습니다."
+            android:layout_gravity="center"
+            android:text="아직 후기가 없습니다."
             android:textSize="20dp"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_show_review_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:tooltipText="후기추가"
+            app:srcCompat="@drawable/ic_add_black_24dp"/>
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_review_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:tooltipText="리뷰추가" />
-
 </RelativeLayout>

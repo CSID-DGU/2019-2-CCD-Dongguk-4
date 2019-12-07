@@ -1,6 +1,5 @@
 package com.example.net_danong;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
@@ -56,22 +49,6 @@ public class ReviewAdapter extends FirestoreAdapter<ReviewAdapter.ViewHolder> {
         }
 
         public void bind(Review review) {
-/*            DocumentReference userDocRef = FirebaseFirestore.getInstance().collection("users").document(review.getUserUId());
-            userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            User user = document.toObject(User.class);
-                            Glide.with(view.getContext())
-                                    .load(review.getRvPhoto())
-                                    .into(imageView);
-                            idView.setText(user.getEmail().substring(0,user.getEmail().lastIndexOf("@")));
-                        }
-                    }
-                }
-            });*/
             Glide.with(view.getContext())
                     .load(review.getRvPhoto())
                     .into(imageView);

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,8 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -44,16 +42,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.maps.android.clustering.ClusterManager;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -76,7 +69,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
     private static final int LIMIT = 50;
     private RecyclerView mProductRecycler;
     private TextView mPdtCntNum;
-    private FirebaseUser user;
     private FirebaseFirestore mFirestore;
     private Query mQuery;
     private ProductListAdapter mAdapter;
@@ -218,12 +210,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         if (mAdapter != null) {
             mAdapter.stopListening();
         }
-    }
-
-
-    @Override
-    public  void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

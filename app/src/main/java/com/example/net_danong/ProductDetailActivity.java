@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -103,10 +102,10 @@ public class ProductDetailActivity extends AppCompatActivity implements
             mProviderIdView= findViewById(R.id.txt_provider);
 
             mEmptyView = findViewById(R.id.view_empty_ratings);
+            mReviewRecycler= findViewById(R.id.recycler_reviews);
 
             mRatingIndicator = findViewById(R.id.product_rating);
             mNumRatingsView = findViewById(R.id.product_num_ratings);
-            mReviewRecycler= findViewById(R.id.recycler_reviews);
 
             findViewById(R.id.btn_goProvider).setOnClickListener(this);
             findViewById(R.id.btn_goReview).setOnClickListener(this);
@@ -128,10 +127,10 @@ public class ProductDetailActivity extends AppCompatActivity implements
                     .build();
             mFirestore.setFirestoreSettings(settings);
             mProductRef = mFirestore.collection("products").document(productId);
-            // Get ratings
+            // 10개만 불러오기
             Query reviewQuery = mProductRef
                     .collection("reviews")
-                    .limit(50);
+                    .limit(10);
 
             // RecyclerView
             mReviewAdapter = new ReviewAdapter(reviewQuery) {
@@ -197,7 +196,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
 /*                    Intent intent = new Intent(ProductDetailActivity.this, 판매자마켓.class);
                     startActivity(intent);*/
                 case R.id.btn_goReview:
-                    Intent intent = new Intent(ProductDetailActivity.this, ReviewActivity.class);
+                    Intent intent = new Intent(ProductDetailActivity.this, PdtTotalReviewActivity.class);
+                    intent.putExtra(PdtTotalReviewActivity.KEY_PRODUCT_ID, getDocumentId());
                     startActivity(intent);
             }
         }

@@ -58,9 +58,11 @@
         <activity android:name=".LoginFragment" />
         <activity android:name=".GalleryActivity"/>
         <activity android:name=".ProductDetailActivity"/>
+        <activity android:name=".MyProductActivity"/>
+        <activity android:name=".MyReviewActivity"/>
 
         <activity android:name=".WritePostActivity"/>
-        <activity android:name=".ReviewActivity"/>
+        <activity android:name=".PdtTotalReviewActivity"/>
         <activity android:name=".Board.WriteBoardActivity"/>
         <activity android:name=".Board.BoardActivity"/>
 

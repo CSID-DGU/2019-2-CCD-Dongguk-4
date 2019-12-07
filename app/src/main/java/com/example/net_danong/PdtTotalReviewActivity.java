@@ -2,14 +2,14 @@ package com.example.net_danong;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,53 +17,59 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 
-public class ReviewActivity extends AppCompatActivity implements
+
+public class PdtTotalReviewActivity extends AppCompatActivity implements
         View.OnClickListener,
-        EventListener<DocumentSnapshot>,
         ReviewFragment.ReviewListener{
 
-    private static final String TAG = "ReviewActivity";
     public static final String KEY_PRODUCT_ID = "key_product_id";
 
 
     private RecyclerView mReviewRecycler;
     private ViewGroup mEmptyView;
-
     private ReviewFragment mReviewFragment;
+    private ReviewAdapter mReviewAdapter;
 
+    private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
     private static DocumentReference mProductRef;
-    private ListenerRegistration mProductRegistration;
 
-    private ReviewAdapter mReviewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String productId = getDocumentId();
+
         setContentView(R.layout.layout_total_review);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mReviewRecycler= findViewById(R.id.recycler_totalReviews);
-        findViewById(R.id.fab_show_review_dialog).setOnClickListener(this);
+        mFirestore = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        mEmptyView = findViewById(R.id.view_empty_total_reviews);
+        mReviewRecycler= findViewById(R.id.recycler_total_reviews);
 
-        mEmptyView = findViewById(R.id.view_empty_ratings);
+        // Get product Id from extras
+        if (productId == null) {
+            throw new IllegalArgumentException("Must pass extra " + KEY_PRODUCT_ID);
+        }
 
         // Initialize Firestore
-        mFirestore = FirebaseFirestore.getInstance();
-        mProductRef = mFirestore.collection("products").document();
-        // Get ratings
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setTimestampsInSnapshotsEnabled(true)
+                .build();
+        mFirestore.setFirestoreSettings(settings);
+        mProductRef = mFirestore.collection("products").document(productId);
+        // Get review
         Query reviewQuery = mProductRef
-                .collection("reviews")
-                .orderBy("timestamp", Query.Direction.DESCENDING)
-                .limit(50);
+                .collection("reviews");
 
         // RecyclerView
         mReviewAdapter = new ReviewAdapter(reviewQuery) {
@@ -72,11 +78,9 @@ public class ReviewActivity extends AppCompatActivity implements
                 if (getItemCount() == 0) {
                     mReviewRecycler.setVisibility(View.GONE);
                     mEmptyView.setVisibility(View.VISIBLE);
-
                 } else {
                     mReviewRecycler.setVisibility(View.VISIBLE);
                     mEmptyView.setVisibility(View.GONE);
-
                 }
             }
         };
@@ -86,8 +90,14 @@ public class ReviewActivity extends AppCompatActivity implements
 
         mReviewFragment = new ReviewFragment();
     }
-
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_show_review_dialog:
+                onAddReviewClicked(v);
+                break;
+        }
+    }
     @Override
     public void onStart() {
         super.onStart();
@@ -97,28 +107,12 @@ public class ReviewActivity extends AppCompatActivity implements
     @Override
     public void onStop() {
         super.onStop();
-
         mReviewAdapter.stopListening();
-        if (mProductRegistration != null) {
-            mProductRegistration.remove();
-            mProductRegistration = null;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.product_button_back:
-                onBackArrowClicked(v);
-                break;
-            case R.id.fab_show_review_dialog:
-                onAddRatingClicked(v);
-                break;
-        }
     }
 
     private Task<Void> addReview(final DocumentReference productRef,
                                  final Review review) {
+
         final DocumentReference reviewRef = productRef.collection("reviews")
                 .document();
 
@@ -153,23 +147,17 @@ public class ReviewActivity extends AppCompatActivity implements
         });
     }
 
-    @Override
-    public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-        if (e != null) {
-            Log.w(TAG, "product:onEvent", e);
-            return;
-        }
-    }
-
     private String getDocumentId() {
         return getIntent().getStringExtra(KEY_PRODUCT_ID);
     }
 
-    public void onBackArrowClicked(View view) {
-        onBackPressed();
-    }
-
-    public void onAddRatingClicked(View view) {
+    //리뷰추가
+    public void onAddReviewClicked(View view) {
+        if (mAuth.getCurrentUser() == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_layout, LoginFragment.newInstance()).commitAllowingStateLoss();
+        }
         mReviewFragment.show(getSupportFragmentManager(), ReviewFragment.TAG);
     }
 
@@ -188,8 +176,6 @@ public class ReviewActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Review added");
-
                         // Hide keyboard and scroll to top
                         hideKeyboard();
                         mReviewRecycler.smoothScrollToPosition(0);
@@ -198,9 +184,6 @@ public class ReviewActivity extends AppCompatActivity implements
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Add rating failed", e);
-
-                        // Show failure message and hide keyboard
                         hideKeyboard();
                         Snackbar.make(findViewById(android.R.id.content), "Failed to add rating",
                                 Snackbar.LENGTH_SHORT).show();

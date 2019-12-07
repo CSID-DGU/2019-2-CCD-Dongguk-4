@@ -129,6 +129,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -170,45 +171,47 @@
         android:layout_height="wrap_content"
         android:background="#eeeeee" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <!-- Ratings -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_reviews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"
-        android:paddingTop="28dp"
-        android:visibility="gone"
-        tools:listitem="@layout/item_detail_review" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:clipToPadding="false"
+            android:visibility="gone"
+            tools:listitem="@layout/item_detail_review" />
 
-    <!-- View for empty ratings -->
-    <LinearLayout
-        android:id="@+id/view_empty_ratings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
+        <!-- View for empty ratings -->
+        <LinearLayout
+            android:id="@+id/view_empty_ratings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="아직 후기가 없습니다."
+                android:textSize="20dp"/>
+
+        </LinearLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_show_review_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="아직 후기가 없습니다."
-            android:textSize="20dp"/>
-
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:tooltipText="후기추가"
+            app:srcCompat="@drawable/ic_add_black_24dp"/>
+    </RelativeLayout>
     <Button
         android:id="@+id/btn_goReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="상품후기 모두보기>" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_show_review_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="10dp"
-        android:tooltipText="후기추가"
-        app:srcCompat="@drawable/ic_add_black_24dp"/>
+
 </LinearLayout>

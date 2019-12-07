@@ -1,11 +1,8 @@
 package com.example.net_danong;
 
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.provider.Contacts;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.inspector.StaticInspectionCompanionProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,22 +12,17 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.net_danong.Board.BoardFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +47,6 @@ public class MainActivity extends AppCompatActivity{
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
     private FristPageFragment FristPageFragment = new FristPageFragment();
-    private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private BoardFragment boardFragment = new BoardFragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
@@ -64,6 +55,8 @@ public class MainActivity extends AppCompatActivity{
     private JoinFragment JoinFragment = new JoinFragment();
     private MapsFragment mapsFragment = new MapsFragment();
     private ChatFragment ChatFragment= new ChatFragment();
+    private MyPageFragment mypageFragment= new MyPageFragment();
+
 
 
 
@@ -186,7 +179,7 @@ public class MainActivity extends AppCompatActivity{
                     break;
                 }
                 case R.id.navigation_menu5: {
-                    transaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, mypageFragment).commitAllowingStateLoss();
                     break;
                 }
             }
@@ -195,39 +188,48 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    //Fragment 교체
+    //Fragment 교체 .addToBackStack(null).commitAllowingStateLoss(); 사용해야 닫을때 뒤로 돌아감 ! ㅎㅁㅎ 닫을때도 마찬가지 pop사용
     public void replaceSearchFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, searchFragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, searchFragment).addToBackStack(null).commitAllowingStateLoss();
         // 검색 searchFragment 연결
     }
     public void replaceLoginFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, loginFragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, loginFragment).addToBackStack(null).commitAllowingStateLoss();
     }
     public void replaceJoinFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, JoinFragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, JoinFragment).addToBackStack(null).commitAllowingStateLoss();
     }
     public void replaceFindFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+/*
         fragmentTransaction.replace(R.id.frame_layout, menu2Fragment).commitAllowingStateLoss();
+*/
         // 추후에 아이디 비밀번호찾기 페이지 만들면 그 fragment로 연결하기
     }
     public void replaceMenu5Frag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, menu5Fragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, menu5Fragment).addToBackStack(null).commitAllowingStateLoss();
     }
     public void replaceMapFrag(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, mapsFragment).commitAllowingStateLoss();
+        fragmentTransaction.replace(R.id.frame_layout, mapsFragment).addToBackStack(null).commitAllowingStateLoss();
         // 검색 쿼리 완료 후에 mapsFragment로 교체
+    }
+    // 로그인 완료 후 닫을 때 사용
+    public void removeLogFrag(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(loginFragment).commitAllowingStateLoss();
+        fragmentManager.popBackStack();
     }
 
 }

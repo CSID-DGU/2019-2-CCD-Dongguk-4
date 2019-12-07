@@ -131,12 +131,8 @@ public class LoginFragment extends Fragment {
                          map.put("pushToken",token);
                          FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
                      });
+                    ((MainActivity)getActivity()).removeLogFrag(LoginFragment.newInstance());
 
-
-                    //로그인 완료시 프래그먼트 닫기
-/*                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().remove(LoginFragment.this).commit();
-                    fragmentManager.popBackStack();*/
 
 /*                    Fragment newFragment = new LoginFragment();
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();

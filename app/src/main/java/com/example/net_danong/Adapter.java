@@ -45,7 +45,7 @@ public class Adapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.item, container, false);
+        View view = layoutInflater.inflate(R.layout.item_firstpage_cardview, container, false);
         final ImageView imageView;
         TextView title, desc;
         imageView = view.findViewById(R.id.image);
