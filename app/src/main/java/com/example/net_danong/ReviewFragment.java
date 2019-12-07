@@ -115,22 +115,7 @@ public class ReviewFragment extends DialogFragment implements View.OnClickListen
     }
 
     public void onSubmitClicked(View view) {
-        final StorageReference REF =  FirebaseStorage.getInstance().getReference().child("reviewImages").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        REF.putFile(imageUri)
-                .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return REF.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                imageUrl2 = task.getResult().toString();
-            }
-        });
+        imageUrl2 = imageUri.toString();
         Review review = new Review(
                 FirebaseAuth.getInstance().getCurrentUser(),
                 mRatingBar.getRating(),
