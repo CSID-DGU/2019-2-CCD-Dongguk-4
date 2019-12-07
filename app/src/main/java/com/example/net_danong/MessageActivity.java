@@ -75,6 +75,8 @@ public class MessageActivity extends AppCompatActivity {
         editText = findViewById(R.id.messageActivity_editText);
 
         recyclerView = findViewById(R.id.messageActivity_reclclerview);
+
+        //전송버튼
         button.setOnClickListener(view -> {
             List chatModel = new ArrayList<ChatModel>();
 
