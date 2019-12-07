@@ -30,7 +30,7 @@ public class ReviewAdapter extends FirestoreAdapter<ReviewAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getSnapshot(position).toObject(Review.class));
+        holder.bind(getSnapshot(position).toObject(ReviewModel.class));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -48,7 +48,7 @@ public class ReviewAdapter extends FirestoreAdapter<ReviewAdapter.ViewHolder> {
             ratingBar = itemView.findViewById(R.id.rating_pdtRating);
         }
 
-        public void bind(Review review) {
+        public void bind(ReviewModel review) {
             Glide.with(view.getContext())
                     .load(review.getRvPhoto())
                     .into(imageView);

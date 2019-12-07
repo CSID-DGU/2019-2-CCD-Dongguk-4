@@ -8,7 +8,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 
-public class Review {
+public class ReviewModel {
     private String userUId;
     private String userName;
     private double rating;
@@ -16,9 +16,9 @@ public class Review {
     private String rvPhoto;
     private @ServerTimestamp Date timestamp;
 
-    public Review() {}
+    public ReviewModel() {}
 
-    public Review(FirebaseUser user, double rating, String text, String rvPhoto) {
+    public ReviewModel(FirebaseUser user, double rating, String text, String rvPhoto) {
         this.userUId = user.getUid();
         this.userName = user.getEmail().substring(0,user.getEmail().lastIndexOf("@"));
         this.rating = rating;

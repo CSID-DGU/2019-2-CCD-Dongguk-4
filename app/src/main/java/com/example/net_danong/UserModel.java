@@ -2,7 +2,7 @@ package com.example.net_danong;
 
 import android.os.Parcel;
 
-public class User {
+public class UserModel {
 
     private String userUid;
     private String email;
@@ -12,11 +12,11 @@ public class User {
     private com.google.firebase.Timestamp createdAt;
     private String photoURL;
 
-    public User(){
+    public UserModel(){
 
     };
 
-    public User(String userUid, String displayName, String email, String phoneNum, String photoURL, com.google.firebase.Timestamp createdAt) {
+    public UserModel(String userUid, String displayName, String email, String phoneNum, String photoURL, com.google.firebase.Timestamp createdAt) {
         this.userUid = userUid;
         this.userId = email.substring(0,email.lastIndexOf("@"));
         this.displayName = displayName;
@@ -25,7 +25,7 @@ public class User {
         this.photoURL = photoURL;
         this.createdAt = createdAt;
     }
-    protected User(Parcel in) {
+    protected UserModel(Parcel in) {
         email = in.readString();
         userId = in.readString();
         displayName = in.readString();

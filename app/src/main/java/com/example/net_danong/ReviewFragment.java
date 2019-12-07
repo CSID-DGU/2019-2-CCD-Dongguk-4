@@ -11,23 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
@@ -48,7 +37,7 @@ public class ReviewFragment extends DialogFragment implements View.OnClickListen
 
     interface ReviewListener {
 
-        void onReview(Review review);
+        void onReview(ReviewModel review);
 
     }
 
@@ -116,7 +105,7 @@ public class ReviewFragment extends DialogFragment implements View.OnClickListen
 
     public void onSubmitClicked(View view) {
         imageUrl2 = imageUri.toString();
-        Review review = new Review(
+        ReviewModel review = new ReviewModel(
                 FirebaseAuth.getInstance().getCurrentUser(),
                 mRatingBar.getRating(),
                 mReviewText.getText().toString(),

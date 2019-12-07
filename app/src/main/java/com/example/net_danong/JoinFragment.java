@@ -3,7 +3,6 @@ package com.example.net_danong;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,7 +43,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.sql.Date;
 import java.util.regex.Pattern;
 
 
@@ -250,7 +248,7 @@ public class JoinFragment extends Fragment {
                                             //리얼타임에 채팅용 유저데이터 저장 완료
 
                                             //파이어스토어에 전체 유저데이터 저장
-                                            User user = new User(FirebaseAuth.getInstance().getUid(), name, email, phoneNumber, imageUrl, time);
+                                            UserModel user = new UserModel(FirebaseAuth.getInstance().getUid(), name, email, phoneNumber, imageUrl, time);
 
                                             FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                                                     .setTimestampsInSnapshotsEnabled(true)

@@ -203,7 +203,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         }
 
         private Task<Void> addReview(final DocumentReference productRef,
-                                     final Review review) {
+                                     final ReviewModel review) {
 
             final DocumentReference reviewRef = productRef.collection("reviews")
                     .document();
@@ -275,7 +275,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            User user = document.toObject(User.class);
+                            UserModel user = document.toObject(UserModel.class);
                             Glide.with(mPdtImageView.getContext())
                                     .load(user.getPhotoURL())
                                     .into(mProviderProfileView);
@@ -326,13 +326,13 @@ public class ProductDetailActivity extends AppCompatActivity implements
         }
 
         @Override
-        public void onReview(Review review) {
+        public void onReview(ReviewModel review) {
             // In a transaction, add the new rating and update the aggregate totals
             addReview(mProductRef, review)
                     .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "Review added");
+                            Log.d(TAG, "ReviewModel added");
 
                             // Hide keyboard and scroll to top
                             hideKeyboard();

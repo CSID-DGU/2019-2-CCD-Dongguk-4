@@ -111,7 +111,7 @@ public class PdtTotalReviewActivity extends AppCompatActivity implements
     }
 
     private Task<Void> addReview(final DocumentReference productRef,
-                                 final Review review) {
+                                 final ReviewModel review) {
 
         final DocumentReference reviewRef = productRef.collection("reviews")
                 .document();
@@ -170,7 +170,7 @@ public class PdtTotalReviewActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onReview(Review review) {
+    public void onReview(ReviewModel review) {
         // In a transaction, add the new rating and update the aggregate totals
         addReview(mProductRef, review)
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {

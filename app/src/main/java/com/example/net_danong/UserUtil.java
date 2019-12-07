@@ -50,10 +50,10 @@ public class UserUtil{
     static String password;
     */
 /**
-     * Create a random User POJO.
+     * Create a random UserModel POJO.
      *//*
 
-    public static User addUserUtil() {
+    public static UserModel addUserUtil() {
         id = "";
         email = "";
         password = "";
@@ -68,7 +68,7 @@ public class UserUtil{
         firebaseAuth = FirebaseAuth.getInstance();
         mdb = FirebaseFirestore.getInstance();
 
-        User user = new User(firebaseAuth.getCurrentUser().getUid(), getDisplayName(random), email, getRandomPhoneNum(random));
+        UserModel user = new UserModel(firebaseAuth.getCurrentUser().getUid(), getDisplayName(random), email, getRandomPhoneNum(random));
         return user;
 
         }

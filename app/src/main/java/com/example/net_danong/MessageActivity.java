@@ -57,7 +57,7 @@ public class MessageActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd HH:mm");
 
     private ChatUserModel destinationUserModel;
     private DatabaseReference databaseReference;
@@ -256,7 +256,6 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.rightbubble);
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
-                messageViewHolder.textView_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
 
                 //상대방이 보낸 메세지
@@ -271,7 +270,6 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
                 messageViewHolder.textView_message.setText(comments.get(position).message);
-                messageViewHolder.textView_message.setTextSize(25);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
 
 
@@ -320,6 +318,5 @@ public class MessageActivity extends AppCompatActivity {
             databaseReference.removeEventListener(valueEventListener);
         }
         finish();
-        overridePendingTransition(R.anim.fromleft, R.anim.toright);
     }
 }
