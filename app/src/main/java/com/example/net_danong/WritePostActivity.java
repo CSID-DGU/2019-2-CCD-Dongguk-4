@@ -189,6 +189,7 @@ public class WritePostActivity extends BasicActivity {
             if(profilePath == null){
                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents);
                 productWriteInfo.setUserUid(user.getUid());
+                productWriteInfo.setPublisher(user.getEmail().substring(0,user.getEmail().lastIndexOf("@")));
                 productWriteInfo.setAvgRating(0);
                 productWriteInfo.setNumRatings(0);
 
@@ -216,7 +217,7 @@ public class WritePostActivity extends BasicActivity {
                                 Uri downloadUri = task.getResult();
 
                                 ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
-
+                                productWriteInfo.setPublisher(user.getDisplayName());
                                 String city = productWriteInfo.getLocation();
                                 productWriteInfo.setLatitude(glatitude(city));
                                 productWriteInfo.setLongitude(glongitude(city));
@@ -355,7 +356,7 @@ public class WritePostActivity extends BasicActivity {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Toast.makeText(WritePostActivity.this, "업로드 완료", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

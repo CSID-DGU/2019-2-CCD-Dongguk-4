@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ecloud.pulltozoomview.PullToZoomScrollViewEx;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -257,6 +260,9 @@ public class ProductDetailActivity extends AppCompatActivity implements
             onProductLoaded(snapshot.toObject(ProductWriteInfo.class));
         }
 
+/*
+    static String uid;
+*/
         private void onProductLoaded(ProductWriteInfo product) {
             mProviderIdView.setText(product.getPublisher());
             mTitleView.setText(product.getTitle());
@@ -271,9 +277,11 @@ public class ProductDetailActivity extends AppCompatActivity implements
             Glide.with(mPdtImageView.getContext())
                     .load(product.getPhotoUrl())
                     .into(mPdtImageView);
-            // Profile image
-   /*         DocumentReference docRef = mFirestore.collection("users").document(product.getUserUid());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
+            //시작 user 에서 image 불러오기
+            DocumentReference userDocRef = mFirestore.collection("users").document(product.getUserUid());
+            userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
@@ -282,8 +290,8 @@ public class ProductDetailActivity extends AppCompatActivity implements
                             User user = document.toObject(User.class);
                             Glide.with(mPdtImageView.getContext())
                                     .load(user.getPhotoURL())
-                                    .into(mPdtImageView);
-                            Log.d(TAG, "유저 DocumentSnapshot data: " + document.getData());
+                                    .apply(new RequestOptions().circleCrop())
+                                    .into(mProviderProfileView);
                         } else {
                             Log.d(TAG, "No such document");
                         }
@@ -291,7 +299,9 @@ public class ProductDetailActivity extends AppCompatActivity implements
                         Log.d(TAG, "get failed with ", task.getException());
                     }
                 }
-            });*/
+            });
+            //시작 user 에서 image 불러오기
+        // Profile image
 
 
         }
