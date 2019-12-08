@@ -150,10 +150,10 @@ public class WriteBoardActivity extends BasicActivity {
                     storageUpload();
                     break;
                 case R.id.board_image:
-                    myStartActivity(GalleryActivity.class, GALLERY_IMAGE, 0);
+                    myStartActivity(Board_Gallery.class, GALLERY_IMAGE, 0);
                     break;
                 case R.id.board_video:
-                    myStartActivity(GalleryActivity.class, GALLERY_VIDEO, 0);
+                    myStartActivity(Board_Gallery.class, GALLERY_VIDEO, 0);
                     break;
                 case R.id.buttonBackgroundLayout:
                     if (buttonsBackgroundLayout.getVisibility() == View.VISIBLE) {
@@ -161,11 +161,11 @@ public class WriteBoardActivity extends BasicActivity {
                     }
                     break;
                 case R.id.board_imageModify:
-                    myStartActivity(GalleryActivity.class, GALLERY_IMAGE, 1);
+                    myStartActivity(Board_Gallery.class, GALLERY_IMAGE, 1);
                     buttonsBackgroundLayout.setVisibility(View.GONE);
                     break;
                 case R.id.board_videoModify:
-                    myStartActivity(GalleryActivity.class, GALLERY_VIDEO, 1);
+                    myStartActivity(Board_Gallery.class, GALLERY_VIDEO, 1);
                     buttonsBackgroundLayout.setVisibility(View.GONE);
                     break;
                 case R.id.board_delete:
@@ -282,7 +282,7 @@ public class WriteBoardActivity extends BasicActivity {
     }
 
     private void storeUpload(DocumentReference documentReference, final BoardInfo boardInfo) {
-        documentReference.set(boardInfo.getPostInfo())
+        documentReference.set(boardInfo.getBoardInfo())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

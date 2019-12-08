@@ -32,7 +32,7 @@ public class BoardInfo implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Map<String, Object> getPostInfo(){
+    public Map<String, Object> getBoardInfo(){
         Map<String, Object> docData = new HashMap<>();
         docData.put("title",title);
         docData.put("contents",contents);

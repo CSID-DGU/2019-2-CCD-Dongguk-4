@@ -65,6 +65,7 @@
         <activity android:name=".PdtTotalReviewActivity"/>
         <activity android:name=".Board.WriteBoardActivity"/>
         <activity android:name=".Board.BoardActivity"/>
+        <activity android:name=".Board.Board_Gallery"/>
 
     </application>
 
