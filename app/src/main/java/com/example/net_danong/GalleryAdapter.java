@@ -18,10 +18,14 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
     private ArrayList<String> mDataset;
     private Activity activity;
+ /*   private final int GET_GALLERY_IMAGE = 200;
+    private ImageView imageview;*/
 
     public static class GalleryViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
@@ -37,7 +41,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         this.activity=activity;
     }
 
-//    /*@NonNull*/초기 Null checking 에러>초기 default 그림넣기
+    @NonNull/*초기 Null checking 에러>초기 default 그림넣기*/
     @Override
     public GalleryAdapter.GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         CardView cardView = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);//갤러리 자동으로 보이게
@@ -55,11 +59,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
                 activity.setResult(Activity.RESULT_OK, resultIntent);
                 activity.finish();
             }
-                                    });
-
+        });
         ImageView imageView = holder.cardView.findViewById(R.id.imageView);
         Glide.with(activity).load(mDataset.get(position)).centerCrop().override(500).into(imageView);
-    }//데이터(mDataset)가 하나씩 들어오는 곳
+
+    }
+
+
 
     @Override
     public int getItemCount() {

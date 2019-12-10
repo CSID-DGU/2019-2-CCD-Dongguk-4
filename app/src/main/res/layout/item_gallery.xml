@@ -10,5 +10,6 @@ app:cardCornerRadius="10dp">
     android:id="@+id/imageView"
     android:layout_width="130dp"
     android:layout_height="wrap_content"
-    android:adjustViewBounds="true" />
+    android:adjustViewBounds="true"
+    app:srcCompat="@drawable/picture_1"/>
 </androidx.cardview.widget.CardView>
