@@ -23,10 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:gravity="center"
-            android:text="상품등록"
-            android:textColor="#000000"
+            android:text="상 품 등 록"
+            android:textColor="#0A0A0C"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,6 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"
+                    android:src="@drawable/imageupload"
                      />
             </androidx.cardview.widget.CardView>
 
@@ -113,11 +114,6 @@
                 android:inputType="textMultiLine"
                 android:lines="10" />
 
-            <Button
-                android:id="@+id/gallery"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="갤러리" />
 
 
             <Button

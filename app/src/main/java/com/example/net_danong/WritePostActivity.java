@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
+import android.os.Bundle;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -72,7 +73,7 @@ public class WritePostActivity extends BasicActivity {
         setContentView(R.layout.activity_write_post_1);
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
-        findViewById(R.id.gallery).setOnClickListener(onClickListener);
+        /*findViewById(R.id.gallery).setOnClickListener(onClickListener);*/
         productImage = findViewById(R.id.iv_productImage);
         productImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,6 +269,7 @@ public class WritePostActivity extends BasicActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Toast.makeText(WritePostActivity.this, "업로드 완료", Toast.LENGTH_SHORT).show();
+                        finish();//추가
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
