@@ -66,6 +66,7 @@
         <activity android:name=".Board.WriteBoardActivity"/>
         <activity android:name=".Board.BoardActivity"/>
         <activity android:name=".Board.Board_Gallery"/>
+        <activity android:name="Board.BoardFragment"/>
 
     </application>
 

@@ -26,16 +26,7 @@
 
     </com.example.net_danong.Board.view.ReadContentsVIew>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/board_scroll"
-        android:layout_alignParentRight="true"
-        android:text="글쓰기"
-        android:id="@+id/BoardWritdBtn"
-        >
 
-    </Button>
 
 
 </RelativeLayout>
