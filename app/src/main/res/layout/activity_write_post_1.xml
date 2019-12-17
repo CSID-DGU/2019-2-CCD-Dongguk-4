@@ -79,23 +79,6 @@
                 android:ems="10"
                 android:hint="가격"
                 android:inputType="textPersonName" />
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/map"
-                    class="com.google.android.gms.maps.SupportMapFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/><!--250dp-->
-                <Button
-                    android:id="@+id/btn_lastLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="내위치찾기"/>
-
-            </FrameLayout>
-
             <EditText
                 android:id="@+id/locationEditText"
                 android:layout_width="match_parent"
