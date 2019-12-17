@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="판매중인 제품수"
+                android:text="등록된 상품"
                 android:textSize="20dp" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="20dp"
-                android:text="20"
+                android:text="00"
                 android:textSize="20dp" />
         </LinearLayout>
 

@@ -3,7 +3,6 @@
     android:id="@+id/img_productZoom"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:src="@drawable/one"
     android:scaleType="centerCrop"
     android:layout_gravity="center_horizontal"
     android:contentDescription="@string/app_name" />

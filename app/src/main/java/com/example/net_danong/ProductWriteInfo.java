@@ -1,6 +1,7 @@
 package com.example.net_danong;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class ProductWriteInfo {
 
     private String contents;
     private String publisher;
-    private Date createdAt;
+    private Object createdAt;
 
     private String category;
     private String photoUrl;
@@ -30,32 +31,20 @@ public class ProductWriteInfo {
     public ProductWriteInfo() {
     }
 
-    public ProductWriteInfo(String title, String product, String price, String location, String contents, Date createdAt, String category, String photoUrl) {
+    public ProductWriteInfo(String userUid, String title, String product, String price, String location, String contents, String publisher, Object createdAt, String category, String photoUrl) {
+        this.userUid = userUid;
         this.title = title;
         this.product = product;
         this.price = price;
         this.location = location;
         this.contents = contents;
-        this.photoUrl = photoUrl;
+        this.publisher = publisher;
         this.createdAt = createdAt;
         this.category = category;
+        this.photoUrl = photoUrl;
+        numRatings = 0;
+        avgRating = 0;
     }
-
-    public ProductWriteInfo(String title, String product, String price, String location, String contents) {
-        this.title = title;
-        this.product = product;
-        this.price = price;
-        this.location = location;
-        this.contents = contents;
-    }
-
-    //public LatLng getGoogleLocation() {
-    //    return googleLocation;
-    //}
-
-    //public void setGoogleLocation(LatLng googleLocation) {
-    //    this.googleLocation = googleLocation;
-    //}
 
     public double getLatitude(){return latitude;}
     public void setLatitude(double latitude){
@@ -70,9 +59,6 @@ public class ProductWriteInfo {
         return userUid;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
-    }
 
     public String getCategory() {
         return category;
@@ -146,7 +132,7 @@ public class ProductWriteInfo {
         this.publisher = publisher;
     }
 
-    public Date getCreatedAt(){ return this.createdAt; }
+    public Object getCreatedAt(){ return this.createdAt; }
 
-    public void setCreatedAt(Date createdAt){ this.createdAt = createdAt; }
+    public void setCreatedAt(Object createdAt){ this.createdAt = createdAt; }
 }

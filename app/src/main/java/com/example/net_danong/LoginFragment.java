@@ -123,14 +123,24 @@ public class LoginFragment extends Fragment {
                 } else {
                     currentUser = mAuth.getCurrentUser();
                     Toast.makeText(getActivity(), "어서오세요, " + currentUser.getEmail(), Toast.LENGTH_SHORT).show();
+                    FirebaseInstanceId.getInstance().getInstanceId()
+                            .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w("Token", "getInstanceId failed", task.getException());
+                                        return;
+                                    }
 
-                     FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( instanceIdResult -> {
-                         String uid = currentUser.getUid();
-                         String token = FirebaseInstanceId.getInstance().getToken();
-                         Map<String,Object> map = new HashMap<>();
-                         map.put("pushToken",token);
-                         FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
-                     });
+                                    // Get new Instance ID token
+                                    String token = task.getResult().getToken();
+                                    String uid = currentUser.getUid();
+
+                                    Map<String,Object> map = new HashMap<>();
+                                    map.put("pushToken",token);
+                                    FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
+                                }
+                            });
                     ((MainActivity)getActivity()).removeLogFrag(LoginFragment.newInstance());
 
 

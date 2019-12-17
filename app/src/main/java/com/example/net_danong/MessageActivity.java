@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -99,7 +98,7 @@ public class MessageActivity extends AppCompatActivity {
                 FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        sendGcm();
+                        sendFcm();
                         editText.setText("");
                     }
                 });
@@ -113,11 +112,11 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
-    void sendGcm() {
+    void sendFcm() {
 
         Gson gson = new Gson();
 
-        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getEmail().substring(0,FirebaseAuth.getInstance().getCurrentUser().getEmail().indexOf("@"));
         NotificationModel notificationModel = new NotificationModel();
         notificationModel.to = destinationUserModel.pushToken;
         notificationModel.notification.title = userName;
@@ -126,7 +125,7 @@ public class MessageActivity extends AppCompatActivity {
         notificationModel.data.text = editText.getText().toString();
 
 
-        okhttp3.RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
+        okhttp3 .RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
 
         okhttp3.Request request = new Request.Builder()
                 .header("Content-Type", "application/json")

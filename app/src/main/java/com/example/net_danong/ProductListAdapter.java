@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
@@ -73,10 +74,10 @@ public class ProductListAdapter extends FirestoreAdapter<ProductListAdapter.View
             ProductWriteInfo product = snapshot.toObject(ProductWriteInfo.class);
             Resources resources = itemView.getResources();
 
-/*            // Load image
+            // Load image
             Glide.with(imageView.getContext())
                     .load(product.getPhotoUrl())
-                    .into(imageView);*/
+                    .into(imageView);
 
             idView.setText(product.getPublisher());
             nameView.setText(product.getProduct());

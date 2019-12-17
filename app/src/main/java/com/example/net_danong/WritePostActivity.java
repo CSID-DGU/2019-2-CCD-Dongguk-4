@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,8 +51,11 @@ import java.util.List;
 public class WritePostActivity extends BasicActivity {
     private static final String TAG = "WritePostActivity";
 
+    //상품대표이미지
     private static final int PICK_FROM_ALBUM = 10;
     private Uri imageUri;
+    private ImageView productImage;
+
 
     private String profilePath;
     public static String category;
@@ -61,7 +65,6 @@ public class WritePostActivity extends BasicActivity {
     private int pathCount, successCount;
     private static FirebaseAuth mAuth;/*선언하기*/
     private static FirebaseFirestore mdb;/*바뀐부분*//*선언하기*/
-    private ImageView profileImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,15 @@ public class WritePostActivity extends BasicActivity {
 
         findViewById(R.id.check).setOnClickListener(onClickListener);
         findViewById(R.id.gallery).setOnClickListener(onClickListener);
-        findViewById(R.id.profileImageView).setOnClickListener(onClickListener);
+        productImage = findViewById(R.id.iv_productImage);
+        productImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+            }
+        });
 
         Spinner spinner = findViewById(R.id.categorySpinner);
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this, R.array.spinnerArray, android.R.layout.simple_spinner_dropdown_item);
@@ -97,8 +108,17 @@ public class WritePostActivity extends BasicActivity {
             finish();
         }
 
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_FROM_ALBUM && resultCode == RESULT_OK) {
+            productImage.setImageURI(data.getData()); // 가운데 뷰를 바꿈
+            imageUri = data.getData();// 이미지 경로 원본
+        }
+    }
+
+        //일단 주석처리할게용
+       /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
             switch (requestCode) {
             case 0: {
@@ -109,8 +129,8 @@ public class WritePostActivity extends BasicActivity {
                     }
                 break;
             }
-        }
-    }//profileImageView에 이미지 넣기
+        }*/
+    //}//profileImageView에 이미지 넣기
 
 
 
@@ -122,25 +142,25 @@ public class WritePostActivity extends BasicActivity {
                 case R.id.check:
                     profileUpdate();
                     break;
-                case R.id.profileImageView:
+               /* case R.id.profileImageView:
                     if (ContextCompat.checkSelfPermission(WritePostActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)/*갤러리접근권한얻기*/
+                            Manifest.permission.READ_EXTERNAL_STORAGE)*//*갤러리접근권한얻기*//*
                             != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(WritePostActivity.this,
                                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    1);/*권한이 없을 떄 나오는 작업*/
+                                    1);*//*권한이 없을 떄 나오는 작업*//*
                         if (ActivityCompat.shouldShowRequestPermissionRationale(WritePostActivity.this,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
                         } else {
                             startToast("권한을 허용해 주세요");
-                        }/*권한다시 묻는 작업*/
+                        }*//*권한다시 묻는 작업*//*
                     }else{
-                        /*myStartActivity(GalleryActivity.class);*/
+                        *//*myStartActivity(GalleryActivity.class);*//*
                         Intent intent = new Intent(Intent.ACTION_PICK);
                         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                         startActivityForResult(intent, PICK_FROM_ALBUM);
-                    }/*권한 허용했을 때 나오는 작업*/
-                    break;
+                    }*//*권한 허용했을 때 나오는 작업*//*
+                    break;*/
             }
         }
     };
@@ -165,63 +185,34 @@ public class WritePostActivity extends BasicActivity {
         final String price = ((EditText) findViewById(R.id.priceEditText)).getText().toString();
         final String location = ((EditText) findViewById(R.id.locationEditText)).getText().toString();
         final String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();
+        final Object createdAt = ServerValue.TIMESTAMP;
        /* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*/
 
         if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
 //            final ArrayList<String> contentsList = new ArrayList<>();//내용 하나씩 추가 위해서
             user = FirebaseAuth.getInstance().getCurrentUser();
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            final StorageReference mountainImagesRef = storageRef.child("users/"+user.getUid()+"/profileImage.jpg");
+            final StorageReference REF =  FirebaseStorage.getInstance().getReference().child("productImages").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+ createdAt.toString());
 
-            if(profilePath == null){
-                ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents);
-                productWriteInfo.setUserUid(user.getUid());
-                productWriteInfo.setPublisher(user.getEmail().substring(0,user.getEmail().lastIndexOf("@")));
-                productWriteInfo.setAvgRating(0);
-                productWriteInfo.setNumRatings(0);
-
-                String city = productWriteInfo.getLocation();
-                productWriteInfo.setLatitude(glatitude(city));
-                productWriteInfo.setLongitude(glongitude(city));
-
-                uploader(productWriteInfo);
-            }else{
-                try {
-                    InputStream stream = new FileInputStream(new File(profilePath));
-                    UploadTask uploadTask = mountainImagesRef.putStream(stream);
-                    uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            REF.putFile(imageUri)
+                    .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                         @Override
                         public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                             if (!task.isSuccessful()) {
                                 throw task.getException();
                             }
-                            return mountainImagesRef.getDownloadUrl();
+                            return REF.getDownloadUrl();
                         }
                     }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            if (task.isSuccessful()) {
-                                Uri downloadUri = task.getResult();
-
-                                ProductWriteInfo productWriteInfo = new ProductWriteInfo(title, product, price, location, contents, new Date(), category, downloadUri.toString());
-                                productWriteInfo.setPublisher(user.getDisplayName());
-                                String city = productWriteInfo.getLocation();
-                                productWriteInfo.setLatitude(glatitude(city));
-                                productWriteInfo.setLongitude(glongitude(city));
-
-                                uploader(productWriteInfo);
-                                startToast("상품등록을 성공하였습니다.");
-                                finish();
-                            } else {
-                                startToast("등록정보를 보내는데 실패하였습니다.");
-                            }
-                        }
-                    });
-                } catch (FileNotFoundException e) {
-                    Log.e("로그", "에러: " + e.toString());
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    String imageUrl = task.getResult().toString();
+                    ProductWriteInfo productWriteInfo = new ProductWriteInfo(user.getUid(),title,product,price,location,contents, user.getEmail().substring(0,user.getEmail().lastIndexOf("@")), createdAt,category,imageUrl);
+                    String city = productWriteInfo.getLocation();
+                    productWriteInfo.setLatitude(glatitude(city));
+                    productWriteInfo.setLongitude(glongitude(city));
+                    uploader(productWriteInfo);
                 }
-            }
+            });
         } else {
             startToast("상품정보를 입력해주세요.");
         }

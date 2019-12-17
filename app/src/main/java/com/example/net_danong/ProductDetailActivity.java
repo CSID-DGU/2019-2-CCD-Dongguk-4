@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -153,7 +154,15 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
             mReviewFragment = new ReviewFragment();
         }
-
+        public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()){
+                case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                        finish();
+                        break;
+                }
+            }
+            return super.onOptionsItemSelected(item);
+        }
         private void loadViewForCode() {
             PullToZoomScrollViewEx scrollView = findViewById(R.id.scroll_view);
             View zoomView = LayoutInflater.from(this).inflate(R.layout.item_zoom_view, null, false);
@@ -186,9 +195,7 @@ public class ProductDetailActivity extends AppCompatActivity implements
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.product_button_back:
-                    onBackArrowClicked(v);
-                    break;
+
                 case R.id.fab_show_review_dialog:
                     onAddReviewClicked(v);
                     break;
