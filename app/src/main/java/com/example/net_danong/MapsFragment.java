@@ -5,6 +5,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -31,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -369,9 +372,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
             public void onSuccess(Location location) {
                 if (location != null) {
                     LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.addMarker(new MarkerOptions()
-                            .position(myLocation)
-                            .title("현재 위치"));
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(myLocation).title("현재 위치");
+
+                    //마커 아이콘 변경
+                    BitmapDrawable bitmapdraw = (BitmapDrawable)getResources().getDrawable(R.drawable.marker);
+                    Bitmap b=bitmapdraw.getBitmap();
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(b, 100, 100, false);
+                    markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+                    mMap.addMarker(markerOptions);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
                 }

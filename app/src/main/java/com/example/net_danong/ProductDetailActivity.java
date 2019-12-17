@@ -110,7 +110,6 @@ public class ProductDetailActivity extends AppCompatActivity implements
 
             findViewById(R.id.btn_goProvider).setOnClickListener(this);
             findViewById(R.id.btn_goReview).setOnClickListener(this);
-            findViewById(R.id.product_button_back).setOnClickListener(this);
             findViewById(R.id.fab_show_review_dialog).setOnClickListener(this);
 
             //채팅하기 버튼
