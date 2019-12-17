@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -59,7 +60,6 @@ public class ProductDetailActivity extends AppCompatActivity implements
                 , mContentsView, mProviderIdView, mLocationView;
         private Button goProvider, goReview, btn_chat;
 
-        private FieldPath fieldPath;
         private MaterialRatingBar mRatingIndicator;
         private TextView mNumRatingsView;
         private RecyclerView mReviewRecycler;
@@ -78,7 +78,9 @@ public class ProductDetailActivity extends AppCompatActivity implements
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             String productId = getDocumentId();
-
+            //액션바 이름 설정
+            ActionBar ab = getSupportActionBar();
+            ab.setTitle("");
             setContentView(R.layout.activity_product_detail);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             loadViewForCode();

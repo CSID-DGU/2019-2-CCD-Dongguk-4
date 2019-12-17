@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -71,7 +72,8 @@ public class WritePostActivity extends BasicActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_post_1);
-
+        ActionBar ab = getSupportActionBar();
+        ab.setTitle("상품등록");
         findViewById(R.id.check).setOnClickListener(onClickListener);
         /*findViewById(R.id.gallery).setOnClickListener(onClickListener);*/
         productImage = findViewById(R.id.iv_productImage);

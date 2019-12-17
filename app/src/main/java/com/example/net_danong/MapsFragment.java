@@ -11,6 +11,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -97,6 +98,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         if(getArguments() != null){
             productName = getArguments().getString("pdtName");
         }
+        ActionBar ab = ((MainActivity) getActivity()).getSupportActionBar();
+        ab.hide() ;
 
         View view  = inflater.inflate(R.layout.fragment_maps, container, false);
         mapView = view.findViewById(R.id.map);
@@ -168,6 +171,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, Produc
         mProductRecycler.setAdapter(mAdapter);
         return view;
     }
+
 
     @Override
     public void onResume() {
