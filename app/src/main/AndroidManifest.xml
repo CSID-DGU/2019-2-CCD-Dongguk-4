@@ -61,7 +61,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FristPageFragment" />
+        <activity android:name=".FirstPageFragment" />
         <activity android:name=".SearchFragment" />
         <activity android:name=".BasicActivity"/><!--//등록구현-->
         <!--//등록구현-->

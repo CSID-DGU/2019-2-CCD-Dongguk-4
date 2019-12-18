@@ -4,21 +4,21 @@ import com.google.firebase.storage.StorageReference;
 
 public class Model {
 
-    private StorageReference image;
+    private String image;
     private String title;
     private String desc;
 
-    public Model(StorageReference image, String title, String desc) {
+    public Model(String image, String title, String desc) {
         this.image = image;
         this.title = title;
         this.desc = desc;
     }
 
-    public StorageReference getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(StorageReference image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

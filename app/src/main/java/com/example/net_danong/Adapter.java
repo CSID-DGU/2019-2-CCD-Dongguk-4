@@ -1,3 +1,4 @@
+/*
 package com.example.net_danong;
 
 import android.content.Context;
@@ -66,8 +67,8 @@ public class Adapter extends PagerAdapter {
         }
         });
 
-        title.setText(models.get(position).getTitle());
-        desc.setText(models.get(position).getDesc());
+        title.setText(models.getTitle());
+        desc.setText(models.getDesc());
 
         container.addView(view, 0);
         return view;
@@ -78,3 +79,4 @@ public class Adapter extends PagerAdapter {
         container.removeView((View)object);
     }
 }
+*/

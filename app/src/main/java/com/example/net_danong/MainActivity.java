@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
     // FrameLayout 관련 초기화
     private FragmentManager fragmentManager = getSupportFragmentManager();
     // 5개의 메뉴에 들어갈 Fragment들 (변수명 변경 필요)
-    private FristPageFragment FristPageFragment = new FristPageFragment();
+    private FirstPageFragment FirstPageFragment = new FirstPageFragment();
     private BoardFragment boardFragment = new BoardFragment();
     private Menu5Fragment menu5Fragment = new Menu5Fragment();
     //추가 기능별 Fragment (아이디비번찾기, 회원가입, 등 기능 및 페이지 관련해서 추가 필요)
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
 
         //Fragment Layout 초기 설정 (menu1화면)
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, FristPageFragment.newInstance()).commitAllowingStateLoss();
+        transaction.replace(R.id.frame_layout, FirstPageFragment.newInstance()).commitAllowingStateLoss();
 
         //하단 navigation bar 지정
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        /*Intent intent = new Intent(MainActivity.this, FristPageFragment.class);
+        /*Intent intent = new Intent(MainActivity.this, FirstPageFragment.class);
         startActivity(intent);*/
        /* findViewById(R.id.floatingActionButton).setOnClickListener(onClickListener);//더보기 화면의 +버튼 클릭시 작동할 모드 설정*/
     }
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity{
 
             switch (menuItem.getItemId()) {
                 case R.id.navigation_menu1: {
-                    transaction.replace(R.id.frame_layout, FristPageFragment).commitAllowingStateLoss();
+                    transaction.replace(R.id.frame_layout, FirstPageFragment).commitAllowingStateLoss();
                     break;
                 }
                 case R.id.navigation_menu2: {

@@ -34,7 +34,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BoardFragment extends Fragment {
+public class
+
+BoardFragment extends Fragment {
     private static final String TAG = "BoardFragment";
     private FirebaseFirestore firebaseFirestore;
     private BoardFragAdapter boardFragAdapter;

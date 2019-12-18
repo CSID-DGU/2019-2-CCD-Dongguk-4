@@ -120,23 +120,6 @@ public class WritePostActivity extends BasicActivity {
         }
     }
 
-        //일단 주석처리할게용
-       /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            switch (requestCode) {
-            case 0: {
-                    if (resultCode == Activity.RESULT_OK) {
-                         profilePath = data.getStringExtra("profilePath");
-                         Bitmap bmp = BitmapFactory.decodeFile(profilePath);
-                            profileImageView.setImageBitmap(bmp);
-                    }
-                break;
-            }
-        }*/
-    //}//profileImageView에 이미지 넣기
-
-
-
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -145,25 +128,6 @@ public class WritePostActivity extends BasicActivity {
                 case R.id.check:
                     profileUpdate();
                     break;
-               /* case R.id.profileImageView:
-                    if (ContextCompat.checkSelfPermission(WritePostActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE)*//*갤러리접근권한얻기*//*
-                            != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(WritePostActivity.this,
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    1);*//*권한이 없을 떄 나오는 작업*//*
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(WritePostActivity.this,
-                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                        } else {
-                            startToast("권한을 허용해 주세요");
-                        }*//*권한다시 묻는 작업*//*
-                    }else{
-                        *//*myStartActivity(GalleryActivity.class);*//*
-                        Intent intent = new Intent(Intent.ACTION_PICK);
-                        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                        startActivityForResult(intent, PICK_FROM_ALBUM);
-                    }*//*권한 허용했을 때 나오는 작업*//*
-                    break;*/
             }
         }
     };
