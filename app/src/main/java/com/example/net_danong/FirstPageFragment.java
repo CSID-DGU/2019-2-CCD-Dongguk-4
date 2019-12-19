@@ -38,6 +38,8 @@ import java.util.List;
 
 public class FirstPageFragment extends Fragment implements Adapter2.OnModelSelectedListener {
 
+    private LinearLayoutManager mLayoutManager;
+
     public static FirstPageFragment newInstance() {
         return new FirstPageFragment();
     }
@@ -71,8 +73,9 @@ public class FirstPageFragment extends Fragment implements Adapter2.OnModelSelec
         FirebaseFirestore.setLoggingEnabled(true);
         initFirestore();
 
-
-        mModelRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mModelRecycler.setLayoutManager(mLayoutManager);
         mModelRecycler.setPadding(130, 0, 130, 0);
         mAdapter = new Adapter2(mQuery, this);
         mModelRecycler.setAdapter(mAdapter);
@@ -85,7 +88,7 @@ public class FirstPageFragment extends Fragment implements Adapter2.OnModelSelec
 //                Intent intent = new Intent(getContext(), SearchFragment.class);
 //                startActivity(intent);
 //            }
-//        });
+//        }); 6
 
         //우선 SearchFrag, 다른 화면으로 연결하는거 말고 버튼 클릭시 바로 결과 연동되도록..
         btn_search.setOnClickListener(new View.OnClickListener() {
