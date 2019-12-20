@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Danong</string>
+    <string name="app_name">다농</string>
     //로그인
     <string name="login_Welcome">Welcome Danong</string>
     <string name="success_login">로그인 성공</string>
