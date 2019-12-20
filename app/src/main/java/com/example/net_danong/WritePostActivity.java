@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -57,7 +58,6 @@ public class WritePostActivity extends BasicActivity {
     private static final int PICK_FROM_ALBUM = 10;
     private Uri imageUri;
     private ImageView productImage;
-
 
     private String profilePath;
     public static String category;
@@ -155,7 +155,7 @@ public class WritePostActivity extends BasicActivity {
         final Object createdAt = ServerValue.TIMESTAMP;
        /* String contents = ((EditText) findViewById(R.id.contentsEditText)).getText().toString();*/
 
-        if (title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
+        if (imageUri.toString().length() > 0 && title.length() > 0 && product.length() > 0 && price.length() > 0 && location.length() > 0 && contents.length() > 0) {
 //            final ArrayList<String> contentsList = new ArrayList<>();//내용 하나씩 추가 위해서
             user = FirebaseAuth.getInstance().getCurrentUser();
             final StorageReference REF =  FirebaseStorage.getInstance().getReference().child("productImages").child(FirebaseAuth.getInstance().getCurrentUser().getUid()+ createdAt.toString());
@@ -199,6 +199,8 @@ public class WritePostActivity extends BasicActivity {
             if (addressList.size() == 0) {
                 Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
             }
+        } else {
+            Toast.makeText(getApplicationContext(), "위치를 다시 입력해주세요", Toast.LENGTH_SHORT).show();
         }
 
         double latitude = addressList.get(0).getLatitude(); //위도
